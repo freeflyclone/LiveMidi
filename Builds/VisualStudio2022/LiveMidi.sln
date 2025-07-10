@@ -1,0 +1,46 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio Version 17
+
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "LiveMidi - Standalone Plugin", "LiveMidi_StandalonePlugin.vcxproj", "{DD5D6AC7-1982-28FD-95F6-6D4A883E12F9}"
+	ProjectSection(ProjectDependencies) = postProject
+		{DD09DBAD-7781-F36C-36B1-01DB5695E2D1} = {DD09DBAD-7781-F36C-36B1-01DB5695E2D1}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "LiveMidi - VST3", "LiveMidi_VST3.vcxproj", "{41B295F5-891D-2F46-AD75-4A667AF7E785}"
+	ProjectSection(ProjectDependencies) = postProject
+		{DD09DBAD-7781-F36C-36B1-01DB5695E2D1} = {DD09DBAD-7781-F36C-36B1-01DB5695E2D1}
+		{8A0C44BE-2E00-4ED2-5054-14FDF552732B} = {8A0C44BE-2E00-4ED2-5054-14FDF552732B}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "LiveMidi - Shared Code", "LiveMidi_SharedCode.vcxproj", "{DD09DBAD-7781-F36C-36B1-01DB5695E2D1}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "LiveMidi - VST3 Manifest Helper", "LiveMidi_VST3ManifestHelper.vcxproj", "{8A0C44BE-2E00-4ED2-5054-14FDF552732B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x64 = Debug|x64
+		Release|x64 = Release|x64
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{41B295F5-891D-2F46-AD75-4A667AF7E785}.Debug|x64.ActiveCfg = Debug|x64
+		{41B295F5-891D-2F46-AD75-4A667AF7E785}.Debug|x64.Build.0 = Debug|x64
+		{41B295F5-891D-2F46-AD75-4A667AF7E785}.Release|x64.ActiveCfg = Release|x64
+		{41B295F5-891D-2F46-AD75-4A667AF7E785}.Release|x64.Build.0 = Release|x64
+		{DD5D6AC7-1982-28FD-95F6-6D4A883E12F9}.Debug|x64.ActiveCfg = Debug|x64
+		{DD5D6AC7-1982-28FD-95F6-6D4A883E12F9}.Debug|x64.Build.0 = Debug|x64
+		{DD5D6AC7-1982-28FD-95F6-6D4A883E12F9}.Release|x64.ActiveCfg = Release|x64
+		{DD5D6AC7-1982-28FD-95F6-6D4A883E12F9}.Release|x64.Build.0 = Release|x64
+		{DD09DBAD-7781-F36C-36B1-01DB5695E2D1}.Debug|x64.ActiveCfg = Debug|x64
+		{DD09DBAD-7781-F36C-36B1-01DB5695E2D1}.Debug|x64.Build.0 = Debug|x64
+		{DD09DBAD-7781-F36C-36B1-01DB5695E2D1}.Release|x64.ActiveCfg = Release|x64
+		{DD09DBAD-7781-F36C-36B1-01DB5695E2D1}.Release|x64.Build.0 = Release|x64
+		{8A0C44BE-2E00-4ED2-5054-14FDF552732B}.Debug|x64.ActiveCfg = Debug|x64
+		{8A0C44BE-2E00-4ED2-5054-14FDF552732B}.Debug|x64.Build.0 = Debug|x64
+		{8A0C44BE-2E00-4ED2-5054-14FDF552732B}.Release|x64.ActiveCfg = Release|x64
+		{8A0C44BE-2E00-4ED2-5054-14FDF552732B}.Release|x64.Build.0 = Release|x64
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
