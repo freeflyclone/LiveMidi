@@ -155,7 +155,7 @@
  #define JucePlugin_ARAFactoryID           "com.Lumenicious.LiveMidi.factory"
 #endif
 #ifndef  JucePlugin_ARADocumentArchiveID
- #define JucePlugin_ARADocumentArchiveID   "com.Lumenicious.LiveMidi.aradocumentarchive.1.0.0"
+ #define JucePlugin_ARADocumentArchiveID   "com.Lumenicious.LiveMidi.aradocumentarchive.0.1.0"
 #endif
 #ifndef  JucePlugin_ARACompatibleArchiveIDs
  #define JucePlugin_ARACompatibleArchiveIDs  ""
