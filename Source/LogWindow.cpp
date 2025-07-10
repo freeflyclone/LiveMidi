@@ -10,17 +10,22 @@
 
 #include "LogWindow.h"
 
-LogWindow::LogWindow()
+LogWindow::LogWindow(juce::String name)
+    : juce::DocumentWindow(name, juce::Colours::black, DocumentWindow::allButtons)
 {
-    // Add other components to your window content
-    addAndMakeVisible (myButton);
-    myButton.setButtonText ("Click Me!");
-    myButton.setBounds (10, 10, 100, 30); 
+    setSize(600, 900);
+    setTopLeftPosition(200, 200);
+    setVisible(true);
+    setResizable(true, true);
+    setBackgroundColour(getLookAndFeel().findColour(juce::ResizableWindow::backgroundColourId));
 }
 
-void LogWindow::resized()
+void LogWindow::closeButtonPressed()
 {
-    // Layout your components here
-    myButton.setBounds (10, 10, 100, 30); 
+    juce::JUCEApplication::getInstance()->systemRequestedQuit();
 }
 
+void LogWindow::lookAndFeelChanged()
+{
+    setBackgroundColour(findColour(juce::ResizableWindow::backgroundColourId));
+}

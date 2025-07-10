@@ -11,13 +11,14 @@
 #pragma once
 #include <JuceHeader.h>
 
-class LogWindow : public juce::Component
+class LogWindow : public juce::DocumentWindow
 {
 public:
-    LogWindow();
+    LogWindow(juce::String name);
     
-    void resized() override;
+    void closeButtonPressed() override;
+    void lookAndFeelChanged() override;
 
 private:
-    juce::TextButton myButton;
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(LogWindow)
 };

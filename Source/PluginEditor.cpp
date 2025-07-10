@@ -11,7 +11,8 @@
 
 //==============================================================================
 LiveMidiAudioProcessorEditor::LiveMidiAudioProcessorEditor (LiveMidiAudioProcessor& p)
-    : AudioProcessorEditor (&p), audioProcessor (p)
+    : AudioProcessorEditor (&p), audioProcessor (p),
+    mLog(std::make_unique<LogWindow>("LiveMidi logging"))
 {
     // Make sure that before the constructor has finished, you've set the
     // editor's size to whatever you need it to be.
