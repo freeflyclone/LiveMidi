@@ -11,18 +11,15 @@
 #pragma once
 #include <JuceHeader.h>
 
-#ifdef WIN32
-    #include "Windows.h"
-#endif
-
 class LogWindow : public juce::DocumentWindow
 {
 public:
     LogWindow(juce::String name);
-    
+    ~LogWindow();
+
+    void paint(juce::Graphics& g);
+    void resized() override;
     void closeButtonPressed() override;
-    void lookAndFeelChanged() override;
-    void paint(juce::Graphics& g) override;
 
 private:
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(LogWindow)

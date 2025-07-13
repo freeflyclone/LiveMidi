@@ -11,12 +11,16 @@
 
 //==============================================================================
 LiveMidiAudioProcessorEditor::LiveMidiAudioProcessorEditor (LiveMidiAudioProcessor& p)
-    : AudioProcessorEditor (&p), audioProcessor (p),
-    mLog(std::make_unique<LogWindow>("LiveMidi logging"))
+    : AudioProcessorEditor (&p), 
+    audioProcessor (p),
+    showLogButton("Show log")
 {
     // Make sure that before the constructor has finished, you've set the
     // editor's size to whatever you need it to be.
     setSize (400, 300);
+
+    addAndMakeVisible(showLogButton);
+    showLogButton.addListener(this);
 }
 
 LiveMidiAudioProcessorEditor::~LiveMidiAudioProcessorEditor()
@@ -38,4 +42,20 @@ void LiveMidiAudioProcessorEditor::resized()
 {
     // This is generally where you'll want to lay out the positions of any
     // subcomponents in your editor..
+    showLogButton.setBounds(10, 10, 100, 32);
+}
+
+void LiveMidiAudioProcessorEditor::buttonClicked(juce::Button* button) {
+    if (button == &showLogButton) {
+        if (!mLog)
+        {
+            showLogButton.setButtonText("Hide Log");
+            mLog.reset(new LogWindow("Your Mom"));
+        }
+        else
+        {
+            mLog.reset(nullptr);
+            showLogButton.setButtonText("Show Log");
+        }
+    }
 }

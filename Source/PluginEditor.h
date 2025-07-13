@@ -15,7 +15,7 @@
 //==============================================================================
 /**
 */
-class LiveMidiAudioProcessorEditor  : public juce::AudioProcessorEditor
+class LiveMidiAudioProcessorEditor  : public juce::AudioProcessorEditor, juce::Button::Listener
 {
 public:
     LiveMidiAudioProcessorEditor (LiveMidiAudioProcessor&);
@@ -24,11 +24,15 @@ public:
     //==============================================================================
     void paint (juce::Graphics&) override;
     void resized() override;
+    void buttonClicked(juce::Button* button) override;
 
 private:
     // This reference is provided as a quick way for your editor to
     // access the processor object that created it.
     LiveMidiAudioProcessor& audioProcessor;
+
+    // Create a "Show log" button (WIP)
+    juce::TextButton showLogButton;
 
     // During development (while I'm still learning JUCE semantics), it's useful 
     // to have on-screen diagnostic logging available. Placed here for widest possible
