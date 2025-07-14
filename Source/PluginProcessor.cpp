@@ -156,6 +156,12 @@ void LiveMidiAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juc
 
         // ..do something to the data...
     }
+
+    for (auto mm : midiMessages)
+    {
+        // This WILL be audible if Windows' DebugView is used to view OutputDebugString
+        log(mm.getMessage().getDescription().toStdString());
+    }
 }
 
 //==============================================================================
