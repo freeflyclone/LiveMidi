@@ -712,9 +712,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\Source\Log.cpp">
-      <Filter>LiveMidi\Source</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\Source\LogWindow.cpp">
       <Filter>LiveMidi\Source</Filter>
     </ClCompile>

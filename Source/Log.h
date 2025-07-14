@@ -9,10 +9,4 @@
 */
 #pragma once
 
-#ifdef WIN32
-#include <Windows.h>
-#endif
-
-#include <string>
-
-extern void log(const std::string& msg);
+#define MYDBG(x) DBG("LiveMidi: " + (x))

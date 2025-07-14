@@ -7,7 +7,6 @@
               version="0.1.0" pluginFormats="buildAU,buildVST3" headerPath="E:\DevLibs\asiosdk_2.3.3_2019-06-14\common">
   <MAINGROUP id="bGTinK" name="LiveMidi">
     <GROUP id="{E2B440C9-98EB-7B5A-68F6-1F806C3DCF11}" name="Source">
-      <FILE id="wcEto0" name="Log.cpp" compile="1" resource="0" file="Source/Log.cpp"/>
       <FILE id="sKA292" name="Log.h" compile="0" resource="0" file="Source/Log.h"/>
       <FILE id="SNIxGG" name="LogWindow.cpp" compile="1" resource="0" file="Source/LogWindow.cpp"/>
       <FILE id="hpsnOZ" name="LogWindow.h" compile="0" resource="0" file="Source/LogWindow.h"/>
