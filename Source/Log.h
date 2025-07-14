@@ -9,4 +9,6 @@
 */
 #pragma once
 
-#define MYDBG(x) DBG("LiveMidi: " + (x))
+static std::string prefix("LiveMidi: ");
+
+#define MYDBG(x) DBG(prefix + (x))

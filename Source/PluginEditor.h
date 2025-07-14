@@ -33,6 +33,9 @@ private:
 
     // Create a "Show log" button (WIP)
     juce::TextButton showLogButton;
+    juce::TextButton chooseFileButton;
+
+    std::unique_ptr<juce::FileChooser> mFileChooser;
 
     // During development (while I'm still learning JUCE semantics), it's useful 
     // to have on-screen diagnostic logging available. Placed here for widest possible
