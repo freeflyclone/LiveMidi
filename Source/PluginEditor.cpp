@@ -14,16 +14,11 @@ using namespace juce;
 //==============================================================================
 LiveMidiAudioProcessorEditor::LiveMidiAudioProcessorEditor (LiveMidiAudioProcessor& p)
     : AudioProcessorEditor (&p), 
-    audioProcessor (p),
-    showLogButton("Show log"),
-    chooseFileButton("Open MIDI file...")
+    audioProcessor (p)
 {
     // Make sure that before the constructor has finished, you've set the
     // editor's size to whatever you need it to be.
     setSize (400, 300);
-
-    addAndMakeVisible(showLogButton);
-    showLogButton.addListener(this);
 
     addAndMakeVisible(chooseFileButton);
     chooseFileButton.addListener(this);
@@ -48,24 +43,11 @@ void LiveMidiAudioProcessorEditor::resized()
 {
     // This is generally where you'll want to lay out the positions of any
     // subcomponents in your editor..
-    showLogButton.setBounds(10, 10, 100, 32);
-    chooseFileButton.setBounds(120, 10, 150, 32);
+    chooseFileButton.setBounds(10, 10, 150, 32);
 }
 
 void LiveMidiAudioProcessorEditor::buttonClicked(juce::Button* button) {
-    if (button == &showLogButton) {
-        if (!mLog)
-        {
-            showLogButton.setButtonText("Hide Log");
-            mLog.reset(new LogWindow("Your Mom"));
-        }
-        else
-        {
-            mLog.reset(nullptr);
-            showLogButton.setButtonText("Show Log");
-        }
-    }
-    else if (button == &chooseFileButton) {
+    if (button == &chooseFileButton) {
         mFileChooser = std::make_unique<FileChooser>("Please select the MIDI you want to load...",
             File::getSpecialLocation(File::userHomeDirectory),
             "*.mid",

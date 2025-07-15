@@ -8,8 +8,6 @@
   <MAINGROUP id="bGTinK" name="LiveMidi">
     <GROUP id="{E2B440C9-98EB-7B5A-68F6-1F806C3DCF11}" name="Source">
       <FILE id="sKA292" name="Log.h" compile="0" resource="0" file="Source/Log.h"/>
-      <FILE id="SNIxGG" name="LogWindow.cpp" compile="1" resource="0" file="Source/LogWindow.cpp"/>
-      <FILE id="hpsnOZ" name="LogWindow.h" compile="0" resource="0" file="Source/LogWindow.h"/>
       <FILE id="JlL7V8" name="PluginProcessor.cpp" compile="1" resource="0"
             file="Source/PluginProcessor.cpp"/>
       <FILE id="Oci2lA" name="PluginProcessor.h" compile="0" resource="0"

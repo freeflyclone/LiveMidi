@@ -712,9 +712,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\Source\LogWindow.cpp">
-      <Filter>LiveMidi\Source</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\Source\PluginProcessor.cpp">
       <Filter>LiveMidi\Source</Filter>
     </ClCompile>
@@ -3640,9 +3637,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Source\Log.h">
-      <Filter>LiveMidi\Source</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\LogWindow.h">
       <Filter>LiveMidi\Source</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\PluginProcessor.h">
