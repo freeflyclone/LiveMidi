@@ -712,6 +712,9 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\Source\GroovesList.cpp">
+      <Filter>LiveMidi\Source</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\Source\PluginProcessor.cpp">
       <Filter>LiveMidi\Source</Filter>
     </ClCompile>
@@ -3636,6 +3639,9 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\Source\GroovesList.h">
+      <Filter>LiveMidi\Source</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\Source\Log.h">
       <Filter>LiveMidi\Source</Filter>
     </ClInclude>

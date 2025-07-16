@@ -10,11 +10,12 @@
 
 #include <JuceHeader.h>
 #include "PluginProcessor.h"
+#include "GroovesList.h"
 
 //==============================================================================
 /**
 */
-class LiveMidiAudioProcessorEditor  : public juce::AudioProcessorEditor, juce::Button::Listener
+class LiveMidiAudioProcessorEditor  : public juce::AudioProcessorEditor, public juce::Button::Listener
 {
 public:
     LiveMidiAudioProcessorEditor (LiveMidiAudioProcessor&);
@@ -32,6 +33,8 @@ private:
 
     // Create a "Show log" button (WIP)
     juce::TextButton chooseFileButton{ "Groove Selector" };
+
+    GroovesList grooves{};
 
     std::unique_ptr<juce::FileChooser> mFileChooser;
 
