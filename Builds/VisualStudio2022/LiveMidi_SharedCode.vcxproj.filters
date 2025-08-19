@@ -712,7 +712,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\Source\GroovesList.cpp">
+    <ClCompile Include="..\..\Source\GrooveList.cpp">
       <Filter>LiveMidi\Source</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Source\PluginProcessor.cpp">
@@ -3639,7 +3639,7 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\Source\GroovesList.h">
+    <ClInclude Include="..\..\Source\GrooveList.h">
       <Filter>LiveMidi\Source</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\Log.h">

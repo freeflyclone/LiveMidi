@@ -7,8 +7,8 @@
               version="0.1.0" pluginFormats="buildAU,buildVST3" headerPath="E:\DevLibs\asiosdk_2.3.3_2019-06-14\common">
   <MAINGROUP id="bGTinK" name="LiveMidi">
     <GROUP id="{E2B440C9-98EB-7B5A-68F6-1F806C3DCF11}" name="Source">
-      <FILE id="EJdZcx" name="GroovesList.cpp" compile="1" resource="0" file="Source/GroovesList.cpp"/>
-      <FILE id="DkohS3" name="GroovesList.h" compile="0" resource="0" file="Source/GroovesList.h"/>
+      <FILE id="EJdZcx" name="GrooveList.cpp" compile="1" resource="0" file="Source/GrooveList.cpp"/>
+      <FILE id="DkohS3" name="GrooveList.h" compile="0" resource="0" file="Source/GrooveList.h"/>
       <FILE id="sKA292" name="Log.h" compile="0" resource="0" file="Source/Log.h"/>
       <FILE id="JlL7V8" name="PluginProcessor.cpp" compile="1" resource="0"
             file="Source/PluginProcessor.cpp"/>

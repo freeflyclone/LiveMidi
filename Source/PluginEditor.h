@@ -37,7 +37,7 @@ private:
     Label groovesLabel{"groovesLabel", "Grooves: "};
     TextButton groovesButton{ TEMP_GROOVES_FOLDER_NAME };
 
-    GroovesList grooves{};
+    GrooveList grooves{};
 
     std::unique_ptr<FileChooser> mFileChooser;
 

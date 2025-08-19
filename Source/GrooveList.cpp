@@ -1,7 +1,7 @@
 /*
   ==============================================================================
 
-    GroovesList.cpp
+    GrooveList.cpp
     Created: 15 Jul 2025 10:55:58am
     Author:  evan
 
@@ -15,7 +15,7 @@
 #define LISTHEIGHT (rowHeight * numRows * 2 / 3)
 #define LISTWIDTH 200
 
-GroovesList::GroovesList()
+GrooveList::GrooveList()
 {
     // In your constructor, you should add any child components, and
     // initialise any special settings that your component needs.
@@ -37,12 +37,12 @@ GroovesList::GroovesList()
     MYDBG(__FUNCTION__);
 }
 
-GroovesList::~GroovesList()
+GrooveList::~GrooveList()
 {
     MYDBG(__FUNCTION__);
 }
 
-void GroovesList::fetchGroovesFromFolder(String name)
+void GrooveList::fetchGroovesFromFolder(String name)
 {
     auto f = File(name);
 
@@ -59,14 +59,14 @@ void GroovesList::fetchGroovesFromFolder(String name)
         MYDBG("groove: " + g.toStdString());
 }
 
-void GroovesList::paint(Graphics& g)
+void GrooveList::paint(Graphics& g)
 {
     MYDBG(__FUNCTION__);
 
     g.fillAll(getLookAndFeel().findColour(ResizableWindow::backgroundColourId));
 }
 
-void GroovesList::resized()
+void GrooveList::resized()
 {
     MYDBG(__FUNCTION__);
 
@@ -76,12 +76,12 @@ void GroovesList::resized()
 }
 
 // The following methods implement the ListBoxModel virtual methods:
-int GroovesList::getNumRows()
+int GrooveList::getNumRows()
 {
     return numRows; //you should probably derive this from whatever source data you end up using
 }
 
-void GroovesList::paintListBoxItem(int rowNumber, Graphics& g,int width, int height, bool rowIsSelected)
+void GrooveList::paintListBoxItem(int rowNumber, Graphics& g,int width, int height, bool rowIsSelected)
 {
 
     if (rowIsSelected)
@@ -98,7 +98,7 @@ void GroovesList::paintListBoxItem(int rowNumber, Graphics& g,int width, int hei
     g.drawText("Row Number " + String(rowNumber + 1), 5, 0, width, height, Justification::centredLeft, true);
 }
 
-void GroovesList::selectedRowsChanged(int lastRowselected)
+void GrooveList::selectedRowsChanged(int lastRowselected)
 {
     //do stuff when selection changes
     MYDBG("Row Selected: " + std::to_string(lastRowselected));
