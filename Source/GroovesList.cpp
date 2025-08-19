@@ -13,6 +13,7 @@
 #include "GroovesList.h"
 
 #define LISTHEIGHT (rowHeight * numRows * 2 / 3)
+#define LISTWIDTH 200
 
 GroovesList::GroovesList()
 {
@@ -31,7 +32,7 @@ GroovesList::GroovesList()
     vScroll.setVisible(true);
     vScroll.getLookAndFeel().setColour(ScrollBar::thumbColourId, Colour(0xFF3f3f3f));
 
-    setSize(200, LISTHEIGHT);
+    setSize(LISTWIDTH, LISTHEIGHT);
 
     MYDBG(__FUNCTION__);
 }
@@ -71,7 +72,7 @@ void GroovesList::resized()
 
     // This method is where you should set the bounds of any child
     // components that your component contains..
-    listBox.setBounds(0, 0, 200, LISTHEIGHT);
+    listBox.setBounds(0, 0, LISTWIDTH, LISTHEIGHT);
 }
 
 // The following methods implement the ListBoxModel virtual methods:
@@ -92,7 +93,7 @@ void GroovesList::paintListBoxItem(int rowNumber, Graphics& g,int width, int hei
         g.setColour(Colours::ghostwhite);
     }
 
-    g.setFont(height * 0.8f);
+    g.setFont(height * 0.85f);
 
     g.drawText("Row Number " + String(rowNumber + 1), 5, 0, width, height, Justification::centredLeft, true);
 }
