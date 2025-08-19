@@ -12,31 +12,34 @@
 #include "PluginProcessor.h"
 #include "GroovesList.h"
 
+using namespace juce;
+
 //==============================================================================
 /**
 */
-class LiveMidiAudioProcessorEditor  : public juce::AudioProcessorEditor, public juce::Button::Listener
+class LiveMidiAudioProcessorEditor  : public AudioProcessorEditor, public Button::Listener
 {
 public:
     LiveMidiAudioProcessorEditor (LiveMidiAudioProcessor&);
     ~LiveMidiAudioProcessorEditor() override;
 
     //==============================================================================
-    void paint (juce::Graphics&) override;
+    void paint (Graphics&) override;
     void resized() override;
-    void buttonClicked(juce::Button* button) override;
+    void buttonClicked(Button* button) override;
 
 private:
     // This reference is provided as a quick way for your editor to
     // access the processor object that created it.
     LiveMidiAudioProcessor& audioProcessor;
 
-    // Create a "Show log" button (WIP)
-    juce::TextButton chooseFileButton{ "Groove Selector" };
+    // Create a "Select Groove" button (WIP)
+    Label groovesLabel{"groovesLabel", "Grooves: "};
+    TextButton groovesButton{ TEMP_GROOVES_FOLDER_NAME };
 
     GroovesList grooves{};
 
-    std::unique_ptr<juce::FileChooser> mFileChooser;
+    std::unique_ptr<FileChooser> mFileChooser;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (LiveMidiAudioProcessorEditor)
 };

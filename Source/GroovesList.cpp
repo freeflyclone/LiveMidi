@@ -29,9 +29,10 @@ GroovesList::GroovesList()
 
     ScrollBar& vScroll = listBox.getVerticalScrollBar();
     vScroll.setVisible(true);
-    vScroll.getLookAndFeel().setColour(juce::ScrollBar::thumbColourId, Colour(0xFF3f3f3f));
+    vScroll.getLookAndFeel().setColour(ScrollBar::thumbColourId, Colour(0xFF3f3f3f));
 
     setSize(200, LISTHEIGHT);
+
     MYDBG(__FUNCTION__);
 }
 
@@ -40,11 +41,20 @@ GroovesList::~GroovesList()
     MYDBG(__FUNCTION__);
 }
 
+void GroovesList::fetchGroovesFromFolder(String name)
+{
+    auto f = File(name);
+
+    Array<File> groovesList = f.findChildFiles(File::findFilesAndDirectories, true, "*.mid");
+
+    MYDBG("Found " + std::to_string(groovesList.size()) + " grooves");
+}
+
 void GroovesList::paint(Graphics& g)
 {
     MYDBG(__FUNCTION__);
 
-    g.fillAll(getLookAndFeel().findColour(juce::ResizableWindow::backgroundColourId));
+    g.fillAll(getLookAndFeel().findColour(ResizableWindow::backgroundColourId));
 }
 
 void GroovesList::resized()

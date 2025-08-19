@@ -9,7 +9,6 @@
 #include "PluginProcessor.h"
 #include "PluginEditor.h"
 
-using namespace juce;
 
 //==============================================================================
 LiveMidiAudioProcessorEditor::LiveMidiAudioProcessorEditor (LiveMidiAudioProcessor& p)
@@ -18,8 +17,9 @@ LiveMidiAudioProcessorEditor::LiveMidiAudioProcessorEditor (LiveMidiAudioProcess
 {
     setResizable(true, true);
 
-    addAndMakeVisible(chooseFileButton);
-    chooseFileButton.addListener(this);
+    addAndMakeVisible(groovesLabel);
+    addAndMakeVisible(groovesButton);
+    groovesButton.addListener(this);
 
     addAndMakeVisible(grooves);
 
@@ -35,34 +35,47 @@ LiveMidiAudioProcessorEditor::~LiveMidiAudioProcessorEditor()
 }
 
 //==============================================================================
-void LiveMidiAudioProcessorEditor::paint (juce::Graphics& g)
+void LiveMidiAudioProcessorEditor::paint (Graphics& g)
 {
     // (Our component is opaque, so we must completely fill the background with a solid colour)
-    g.fillAll (getLookAndFeel().findColour (juce::ResizableWindow::backgroundColourId));
+    g.fillAll (getLookAndFeel().findColour (ResizableWindow::backgroundColourId));
 }
 
 void LiveMidiAudioProcessorEditor::resized()
 {
-    MYDBG(__FUNCTION__);
+    Rectangle area = getLocalBounds();
+    auto width = area.getWidth();
 
     // This is generally where you'll want to lay out the positions of any
     // subcomponents in your editor..
-    chooseFileButton.setBounds(10, 10, 150, 32);
+    auto text = groovesLabel.getText();
+
+    const Font labelFont = groovesLabel.getFont();
+    const auto textWidth = GlyphArrangement::getStringWidth(labelFont, groovesLabel.getText());
+    const auto textHeight = labelFont.getHeight();
+
+    groovesLabel.setBounds(10, 20, textWidth, textHeight);
+
+    groovesButton.setBounds(20 + textWidth, 10, width - textWidth - 30, 32);
 
     grooves.setBounds(10, 52, grooves.getWidth(), grooves.getHeight());
 }
 
-void LiveMidiAudioProcessorEditor::buttonClicked(juce::Button* button) {
-    if (button == &chooseFileButton) {
+void LiveMidiAudioProcessorEditor::buttonClicked(Button* button) {
+    if (button == &groovesButton) {
         mFileChooser = std::make_unique<FileChooser>("Please select the MIDI you want to load...",
-            File::getSpecialLocation(File::userHomeDirectory),
+            button->getButtonText(),
             "*.mid",
             false);
 
         if (mFileChooser->browseForDirectory())
         {
             File result = mFileChooser->getResult();
-            MYDBG("Result: " + result.getFullPathName().toStdString());
+            String resultWithTrailingSeperator = result.addTrailingSeparator(result.getFullPathName());
+
+            MYDBG("Result: " + resultWithTrailingSeperator.toStdString());
+
+            grooves.fetchGroovesFromFolder(resultWithTrailingSeperator);
         }
     }
 }
