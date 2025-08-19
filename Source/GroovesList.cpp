@@ -46,8 +46,16 @@ void GroovesList::fetchGroovesFromFolder(String name)
     auto f = File(name);
 
     Array<File> groovesList = f.findChildFiles(File::findFilesAndDirectories, true, "*.mid");
+    StringArray grooves;
+
+    for (const auto& groove : groovesList) {
+        grooves.add(groove.getRelativePathFrom(f));
+    }
 
     MYDBG("Found " + std::to_string(groovesList.size()) + " grooves");
+
+    for (const auto& g : grooves)
+        MYDBG("groove: " + g.toStdString());
 }
 
 void GroovesList::paint(Graphics& g)
