@@ -71,13 +71,6 @@ void LiveMidiAudioProcessorEditor::buttonClicked(Button* button) {
             false);
 
         if (mFileChooser->browseForDirectory())
-        {
-            File result = mFileChooser->getResult();
-            String resultWithTrailingSeperator = result.addTrailingSeparator(result.getFullPathName());
-
-            MYDBG("Result: " + resultWithTrailingSeperator.toStdString());
-
-            grooves->fetchStoreFromFolder(resultWithTrailingSeperator);
-        }
+            grooves->fetchStoreFromFolder(mFileChooser->getResult());
     }
 }

@@ -23,15 +23,14 @@ public:
     GrooveStore();
     ~GrooveStore();
 
-    void fetchStoreFromFolder(String);
     void fetchStoreFromFolder(File);
 
     void paint(Graphics& g) override;
     void resized() override;
 
 private:
-    std::unique_ptr<Array<std::unique_ptr<GrooveStore>>> stores;
-    std::unique_ptr<GrooveList> grooves;
+    Array<File> folders;
+    Array<StringArray> files;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(GrooveStore)
 };
