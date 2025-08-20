@@ -144,6 +144,7 @@
     </Bscmake>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\Source\GrooveFolder.cpp"/>
     <ClCompile Include="..\..\Source\GrooveStore.cpp"/>
     <ClCompile Include="..\..\Source\GrooveList.cpp"/>
     <ClCompile Include="..\..\Source\PluginProcessor.cpp"/>
@@ -2889,6 +2890,7 @@
     <ClCompile Include="..\..\JuceLibraryCode\include_juce_opengl.cpp"/>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\Source\GrooveFolder.h"/>
     <ClInclude Include="..\..\Source\GrooveStore.h"/>
     <ClInclude Include="..\..\Source\GrooveList.h"/>
     <ClInclude Include="..\..\Source\Log.h"/>
