@@ -13,13 +13,11 @@
 
 GrooveStore::GrooveStore()
 {
-    MYDBG(__FUNCTION__);
-};
+}
 
 GrooveStore::~GrooveStore()
 {
-    MYDBG(__FUNCTION__);
-};
+}
 
 void GrooveStore::fetchStoreFromFolder(String name)
 {
@@ -28,7 +26,7 @@ void GrooveStore::fetchStoreFromFolder(String name)
     fetchStoreFromFolder(File(name));
 
     return;
-};
+}
 
 void GrooveStore::fetchStoreFromFolder(File f)
 {
@@ -49,10 +47,8 @@ void GrooveStore::fetchStoreFromFolder(File f)
 
 void GrooveStore::paint(Graphics& g)
 {
-    MYDBG(__FUNCTION__);
-};
+}
 
 void GrooveStore::resized()
 {
-    MYDBG(__FUNCTION__);
-};
+}
