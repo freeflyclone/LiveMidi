@@ -10,7 +10,7 @@
 
 #include "JuceHeader.h"
 #include "Log.h"
-#include "GroovesList.h"
+#include "GrooveList.h"
 
 #define LISTHEIGHT (rowHeight * numRows * 2 / 3)
 #define LISTWIDTH 200
@@ -46,7 +46,7 @@ void GrooveList::fetchGroovesFromFolder(String name)
 {
     auto f = File(name);
 
-    Array<File> groovesList = f.findChildFiles(File::findFilesAndDirectories, true, "*.mid");
+    Array<File> groovesList = f.findChildFiles(File::findFiles, false, "*.mid");
     StringArray grooves;
 
     for (const auto& groove : groovesList) {

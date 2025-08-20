@@ -10,7 +10,7 @@
 
 #include <JuceHeader.h>
 #include "PluginProcessor.h"
-#include "GroovesList.h"
+#include "GrooveStore.h"
 
 using namespace juce;
 
@@ -35,11 +35,11 @@ private:
 
     // Create a "Select Groove" button (WIP)
     Label groovesLabel{"groovesLabel", "Grooves: "};
-    TextButton groovesButton{ TEMP_GROOVES_FOLDER_NAME };
-
-    GrooveList grooves{};
+    TextButton groovesButton{ TEMP_STORE_FOLDER_NAME };
 
     std::unique_ptr<FileChooser> mFileChooser;
+    std::unique_ptr<GrooveStore> grooves;
+
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (LiveMidiAudioProcessorEditor)
 };

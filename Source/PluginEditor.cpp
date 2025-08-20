@@ -21,7 +21,9 @@ LiveMidiAudioProcessorEditor::LiveMidiAudioProcessorEditor (LiveMidiAudioProcess
     addAndMakeVisible(groovesButton);
     groovesButton.addListener(this);
 
-    addAndMakeVisible(grooves);
+    grooves = std::make_unique<GrooveStore>();
+
+    addAndMakeVisible(*grooves);
 
     // Make sure that before the constructor has finished, you've set the
     // editor's size to whatever you need it to be.
@@ -58,7 +60,7 @@ void LiveMidiAudioProcessorEditor::resized()
 
     groovesButton.setBounds(20 + textWidth, 10, width - textWidth - 30, 32);
 
-    grooves.setBounds(10, 52, grooves.getWidth(), grooves.getHeight());
+    grooves->setBounds(10, 52, grooves->getWidth(), grooves->getHeight());
 }
 
 void LiveMidiAudioProcessorEditor::buttonClicked(Button* button) {
@@ -75,7 +77,7 @@ void LiveMidiAudioProcessorEditor::buttonClicked(Button* button) {
 
             MYDBG("Result: " + resultWithTrailingSeperator.toStdString());
 
-            grooves.fetchGroovesFromFolder(resultWithTrailingSeperator);
+            grooves->fetchStoreFromFolder(resultWithTrailingSeperator);
         }
     }
 }
