@@ -16,8 +16,6 @@
 #include "GrooveList.h"
 #include "GrooveFolder.h"
 
-#define TEMP_STORE_FOLDER_NAME "E:/music/Native Instruments Content/Abbey Road 60s Drummer Library/MIDI Files/Late Kit"
-
 using namespace juce;
 
 class GrooveStore
@@ -28,12 +26,14 @@ public:
     GrooveStore();
     ~GrooveStore();
 
-    void fetchStoreFromFolder(File, int level = 0);
+    void Initialize(File);
     void Enumerate(EnumerationCb);
-    int MaxDepth() { return maxDepth; }
-    void showStore();
 
 protected:
+    void FetchStoreFromFolder(File, int level = 0);
+    int MaxDepth() { return maxDepth; }
+    void ShowStore();
+
     File root;
     Array<GrooveFolder> grooveFolders;
     int maxDepth{ 0 };

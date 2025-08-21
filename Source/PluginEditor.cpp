@@ -23,7 +23,6 @@ LiveMidiAudioProcessorEditor::LiveMidiAudioProcessorEditor (LiveMidiAudioProcess
 
     grooves = std::make_unique<GrooveStore>();
 
-
     // Make sure that before the constructor has finished, you've set the
     // editor's size to whatever you need it to be.
     // 
@@ -56,29 +55,19 @@ void LiveMidiAudioProcessorEditor::resized()
     const auto textHeight = labelFont.getHeight();
 
     groovesLabel.setBounds(10, 20, textWidth, textHeight);
-
     groovesButton.setBounds(20 + textWidth, 10, width - textWidth - 30, 32);
 }
 
+
 void LiveMidiAudioProcessorEditor::buttonClicked(Button* button) {
     if (button == &groovesButton) {
+
         mFileChooser = std::make_unique<FileChooser>("Please select the MIDI you want to load...",
             button->getButtonText(),
             "*.mid",
             false);
 
         if (mFileChooser->browseForDirectory())
-		{
-            grooves->fetchStoreFromFolder(mFileChooser->getResult());
-
-            grooves->Enumerate([&](const GrooveFolder& gf) {
-                if (gf.level == 0)
-                    MYDBG(__FUNCTION__ + std::string(": ") + gf.folder + ", maxDepth: " + std::to_string(grooves->MaxDepth()));
-                else if(gf.level == 1)
-                    MYDBG(__FUNCTION__ + std::string(":    ") + gf.folder);
-                else if (gf.level == 2)
-                    MYDBG(__FUNCTION__ + std::string(":        ") + gf.folder);
-            });
-        }
+            grooves->Initialize(mFileChooser->getResult());
     }
 }

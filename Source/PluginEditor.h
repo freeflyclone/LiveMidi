@@ -14,6 +14,8 @@
 
 using namespace juce;
 
+#define TEMP_STORE_FOLDER_NAME "E:/music/Native Instruments Content/Abbey Road 60s Drummer Library/MIDI Files/Late Kit"
+
 //==============================================================================
 /**
 */
@@ -39,7 +41,6 @@ private:
 
     std::unique_ptr<FileChooser> mFileChooser;
     std::unique_ptr<GrooveStore> grooves;
-
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (LiveMidiAudioProcessorEditor)
 };
