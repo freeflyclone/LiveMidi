@@ -71,6 +71,9 @@ void LiveMidiAudioProcessorEditor::buttonClicked(Button* button) {
             false);
 
         if (mFileChooser->browseForDirectory())
+		{
             grooves->fetchStoreFromFolder(mFileChooser->getResult());
+            grooves->showStore();
+        }
     }
 }

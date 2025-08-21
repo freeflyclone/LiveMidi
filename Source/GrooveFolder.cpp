@@ -11,10 +11,14 @@
 #include "GrooveFolder.h"
 #include "Log.h"
 
-GrooveFolder::GrooveFolder(File f) :
-    folder(f)
+GrooveFolder::GrooveFolder(File f, int l) 
+    : folder(f.getFileName().toStdString()),
+    level(l)
 {
-    files = f.findChildFiles(File::findFiles, false, "*.mid");
+    auto children = f.findChildFiles(File::findFiles, false, "*.mid");
+
+    for (const auto& child : children)
+        files.push_back(child.getFileName().toStdString());
 }
 
 GrooveFolder::~GrooveFolder()

@@ -5,6 +5,8 @@
     Created: 20 Aug 2025 3:27:42pm
     Author:  evan
 
+    Helper class for storing a set of groove MIDI file names in a single folder,
+    along with the relative "level" down the heirarchy from "root"
   ==============================================================================
 */
 
@@ -14,12 +16,12 @@
 
 using namespace juce;
 
-class GrooveFolder : public Component {
+class GrooveFolder {
 public:
-    GrooveFolder(File);
+    GrooveFolder(File newFolder, int level);
     ~GrooveFolder();
 
-private:
-    File folder;
-    Array<File> files;
+    std::string folder;
+    std::vector<std::string> files;
+    int level;
 };

@@ -19,44 +19,37 @@ GrooveStore::~GrooveStore()
 {
 }
 
-void GrooveStore::fetchStoreFromFolder(File f)
+void GrooveStore::fetchStoreFromFolder(File f, int level)
 {
-    MYDBG(__FUNCTION__ + std::string(": ") + f.getFileName().toStdString());
-
-    folders.clear();
-    files.clear();
-
-    // assume child folders, recursively search them
-    folders = f.findChildFiles(File::findDirectories, true);
-
-    // Early bail if no children, FIX THIS: we'll miss top-level files this way.
-    if (folders.isEmpty())
-        return;
-
-    // Scan child folders
-    for (const auto& folder : folders)
-    {
-        // always add StringArray so # of StringArray matches # of File
-        auto strings = std::make_unique<StringArray>();
-
-        // enumerate any .mid files in the folder
-        auto names = folder.findChildFiles(File::findFiles, false, "*.mid");
-
-        // store the names of the files
-        for (const auto& name : names)
-            strings->add(name.getFileName());
-
-        // Add (possibly empty) list of files
-        files.add(*strings);
+    if (level == 0) {
+        root = f;
+        grooveFolders.clear();
     }
 
-    // report what was found to DBG output
-    for(int i=0; i<files.size(); i++)
+    auto gf = std::make_unique<GrooveFolder>(f, level);
+
+    grooveFolders.add(*gf);
+
+    auto folders = f.findChildFiles(File::findDirectories, false);
+
+    level++;
+    for (const auto& folder : folders)
+        fetchStoreFromFolder(folder, level);
+}
+
+void GrooveStore::showStore()
+{
+    for (const auto& gf : grooveFolders)
     {
-        MYDBG("Folder: " + folders[i].getRelativePathFrom(f).toStdString());
-        for (const auto& name : files[i])
-        {
-            MYDBG("    " + name.toStdString());
+        std::string indentation(": ");
+
+        for (int i = 0; i < gf.level; i++)
+            indentation += "   ";
+
+        MYDBG(__FUNCTION__ + indentation + gf.folder);
+
+        for (const auto& filename : gf.files) {
+            MYDBG(__FUNCTION__ + indentation + "   " + filename);
         }
     }
 }
