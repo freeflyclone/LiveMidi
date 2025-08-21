@@ -20,21 +20,23 @@
 
 using namespace juce;
 
-class GrooveStore : public Component
+class GrooveStore
 {
 public:
+    typedef std::function<void(const GrooveFolder&)> EnumerationCb;
+
     GrooveStore();
     ~GrooveStore();
 
     void fetchStoreFromFolder(File, int level = 0);
+    void Enumerate(EnumerationCb);
+    int MaxDepth() { return maxDepth; }
     void showStore();
 
-    void paint(Graphics& g) override;
-    void resized() override;
-
-private:
+protected:
     File root;
     Array<GrooveFolder> grooveFolders;
+    int maxDepth{ 0 };
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(GrooveStore)
 };

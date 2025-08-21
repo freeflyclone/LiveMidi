@@ -32,32 +32,30 @@ void GrooveStore::fetchStoreFromFolder(File f, int level)
 
     auto folders = f.findChildFiles(File::findDirectories, false);
 
-    level++;
-    for (const auto& folder : folders)
+    for (const auto& folder : folders) {
+        level++;
         fetchStoreFromFolder(folder, level);
+        level--;
+    }
+
+    if (level > maxDepth)
+        maxDepth = level;
+}
+
+void GrooveStore::Enumerate(EnumerationCb cb)
+{
+    for (const GrooveFolder& gf : grooveFolders) {
+        cb(gf);
+    }
 }
 
 void GrooveStore::showStore()
 {
     for (const auto& gf : grooveFolders)
     {
-        std::string indentation(": ");
+        MYDBG(__FUNCTION__ + std::string(": ") + std::to_string(gf.level) + ", " + gf.folder);
 
-        for (int i = 0; i < gf.level; i++)
-            indentation += "   ";
-
-        MYDBG(__FUNCTION__ + indentation + gf.folder);
-
-        for (const auto& filename : gf.files) {
-            MYDBG(__FUNCTION__ + indentation + "   " + filename);
-        }
+        for (const auto& filename : gf.files)
+            MYDBG(__FUNCTION__ + std::string(": ") + std::to_string(gf.level)+ ",   " + filename);
     }
-}
-
-void GrooveStore::paint(Graphics& g)
-{
-}
-
-void GrooveStore::resized()
-{
 }
