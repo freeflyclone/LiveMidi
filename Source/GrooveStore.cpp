@@ -11,8 +11,6 @@
 #include "GrooveStore.h"
 #include "Log.h"
 
-#define XYZZY_PREFIX "buttonClicked::lambda"
-
 GrooveStore::GrooveStore() 
 {
     MYDBG(__FUNCTION__);
@@ -30,18 +28,18 @@ void GrooveStore::Initialize(File f)
     FetchStoreFromFolder(f);
 
     Enumerate([&](const GrooveFolder& gf) {
-        std::string indentation(": ");
+        std::string indentation("");
 
         if (gf.level == 0)
-            MYDBG(XYZZY_PREFIX + indentation + gf.folder + ", maxDepth: " + std::to_string(maxDepth));
+            MYDBG(indentation + gf.folder + ", maxDepth: " + std::to_string(maxDepth));
         else {
             for (int i = 0; i < gf.level; i++)
                 indentation += "  ";
 
-            MYDBG(XYZZY_PREFIX + indentation + "   " + gf.folder);
+            MYDBG(indentation + gf.folder);
 
             for (const auto& file : gf.files) {
-                MYDBG(XYZZY_PREFIX + indentation + "      " + file);
+                MYDBG(indentation + "  " + file);
             }
         }
     });
