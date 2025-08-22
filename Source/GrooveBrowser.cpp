@@ -20,16 +20,23 @@ GrooveBrowser::~GrooveBrowser() {
 
 void GrooveBrowser::Initialize(File f) {
     MYDBG(__FUNCTION__);
+
+    lists.clear();
+
     store.Initialize(f);
 
     auto maxDepth(store.MaxDepth());
 
+    for (int i = 0; i < maxDepth; i++)
+        lists.add(std::make_unique<GrooveList>());
+
     store.Enumerate([&](const GrooveFolder& gf) {
         std::string indentation("");
 
-        if (gf.level == 0)
+        if (gf.level == 0) {
             MYDBG(indentation + gf.folder + ", maxDepth: " + std::to_string(maxDepth));
-        else if (gf.level <= maxDepth) {
+        }
+        else {
             for (int i = 0; i < gf.level; i++)
                 indentation += "  ";
 
@@ -42,7 +49,7 @@ void GrooveBrowser::Initialize(File f) {
 
 void GrooveBrowser::paint(Graphics& g) {
     if (store.MaxDepth())
-        g.fillAll(Colour(0xff0000ff));
+        g.fillAll(Colour(0xff7f7f7f));
     else
         g.fillAll(Colour(0xff000000));
 }

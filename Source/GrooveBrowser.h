@@ -27,4 +27,6 @@ protected:
     void resized() override;
 
     GrooveStore store;
+
+    Array<std::unique_ptr<GrooveList>> lists;
 };
