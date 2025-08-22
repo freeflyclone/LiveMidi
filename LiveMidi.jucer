@@ -7,6 +7,9 @@
               version="0.1.0" pluginFormats="buildAU,buildVST3" headerPath="E:\DevLibs\asiosdk_2.3.3_2019-06-14\common">
   <MAINGROUP id="bGTinK" name="LiveMidi">
     <GROUP id="{E2B440C9-98EB-7B5A-68F6-1F806C3DCF11}" name="Source">
+      <FILE id="xwE85g" name="GrooveBrowser.cpp" compile="1" resource="0"
+            file="Source/GrooveBrowser.cpp"/>
+      <FILE id="quclcC" name="GrooveBrowser.h" compile="0" resource="0" file="Source/GrooveBrowser.h"/>
       <FILE id="C3ZbF2" name="GrooveFolder.cpp" compile="1" resource="0"
             file="Source/GrooveFolder.cpp"/>
       <FILE id="nvrvKR" name="GrooveFolder.h" compile="0" resource="0" file="Source/GrooveFolder.h"/>
