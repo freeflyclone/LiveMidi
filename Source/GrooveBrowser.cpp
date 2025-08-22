@@ -34,7 +34,7 @@ void GrooveBrowser::Initialize(File f) {
             indentation += "  ";
 
         if (gf.level == 1) {
-            MYDBG(indentation + gf.folder);
+            MYDBG(indentation + gf.folder.toStdString());
         }
     });
 

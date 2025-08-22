@@ -33,7 +33,6 @@ public:
 
 protected:
     void FetchStoreFromFolder(File, int level = 0);
-    void ShowStore();
 
     File root;
     Array<GrooveFolder> folders;

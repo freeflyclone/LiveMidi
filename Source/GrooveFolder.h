@@ -21,7 +21,7 @@ public:
     GrooveFolder(File newFolder, int level);
     ~GrooveFolder();
 
-    std::string folder;
-    std::vector<std::string> fileNames;
+    String folder;
+    Array<StringArray> fileNames;
     int level;
 };
