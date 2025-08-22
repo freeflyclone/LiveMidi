@@ -48,8 +48,10 @@ void LiveMidiAudioProcessorEditor::resized()
     auto width = area.getWidth();
     auto height = area.getHeight();
 
+	// TODO: contain all these in a Grid or FlexBox
+
     // This is generally where you'll want to lay out the positions of any
-    // subcomponents in your editor..
+    // subcomponents in your editor.
     auto text = groovesLabel.getText();
 
     const Font labelFont = groovesLabel.getFont();
@@ -65,13 +67,16 @@ void LiveMidiAudioProcessorEditor::resized()
 
 void LiveMidiAudioProcessorEditor::buttonClicked(Button* button) {
     if (button == &groovesButton) {
-
         mFileChooser = std::make_unique<FileChooser>("Please select the MIDI you want to load...",
             button->getButtonText(),
             "*.mid",
             false);
 
-        if (mFileChooser->browseForDirectory())
-            browser->Initialize(mFileChooser->getResult());
+        if (mFileChooser->browseForDirectory()) {
+            File f = mFileChooser->getResult();
+
+            button->setButtonText(f.getFullPathName());
+            browser->Initialize(f);
+        }
     }
 }

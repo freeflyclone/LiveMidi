@@ -37,9 +37,12 @@ GrooveList::GrooveList()
     MYDBG(__FUNCTION__);
 }
 
-GrooveList::~GrooveList()
-{
+GrooveList::~GrooveList() {
     MYDBG(__FUNCTION__);
+}
+
+void GrooveList::populate(std::vector<std::string> strings) {
+
 }
 
 void GrooveList::fetchGroovesFromFolder(String name)

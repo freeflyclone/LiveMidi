@@ -18,7 +18,7 @@ GrooveFolder::GrooveFolder(File f, int l)
     auto children = f.findChildFiles(File::findFiles, false, "*.mid");
 
     for (const auto& child : children)
-        files.push_back(child.getFileName().toStdString());
+        fileNames.push_back(child.getFileName().toStdString());
 }
 
 GrooveFolder::~GrooveFolder()

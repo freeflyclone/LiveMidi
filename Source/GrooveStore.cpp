@@ -59,7 +59,7 @@ void GrooveStore::ShowStore() {
     for (const auto& gf : folders) {
         MYDBG(__FUNCTION__ + std::string(": ") + std::to_string(gf.level) + ", " + gf.folder);
 
-        for (const auto& filename : gf.files)
+        for (const auto& filename : gf.fileNames)
             MYDBG(__FUNCTION__ + std::string(": ") + std::to_string(gf.level)+ ",   " + filename);
     }
 }

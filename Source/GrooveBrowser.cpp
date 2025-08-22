@@ -32,14 +32,10 @@ void GrooveBrowser::Initialize(File f) {
 
     store.Enumerate([&](const GrooveFolder& gf) {
         std::string indentation("");
+        for (int i = 0; i < gf.level; i++)
+            indentation += "  ";
 
-        if (gf.level == 0) {
-            MYDBG(indentation + gf.folder + ", maxDepth: " + std::to_string(maxDepth));
-        }
-        else {
-            for (int i = 0; i < gf.level; i++)
-                indentation += "  ";
-
+        if (gf.level == 1) {
             MYDBG(indentation + gf.folder);
         }
     });

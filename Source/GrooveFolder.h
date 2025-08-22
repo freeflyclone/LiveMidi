@@ -22,6 +22,6 @@ public:
     ~GrooveFolder();
 
     std::string folder;
-    std::vector<std::string> files;
+    std::vector<std::string> fileNames;
     int level;
 };

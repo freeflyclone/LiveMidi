@@ -24,6 +24,7 @@ public:
     ~GrooveList();
 
     void fetchGroovesFromFolder(String);
+    void populate(std::vector<std::string>);
 
     void paint(Graphics& g) override;
     void resized() override;
