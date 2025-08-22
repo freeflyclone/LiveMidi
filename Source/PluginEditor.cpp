@@ -22,12 +22,13 @@ LiveMidiAudioProcessorEditor::LiveMidiAudioProcessorEditor (LiveMidiAudioProcess
     groovesButton.addListener(this);
 
     browser = std::make_unique<GrooveBrowser>();
+    addAndMakeVisible(*browser);
 
     // Make sure that before the constructor has finished, you've set the
     // editor's size to whatever you need it to be.
     // 
     // SOHN: do setSize() last!
-    setSize (600, 300);
+    setSize (800, 400);
 }
 
 LiveMidiAudioProcessorEditor::~LiveMidiAudioProcessorEditor()
@@ -45,6 +46,7 @@ void LiveMidiAudioProcessorEditor::resized()
 {
     Rectangle area = getLocalBounds();
     auto width = area.getWidth();
+    auto height = area.getHeight();
 
     // This is generally where you'll want to lay out the positions of any
     // subcomponents in your editor..
@@ -56,6 +58,8 @@ void LiveMidiAudioProcessorEditor::resized()
 
     groovesLabel.setBounds(10, 20, textWidth, textHeight);
     groovesButton.setBounds(20 + textWidth, 10, width - textWidth - 30, 32);
+
+    browser->setBounds(10, 60, width - 20, height / 2);
 }
 
 

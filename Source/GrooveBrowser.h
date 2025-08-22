@@ -23,5 +23,8 @@ public:
     void Initialize(File);
 
 protected:
+    void paint(Graphics& g) override;
+    void resized() override;
+
     GrooveStore store;
 };

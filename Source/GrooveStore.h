@@ -29,9 +29,10 @@ public:
     void Initialize(File);
     void Enumerate(EnumerationCb);
 
+    int MaxDepth() { return maxDepth; }
+
 protected:
     void FetchStoreFromFolder(File, int level = 0);
-    int MaxDepth() { return maxDepth; }
     void ShowStore();
 
     File root;

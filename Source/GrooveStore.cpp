@@ -21,23 +21,6 @@ void GrooveStore::Initialize(File f) {
     MYDBG(__FUNCTION__);
 
     FetchStoreFromFolder(f);
-
-    Enumerate([&](const GrooveFolder& gf) {
-        std::string indentation("");
-
-        if (gf.level == 0)
-            MYDBG(indentation + gf.folder + ", maxDepth: " + std::to_string(maxDepth));
-        else {
-            for (int i = 0; i < gf.level; i++)
-                indentation += "  ";
-
-            MYDBG(indentation + gf.folder);
-
-            for (const auto& file : gf.files) {
-                MYDBG(indentation + "  " + file);
-            }
-        }
-    });
 }
 
 void GrooveStore::FetchStoreFromFolder(File f, int level) {
