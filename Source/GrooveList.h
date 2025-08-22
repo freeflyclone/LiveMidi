@@ -12,8 +12,6 @@
 
 #include "JuceHeader.h"
 
-#define TEMP_GROOVES_FOLDER_NAME "E:/music/Native Instruments Content/Abbey Road 60s Drummer Library/MIDI Files/Late Kit"
-
 using namespace juce;
 
 class GrooveList : public ListBoxModel, public Component

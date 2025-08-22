@@ -11,18 +11,13 @@
 #include "GrooveStore.h"
 #include "Log.h"
 
-GrooveStore::GrooveStore() 
-{
-    MYDBG(__FUNCTION__);
+GrooveStore::GrooveStore() {
 }
 
-GrooveStore::~GrooveStore() 
-{
-    MYDBG(__FUNCTION__);
+GrooveStore::~GrooveStore() {
 }
 
-void GrooveStore::Initialize(File f)
-{
+void GrooveStore::Initialize(File f) {
     MYDBG(__FUNCTION__);
 
     FetchStoreFromFolder(f);
@@ -45,12 +40,11 @@ void GrooveStore::Initialize(File f)
     });
 }
 
-void GrooveStore::FetchStoreFromFolder(File f, int level) 
-{
-    // when called by Initialize(): clear stale data
+void GrooveStore::FetchStoreFromFolder(File f, int level) {
+    // when called by Initialize(): clear previous data
     if (level == 0) {
         root = f;
-        grooveFolders.clear();
+        folders.clear();
         maxDepth = 0;
     }
 
@@ -60,13 +54,13 @@ void GrooveStore::FetchStoreFromFolder(File f, int level)
     // MIDI files are found in its "folder" 
     auto gf = std::make_unique<GrooveFolder>(f, level);
 
-    // always add new GrooveFolder instance;
-    grooveFolders.add(*gf);
+    // always add (possibly place-holder only) new GrooveFolder instance;
+    folders.add(*gf);
 
     // Recurse into child folders if present
-    auto folders = f.findChildFiles(File::findDirectories, false);
-    for (const auto& folder : folders)
-        FetchStoreFromFolder(folder, level+1);
+    auto childFolders = f.findChildFiles(File::findDirectories, false);
+    for (const auto& folder : childFolders)
+        FetchStoreFromFolder(folder, level + 1);
 
     // Track max depth
     if (level > maxDepth)
@@ -74,13 +68,12 @@ void GrooveStore::FetchStoreFromFolder(File f, int level)
 }
 
 void GrooveStore::Enumerate(EnumerationCb cb) {
-    for (const GrooveFolder& gf : grooveFolders)
-        cb(gf);
+    for (const GrooveFolder& f : folders)
+        cb(f);
 }
 
-void GrooveStore::ShowStore()
-{
-    for (const auto& gf : grooveFolders) {
+void GrooveStore::ShowStore() {
+    for (const auto& gf : folders) {
         MYDBG(__FUNCTION__ + std::string(": ") + std::to_string(gf.level) + ", " + gf.folder);
 
         for (const auto& filename : gf.files)

@@ -10,7 +10,7 @@
 
 #include <JuceHeader.h>
 #include "PluginProcessor.h"
-#include "GrooveStore.h"
+#include "GrooveBrowser.h"
 
 using namespace juce;
 
@@ -31,8 +31,7 @@ public:
     void buttonClicked(Button* button) override;
 
 private:
-    // This reference is provided as a quick way for your editor to
-    // access the processor object that created it.
+    // Provide this editor with access the processor object that created it.
     LiveMidiAudioProcessor& audioProcessor;
 
     // Create a "Select Groove" button (WIP)
@@ -40,7 +39,7 @@ private:
     TextButton groovesButton{ TEMP_STORE_FOLDER_NAME };
 
     std::unique_ptr<FileChooser> mFileChooser;
-    std::unique_ptr<GrooveStore> grooves;
+    std::unique_ptr<GrooveBrowser> browser;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (LiveMidiAudioProcessorEditor)
 };
