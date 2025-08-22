@@ -67,7 +67,7 @@ void LiveMidiAudioProcessorEditor::resized()
 
 void LiveMidiAudioProcessorEditor::buttonClicked(Button* button) {
     if (button == &groovesButton) {
-        mFileChooser = std::make_unique<FileChooser>("Please select the MIDI you want to load...",
+        mFileChooser = std::make_unique<FileChooser>("Select folder to browse...",
             button->getButtonText(),
             "*.mid",
             false);

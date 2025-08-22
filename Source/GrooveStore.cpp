@@ -18,8 +18,6 @@ GrooveStore::~GrooveStore() {
 }
 
 void GrooveStore::Initialize(File f) {
-    MYDBG(__FUNCTION__);
-
     FetchStoreFromFolder(f);
 }
 

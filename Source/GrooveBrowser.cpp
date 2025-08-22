@@ -19,15 +19,13 @@ GrooveBrowser::~GrooveBrowser() {
 }
 
 void GrooveBrowser::Initialize(File f) {
-    MYDBG(__FUNCTION__);
-
     lists.clear();
 
     store.Initialize(f);
 
     auto maxDepth(store.MaxDepth());
 
-    for (int i = 0; i < maxDepth; i++)
+    for (int i = 0; i < maxDepth + 1; i++)
         lists.add(std::make_unique<GrooveList>());
 
     store.Enumerate([&](const GrooveFolder& gf) {
