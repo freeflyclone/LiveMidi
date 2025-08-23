@@ -30,12 +30,9 @@ GrooveList::GrooveList()
     vScroll.getLookAndFeel().setColour(ScrollBar::thumbColourId, Colour(0xFF3f3f3f));
 
     setSize(LISTWIDTH, LISTHEIGHT);
-
-    MYDBG(__FUNCTION__);
 }
 
 GrooveList::~GrooveList() {
-    MYDBG(__FUNCTION__);
 }
 
 void GrooveList::clear() {
@@ -52,15 +49,11 @@ void GrooveList::add(String item) {
 
 void GrooveList::paint(Graphics& g)
 {
-    MYDBG(__FUNCTION__);
-
     g.fillAll(getLookAndFeel().findColour(ResizableWindow::backgroundColourId));
 }
 
 void GrooveList::resized()
 {
-    MYDBG(__FUNCTION__);
-
     // This method is where you should set the bounds of any child
     // components that your component contains..
     listBox.setBounds(0, 0, LISTWIDTH, LISTHEIGHT);

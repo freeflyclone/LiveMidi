@@ -29,14 +29,12 @@ void GrooveStore::FetchStoreFromFolder(File f, int level) {
         maxDepth = 0;
     }
 
-    // smart ptr for new GrooveFolder instance eases management.
-    // 
-    // GrooveFolder() fills its "files" vector if
+    // GrooveFolder() fills its "fileNames" Array if
     // MIDI files are found in its "folder" 
-    auto gf = std::make_unique<GrooveFolder>(f, level);
+    GrooveFolder gf = GrooveFolder(f, level);
 
     // always add (possibly place-holder only) new GrooveFolder instance;
-    folders.add(*gf);
+    folders.add(gf);
 
     // Recurse into child folders if present
     auto childFolders = f.findChildFiles(File::findDirectories, false);
