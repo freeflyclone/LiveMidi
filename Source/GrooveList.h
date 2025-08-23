@@ -23,8 +23,7 @@ public:
     GrooveList();
     ~GrooveList();
 
-    void fetchGroovesFromFolder(String);
-    void populate(std::vector<std::string>);
+    void add(String);
 
     void paint(Graphics& g) override;
     void resized() override;
@@ -34,6 +33,6 @@ public:
 
 private:
     ListBox listBox;
-
+    StringArray items;
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(GrooveList)
 };

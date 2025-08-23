@@ -13,20 +13,16 @@
 
 GrooveBrowser::GrooveBrowser()
 {
+    addAndMakeVisible(lists[0]);
 }
 
 GrooveBrowser::~GrooveBrowser() {
 }
 
 void GrooveBrowser::Initialize(File f) {
-    lists.clear();
-
     store.Initialize(f);
 
     auto maxDepth(store.MaxDepth());
-
-    for (int i = 0; i < maxDepth + 1; i++)
-        lists.add(std::make_unique<GrooveList>());
 
     store.Enumerate([&](const GrooveFolder& gf) {
         std::string indentation("");
@@ -34,6 +30,7 @@ void GrooveBrowser::Initialize(File f) {
             indentation += "  ";
 
         if (gf.level == 1) {
+            lists[0].add(gf.folder);
             MYDBG(indentation + gf.folder.toStdString());
         }
     });

@@ -41,25 +41,8 @@ GrooveList::~GrooveList() {
     MYDBG(__FUNCTION__);
 }
 
-void GrooveList::populate(std::vector<std::string> strings) {
-
-}
-
-void GrooveList::fetchGroovesFromFolder(String name)
-{
-    auto f = File(name);
-
-    Array<File> groovesList = f.findChildFiles(File::findFiles, false, "*.mid");
-    StringArray grooves;
-
-    for (const auto& groove : groovesList) {
-        grooves.add(groove.getRelativePathFrom(f));
-    }
-
-    MYDBG("Found " + std::to_string(groovesList.size()) + " grooves");
-
-    for (const auto& g : grooves)
-        MYDBG("groove: " + g.toStdString());
+void GrooveList::add(String item) {
+    items.add(item);
 }
 
 void GrooveList::paint(Graphics& g)
@@ -81,7 +64,7 @@ void GrooveList::resized()
 // The following methods implement the ListBoxModel virtual methods:
 int GrooveList::getNumRows()
 {
-    return numRows; //you should probably derive this from whatever source data you end up using
+    return 2;// numRows; //you should probably derive this from whatever source data you end up using
 }
 
 void GrooveList::paintListBoxItem(int rowNumber, Graphics& g,int width, int height, bool rowIsSelected)
@@ -98,7 +81,7 @@ void GrooveList::paintListBoxItem(int rowNumber, Graphics& g,int width, int heig
 
     g.setFont(height * 0.85f);
 
-    g.drawText("Row Number " + String(rowNumber + 1), 5, 0, width, height, Justification::centredLeft, true);
+    g.drawText(items[rowNumber], 5, 0, width, height, Justification::centredLeft, true);
 }
 
 void GrooveList::selectedRowsChanged(int lastRowselected)

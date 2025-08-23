@@ -30,5 +30,5 @@ protected:
 
     GrooveStore store;
 
-    Array<std::unique_ptr<GrooveList>> lists;
+    GrooveList lists[6];
 };
