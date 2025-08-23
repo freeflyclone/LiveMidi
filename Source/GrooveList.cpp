@@ -12,9 +12,6 @@
 #include "Log.h"
 #include "GrooveList.h"
 
-#define LISTHEIGHT 200
-#define LISTWIDTH 300
-
 GrooveList::GrooveList()
 {
     // In your constructor, you should add any child components, and
