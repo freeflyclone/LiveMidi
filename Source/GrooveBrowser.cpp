@@ -24,6 +24,8 @@ void GrooveBrowser::Initialize(File f) {
 
     auto maxDepth(store.MaxDepth());
 
+    lists[0].clear();
+
     store.Enumerate([&](const GrooveFolder& gf) {
         std::string indentation("");
         for (int i = 0; i < gf.level; i++)
@@ -34,6 +36,8 @@ void GrooveBrowser::Initialize(File f) {
             MYDBG(indentation + gf.folder.toStdString());
         }
     });
+
+    lists[0].updateContent();
 
     repaint();
 }

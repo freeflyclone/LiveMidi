@@ -23,6 +23,9 @@ public:
     GrooveList();
     ~GrooveList();
 
+    void clear();
+    void updateContent();
+
     void add(String);
 
     void paint(Graphics& g) override;

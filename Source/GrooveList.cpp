@@ -12,8 +12,8 @@
 #include "Log.h"
 #include "GrooveList.h"
 
-#define LISTHEIGHT (rowHeight * numRows * 2 / 3)
-#define LISTWIDTH 200
+#define LISTHEIGHT 200
+#define LISTWIDTH 300
 
 GrooveList::GrooveList()
 {
@@ -41,6 +41,14 @@ GrooveList::~GrooveList() {
     MYDBG(__FUNCTION__);
 }
 
+void GrooveList::clear() {
+    items.clear();
+}
+
+void GrooveList::updateContent() {
+    listBox.updateContent();
+}
+
 void GrooveList::add(String item) {
     items.add(item);
 }
@@ -64,7 +72,7 @@ void GrooveList::resized()
 // The following methods implement the ListBoxModel virtual methods:
 int GrooveList::getNumRows()
 {
-    return 2;// numRows; //you should probably derive this from whatever source data you end up using
+    return items.size();
 }
 
 void GrooveList::paintListBoxItem(int rowNumber, Graphics& g,int width, int height, bool rowIsSelected)
