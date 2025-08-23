@@ -34,9 +34,7 @@ public:
 protected:
     void FetchStoreFromFolder(File, int level = 0);
 
-    File root;
-    Array<GrooveFolder> folders;
-    int maxDepth{ 0 };
+    GrooveFolder root;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(GrooveStore)
 };

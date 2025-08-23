@@ -16,12 +16,13 @@
 
 using namespace juce;
 
-class GrooveFolder {
+class GrooveFolder : public Component {
 public:
-    GrooveFolder(File newFolder, int level);
+    GrooveFolder();
     ~GrooveFolder();
 
-    String folder;
+    void Initialize(File);
+
     Array<StringArray> fileNames;
     int level;
 };

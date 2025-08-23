@@ -37,10 +37,6 @@ void GrooveBrowser::Initialize(File f) {
         for (int i = 0; i < gf.level; i++)
             indentation += "  ";
 
-        if (gf.level == 1) {
-            lists[0].add(gf.folder);
-            MYDBG(indentation + gf.folder.toStdString());
-        }
     });
 
     lists[0].updateContent();
