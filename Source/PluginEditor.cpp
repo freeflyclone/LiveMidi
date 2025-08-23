@@ -21,8 +21,7 @@ LiveMidiAudioProcessorEditor::LiveMidiAudioProcessorEditor (LiveMidiAudioProcess
     addAndMakeVisible(groovesButton);
     groovesButton.addListener(this);
 
-    browser = std::make_unique<GrooveBrowser>();
-    addAndMakeVisible(*browser);
+    addAndMakeVisible(browser);
 
     // Make sure that before the constructor has finished, you've set the
     // editor's size to whatever you need it to be.
@@ -61,22 +60,19 @@ void LiveMidiAudioProcessorEditor::resized()
     groovesLabel.setBounds(10, 20, textWidth, textHeight);
     groovesButton.setBounds(20 + textWidth, 10, width - textWidth - 30, 32);
 
-    browser->setBounds(10, 60, width - 20, height / 2);
+    browser.setBounds(10, 60, width - 20, height / 2);
 }
 
 
 void LiveMidiAudioProcessorEditor::buttonClicked(Button* button) {
     if (button == &groovesButton) {
-        mFileChooser = std::make_unique<FileChooser>("Select folder to browse...",
-            button->getButtonText(),
-            "*.mid",
-            false);
+        FileChooser chooser("Select folder to browse...", button->getButtonText(), "*.mid", false);
 
-        if (mFileChooser->browseForDirectory()) {
-            File f = mFileChooser->getResult();
+        if (chooser.browseForDirectory()) {
+            File f = chooser.getResult();
 
             button->setButtonText(f.getFullPathName());
-            browser->Initialize(f);
+            browser.Initialize(f);
         }
     }
 }
