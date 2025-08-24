@@ -5,8 +5,9 @@
     Created: 19 Aug 2025 2:43:05pm
     Author:  evan
 
-    A class for managing a tree of GrooveFolder's, each of which contains MIDI
-    groove files (drum patterns, ostinatos, whatever)
+    A class for managing a tree of GrooveFolder's, each of which may contain MIDI
+    groove files (drum patterns, ostinatos, whatever) and/or sub-directories
+    leading to MIDI files.
   ==============================================================================
 */
 
