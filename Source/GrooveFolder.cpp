@@ -25,9 +25,12 @@ void GrooveFolder::Initialize(File f) {
     auto subdirs = f.findChildFiles(File::findDirectories, false);
     for (const auto& subdir : subdirs) {
         subdirNames.add(subdir.getFileName());
+        MYDBG(__FUNCTION__"  subdir: " + subdir.getFileName().toStdString());
     }
 
     auto files = f.findChildFiles(File::findFiles, false, "*.mid");
-    for (const auto& file : files)
+    for (const auto& file : files) {
         fileNames.add(file.getFileName());
+        MYDBG(__FUNCTION__"    groove file: " + file.getFileName().toStdString());
+    }
 }
