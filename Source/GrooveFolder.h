@@ -27,5 +27,5 @@ public:
 
     Array<StringArray> fileNames;
     Array<StringArray> subdirNames;
-    int level;
+    int level{ 0 };
 };
