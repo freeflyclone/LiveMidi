@@ -13,7 +13,6 @@
 #pragma once
 
 #include "JuceHeader.h"
-#include "GrooveList.h"
 #include "GrooveFolder.h"
 
 using namespace juce;

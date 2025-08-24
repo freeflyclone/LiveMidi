@@ -15,8 +15,9 @@
       <FILE id="nvrvKR" name="GrooveFolder.h" compile="0" resource="0" file="Source/GrooveFolder.h"/>
       <FILE id="YjFKgU" name="GrooveStore.cpp" compile="1" resource="0" file="Source/GrooveStore.cpp"/>
       <FILE id="k9VOR6" name="GrooveStore.h" compile="0" resource="0" file="Source/GrooveStore.h"/>
-      <FILE id="EJdZcx" name="GrooveList.cpp" compile="1" resource="0" file="Source/GrooveList.cpp"/>
-      <FILE id="DkohS3" name="GrooveList.h" compile="0" resource="0" file="Source/GrooveList.h"/>
+      <FILE id="EJdZcx" name="GrooveListBox.cpp" compile="1" resource="0"
+            file="Source/GrooveListBox.cpp"/>
+      <FILE id="DkohS3" name="GrooveListBox.h" compile="0" resource="0" file="Source/GrooveListBox.h"/>
       <FILE id="sKA292" name="Log.h" compile="0" resource="0" file="Source/Log.h"/>
       <FILE id="JlL7V8" name="PluginProcessor.cpp" compile="1" resource="0"
             file="Source/PluginProcessor.cpp"/>

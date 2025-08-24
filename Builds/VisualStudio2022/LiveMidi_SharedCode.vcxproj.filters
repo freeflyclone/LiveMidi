@@ -721,7 +721,7 @@
     <ClCompile Include="..\..\Source\GrooveStore.cpp">
       <Filter>LiveMidi\Source</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Source\GrooveList.cpp">
+    <ClCompile Include="..\..\Source\GrooveListBox.cpp">
       <Filter>LiveMidi\Source</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Source\PluginProcessor.cpp">
@@ -3657,7 +3657,7 @@
     <ClInclude Include="..\..\Source\GrooveStore.h">
       <Filter>LiveMidi\Source</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Source\GrooveList.h">
+    <ClInclude Include="..\..\Source\GrooveListBox.h">
       <Filter>LiveMidi\Source</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\Log.h">

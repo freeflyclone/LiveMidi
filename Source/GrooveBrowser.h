@@ -12,6 +12,7 @@
 
 #include "JuceHeader.h"
 #include "GrooveStore.h"
+#include "GrooveListBox.h"
 
 using namespace juce;
 
@@ -30,5 +31,5 @@ protected:
 
     GrooveStore store;
 
-    GrooveList lists[6];
+    GrooveListBox lists[6];
 };

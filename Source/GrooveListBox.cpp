@@ -10,9 +10,9 @@
 
 #include "JuceHeader.h"
 #include "Log.h"
-#include "GrooveList.h"
+#include "GrooveListBox.h"
 
-GrooveList::GrooveList()
+GrooveListBox::GrooveListBox()
 {
     // In your constructor, you should add any child components, and
     // initialise any special settings that your component needs.
@@ -29,43 +29,43 @@ GrooveList::GrooveList()
     vScroll.setVisible(true);
     vScroll.getLookAndFeel().setColour(ScrollBar::thumbColourId, Colour(0xFF3f3f3f));
 
-    setSize(LISTWIDTH, LISTHEIGHT);
+    setSize(GROOVE_LISTBOX_WIDTH, GROOVE_LISTBOX_HEIGHT);
 }
 
-GrooveList::~GrooveList() {
+GrooveListBox::~GrooveListBox() {
 }
 
-void GrooveList::clear() {
+void GrooveListBox::clear() {
     items.clear();
 }
 
-void GrooveList::updateContent() {
+void GrooveListBox::updateContent() {
     listBox.updateContent();
 }
 
-void GrooveList::add(String item) {
+void GrooveListBox::add(String item) {
     items.add(item);
 }
 
-void GrooveList::paint(Graphics& g)
+void GrooveListBox::paint(Graphics& g)
 {
     g.fillAll(getLookAndFeel().findColour(ResizableWindow::backgroundColourId));
 }
 
-void GrooveList::resized()
+void GrooveListBox::resized()
 {
     // This method is where you should set the bounds of any child
     // components that your component contains..
-    listBox.setBounds(0, 0, LISTWIDTH, LISTHEIGHT);
+    listBox.setBounds(0, 0, GROOVE_LISTBOX_WIDTH, GROOVE_LISTBOX_HEIGHT);
 }
 
 // The following methods implement the ListBoxModel virtual methods:
-int GrooveList::getNumRows()
+int GrooveListBox::getNumRows()
 {
     return items.size();
 }
 
-void GrooveList::paintListBoxItem(int rowNumber, Graphics& g,int width, int height, bool rowIsSelected)
+void GrooveListBox::paintListBoxItem(int rowNumber, Graphics& g,int width, int height, bool rowIsSelected)
 {
 
     if (rowIsSelected)
@@ -82,7 +82,7 @@ void GrooveList::paintListBoxItem(int rowNumber, Graphics& g,int width, int heig
     g.drawText(items[rowNumber], 5, 0, width, height, Justification::centredLeft, true);
 }
 
-void GrooveList::selectedRowsChanged(int lastRowselected)
+void GrooveListBox::selectedRowsChanged(int lastRowselected)
 {
     //do stuff when selection changes
     MYDBG("Row Selected: " + std::to_string(lastRowselected));

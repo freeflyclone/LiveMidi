@@ -1,7 +1,7 @@
 /*
   ==============================================================================
 
-    GrooveList.h
+    GrooveListBox.h
     Created: 15 Jul 2025 10:55:58am
     Author:  evan
 
@@ -14,17 +14,17 @@
 
 using namespace juce;
 
-#define LISTHEIGHT 200
-#define LISTWIDTH 250
+#define GROOVE_LISTBOX_HEIGHT 200
+#define GROOVE_LISTBOX_WIDTH 250
 
-class GrooveList : public ListBoxModel, public Component
+class GrooveListBox : public ListBoxModel, public Component
 {
     const int rowHeight{ 20 };
-    int numRows{ 12 };
+    int numRows{ 0 };
 
 public:
-    GrooveList();
-    ~GrooveList();
+    GrooveListBox();
+    ~GrooveListBox();
 
     void clear();
     void updateContent();
@@ -40,5 +40,5 @@ public:
 private:
     ListBox listBox;
     StringArray items;
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(GrooveList)
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(GrooveListBox)
 };

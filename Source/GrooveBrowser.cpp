@@ -16,10 +16,10 @@ GrooveBrowser::GrooveBrowser()
     addAndMakeVisible(lists[0]);
 
     addAndMakeVisible(lists[1]);
-    lists[1].setTopLeftPosition(LISTWIDTH-1, 0);
+    lists[1].setTopLeftPosition(GROOVE_LISTBOX_WIDTH-1, 0);
 
     addAndMakeVisible(lists[2]);
-    lists[2].setTopLeftPosition((LISTWIDTH-1) * 2, 0);
+    lists[2].setTopLeftPosition((GROOVE_LISTBOX_WIDTH-1) * 2, 0);
 }
 
 GrooveBrowser::~GrooveBrowser() {

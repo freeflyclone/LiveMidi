@@ -147,7 +147,7 @@
     <ClCompile Include="..\..\Source\GrooveBrowser.cpp"/>
     <ClCompile Include="..\..\Source\GrooveFolder.cpp"/>
     <ClCompile Include="..\..\Source\GrooveStore.cpp"/>
-    <ClCompile Include="..\..\Source\GrooveList.cpp"/>
+    <ClCompile Include="..\..\Source\GrooveListBox.cpp"/>
     <ClCompile Include="..\..\Source\PluginProcessor.cpp"/>
     <ClCompile Include="..\..\Source\PluginEditor.cpp"/>
     <ClCompile Include="..\..\..\..\..\DevLibs\JUCE\modules\juce_audio_basics\audio_play_head\juce_AudioPlayHead.cpp">
@@ -2894,7 +2894,7 @@
     <ClInclude Include="..\..\Source\GrooveBrowser.h"/>
     <ClInclude Include="..\..\Source\GrooveFolder.h"/>
     <ClInclude Include="..\..\Source\GrooveStore.h"/>
-    <ClInclude Include="..\..\Source\GrooveList.h"/>
+    <ClInclude Include="..\..\Source\GrooveListBox.h"/>
     <ClInclude Include="..\..\Source\Log.h"/>
     <ClInclude Include="..\..\Source\PluginProcessor.h"/>
     <ClInclude Include="..\..\Source\PluginEditor.h"/>
