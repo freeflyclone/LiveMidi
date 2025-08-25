@@ -25,10 +25,10 @@ public:
     ~GrooveFolder();
 
     // Load up all "*.mid" file and subfolder names non-recursively
-    void Initialize(File);
+    void Initialize(File, GrooveFolderPtr);
 
     // Build the "children" tree
-    void Scan(const GrooveFolder& parent);
+    void Scan();
 
 private:
     File fileSelf;
