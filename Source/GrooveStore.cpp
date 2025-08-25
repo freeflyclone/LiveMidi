@@ -20,10 +20,11 @@ GrooveStore::~GrooveStore() {
 void GrooveStore::Initialize(File f) {
     root.Initialize(f);
 
-    FetchStoreFromFolder(f);
+    FetchStoreFromFolder();
 }
 
-void GrooveStore::FetchStoreFromFolder(File f, int level) {
+void GrooveStore::FetchStoreFromFolder() {
+    root.Scan(root);
 }
 
 void GrooveStore::Enumerate(EnumerationCb cb) {

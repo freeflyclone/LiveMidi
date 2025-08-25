@@ -17,15 +17,24 @@
 
 using namespace juce;
 
-class GrooveFolder : public Component {
+class GrooveFolder {
 public:
+    typedef std::shared_ptr<GrooveFolder> GrooveFolderPtr;
+
     GrooveFolder();
     ~GrooveFolder();
 
     // Load up all "*.mid" file and subfolder names non-recursively
     void Initialize(File);
 
+    // Build the "children" tree
+    void Scan(const GrooveFolder& parent);
+
+private:
+    File fileSelf;
     Array<StringArray> fileNames;
     Array<StringArray> subdirNames;
-    int level{ 0 };
+
+    GrooveFolderPtr parent;
+    Array<GrooveFolderPtr> children;
 };

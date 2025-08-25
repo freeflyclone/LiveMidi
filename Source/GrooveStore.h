@@ -32,7 +32,7 @@ public:
     int MaxDepth() { return maxDepth; }
 
 protected:
-    void FetchStoreFromFolder(File, int level = 0);
+    void FetchStoreFromFolder();
 
     GrooveFolder root;
     int maxDepth{ 0 };

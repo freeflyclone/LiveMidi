@@ -33,10 +33,6 @@ void GrooveBrowser::Initialize(File f) {
     lists[0].clear();
 
     store.Enumerate([&](const GrooveFolder& gf) {
-        std::string indentation("");
-        for (int i = 0; i < gf.level; i++)
-            indentation += "  ";
-
     });
 
     lists[0].updateContent();
