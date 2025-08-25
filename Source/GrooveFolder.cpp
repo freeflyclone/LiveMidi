@@ -21,6 +21,8 @@ GrooveFolder::~GrooveFolder()
 
 void GrooveFolder::Initialize(File f) {
     fileSelf = f;
+    subdirNames.clear();
+    fileNames.clear();
 
     MYDBG(__FUNCTION__" opening: " + fileSelf.getFileName().toStdString());
 
@@ -42,11 +44,14 @@ void GrooveFolder::Scan(const GrooveFolder& parentGrooveFolder) {
         for (const auto& subdirName : subdirNames) {
             // Create a File object for the child...
             // Figure out the absolute path for File class
+            String subdirFullPathName = fileSelf.getFullPathName() + File::getSeparatorString() + subdirName;
 
-            MYDBG(__FUNCTION__" parent: " + SelfFullPathName().toStdString() + ", child: " + subdirName.toStdString());
+            MYDBG(__FUNCTION__"(), considering: " + subdirFullPathName.toStdString());
+            auto file = File(subdirFullPathName);
 
-            // Create the child object
-            //auto grooveFolder = std::make_shared<GrooveFolder>();
+            auto child = std::make_shared<GrooveFolder>();
+            child->Initialize(file);
+            child->Scan(*this);
         }
     }
 
