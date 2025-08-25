@@ -30,10 +30,12 @@ public:
     // Build the "children" tree
     void Scan(const GrooveFolder& parent);
 
+    String SelfFullPathName() { return fileSelf.getFullPathName(); }
+
 private:
     File fileSelf;
-    Array<StringArray> fileNames;
-    Array<StringArray> subdirNames;
+    StringArray fileNames;
+    StringArray subdirNames;
 
     GrooveFolderPtr parent;
     Array<GrooveFolderPtr> children;
