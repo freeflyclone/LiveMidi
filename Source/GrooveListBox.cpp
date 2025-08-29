@@ -85,6 +85,6 @@ void GrooveListBox::paintListBoxItem(int rowNumber, Graphics& g,int width, int h
 void GrooveListBox::selectedRowsChanged(int lastRowSelected)
 {
     //do stuff when selection changes
-    sendActionMessage( getComponentID() + "::selectedRowsChanged " + mItems[lastRowSelected]);
+    sendActionMessage( getComponentID() + ":SRC:" + mItems[lastRowSelected]);
 }
 

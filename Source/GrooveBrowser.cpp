@@ -20,7 +20,7 @@ GrooveBrowser::GrooveBrowser()
         addChildComponent(listBox);
         listBox.setTopLeftPosition(xOffset, 0);
         listBox.addActionListener(this);
-        listBox.setComponentID("GrooveListBox:" + std::to_string(idx++));
+        listBox.setComponentID("GLBX:" + std::to_string(idx++));
         xOffset += GROOVE_LISTBOX_WIDTH - 1;
     }
 }
@@ -40,15 +40,16 @@ void GrooveBrowser::Initialize(File f) {
 
     mStore.Enumerate([&](GrooveFolder& gf) {
         auto& fileSelf = gf.GetSelfFile();
+        auto& listBox = mListBoxes[0];
 
         for (const auto child : gf.GetChildren()) {
-            mListBoxes[0].setVisible(true);
-            mListBoxes[0].add(child->GetSelfFile().getFileName());
+            listBox.setVisible(true);
+            listBox.add(child->GetSelfFile().getFileName());
         }
 
         for (const auto fileName : gf.GetFileNames()) {
-            mListBoxes[0].setVisible(true);
-            mListBoxes[0].add(fileName);
+            listBox.setVisible(true);
+            listBox.add(fileName);
         }
     });
 
