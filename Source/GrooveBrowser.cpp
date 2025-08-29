@@ -13,13 +13,13 @@
 
 GrooveBrowser::GrooveBrowser()
 {
-    addAndMakeVisible(mLists[0]);
+    addAndMakeVisible(mListBoxes[0]);
 
-    addAndMakeVisible(mLists[1]);
-    mLists[1].setTopLeftPosition(GROOVE_LISTBOX_WIDTH-1, 0);
+    addAndMakeVisible(mListBoxes[1]);
+    mListBoxes[1].setTopLeftPosition(GROOVE_LISTBOX_WIDTH-1, 0);
 
-    addAndMakeVisible(mLists[2]);
-    mLists[2].setTopLeftPosition((GROOVE_LISTBOX_WIDTH-1) * 2, 0);
+    addAndMakeVisible(mListBoxes[2]);
+    mListBoxes[2].setTopLeftPosition((GROOVE_LISTBOX_WIDTH-1) * 2, 0);
 }
 
 GrooveBrowser::~GrooveBrowser() {
@@ -30,14 +30,16 @@ void GrooveBrowser::Initialize(File f) {
 
     auto maxDepth(mStore.MaxDepth());
 
-    mLists[0].clear();
+    for (auto& listBox : mListBoxes)
+        listBox.clear();
 
-    mStore.Enumerate([](GrooveFolder& gf) {
+    mStore.Enumerate([&](GrooveFolder& gf) {
         auto& fileSelf = gf.GetSelfFile();
 
         MYDBG("enumerating: " + fileSelf.getFileName().toStdString());
 
         for (const auto child : gf.GetChildren()) {
+            mListBoxes[0].add(child->GetSelfFile().getFileName());
             MYDBG("  " + child->GetSelfFile().getFileName().toStdString() + ", parent: " + child->GetParent()->GetSelfFile().getFileName().toStdString());
         }
 
@@ -45,7 +47,8 @@ void GrooveBrowser::Initialize(File f) {
             MYDBG("    " + fileName.toStdString());
     });
 
-    mLists[0].updateContent();
+    for (auto& listBox : mListBoxes)
+        listBox.updateContent();
 
     repaint();
 }

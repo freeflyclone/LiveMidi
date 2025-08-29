@@ -85,6 +85,6 @@ void GrooveListBox::paintListBoxItem(int rowNumber, Graphics& g,int width, int h
 void GrooveListBox::selectedRowsChanged(int lastRowselected)
 {
     //do stuff when selection changes
-    MYDBG("Row Selected: " + std::to_string(lastRowselected));
+    MYDBG(__FUNCTION__ "(), Row Selected: " + std::to_string(lastRowselected));
 }
 

@@ -31,5 +31,5 @@ protected:
 
     GrooveStore mStore;
 
-    GrooveListBox mLists[6];
+    GrooveListBox mListBoxes[6];
 };
