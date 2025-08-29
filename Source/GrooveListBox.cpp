@@ -16,16 +16,16 @@ GrooveListBox::GrooveListBox()
 {
     // In your constructor, you should add any child components, and
     // initialise any special settings that your component needs.
-    addAndMakeVisible(listBox);
-    listBox.setRowHeight(rowHeight);
-    listBox.setModel(this);   // Tell the listbox where to get its data model
+    addAndMakeVisible(mListBox);
+    mListBox.setRowHeight(rowHeight);
+    mListBox.setModel(this);   // Tell the listbox where to get its data model
 
-    listBox.setColour(ListBox::textColourId, Colours::ghostwhite);
-    listBox.setColour(ListBox::backgroundColourId, Colour(0xFF1F1F1F));
-    listBox.setColour(ListBox::outlineColourId, Colour(0xFF606060));
-    listBox.setOutlineThickness(1);
+    mListBox.setColour(ListBox::textColourId, Colours::ghostwhite);
+    mListBox.setColour(ListBox::backgroundColourId, Colour(0xFF1F1F1F));
+    mListBox.setColour(ListBox::outlineColourId, Colour(0xFF606060));
+    mListBox.setOutlineThickness(1);
 
-    ScrollBar& vScroll = listBox.getVerticalScrollBar();
+    ScrollBar& vScroll = mListBox.getVerticalScrollBar();
     vScroll.setVisible(true);
     vScroll.getLookAndFeel().setColour(ScrollBar::thumbColourId, Colour(0xFF3f3f3f));
 
@@ -36,15 +36,15 @@ GrooveListBox::~GrooveListBox() {
 }
 
 void GrooveListBox::clear() {
-    items.clear();
+    mItems.clear();
 }
 
 void GrooveListBox::updateContent() {
-    listBox.updateContent();
+    mListBox.updateContent();
 }
 
 void GrooveListBox::add(String item) {
-    items.add(item);
+    mItems.add(item);
 }
 
 void GrooveListBox::paint(Graphics& g)
@@ -56,13 +56,13 @@ void GrooveListBox::resized()
 {
     // This method is where you should set the bounds of any child
     // components that your component contains..
-    listBox.setBounds(0, 0, GROOVE_LISTBOX_WIDTH, GROOVE_LISTBOX_HEIGHT);
+    mListBox.setBounds(0, 0, GROOVE_LISTBOX_WIDTH, GROOVE_LISTBOX_HEIGHT);
 }
 
 // The following methods implement the ListBoxModel virtual methods:
 int GrooveListBox::getNumRows()
 {
-    return items.size();
+    return mItems.size();
 }
 
 void GrooveListBox::paintListBoxItem(int rowNumber, Graphics& g,int width, int height, bool rowIsSelected)
@@ -79,7 +79,7 @@ void GrooveListBox::paintListBoxItem(int rowNumber, Graphics& g,int width, int h
 
     g.setFont(height * 0.85f);
 
-    g.drawText(items[rowNumber], 5, 0, width, height, Justification::centredLeft, true);
+    g.drawText(mItems[rowNumber], 5, 0, width, height, Justification::centredLeft, true);
 }
 
 void GrooveListBox::selectedRowsChanged(int lastRowselected)

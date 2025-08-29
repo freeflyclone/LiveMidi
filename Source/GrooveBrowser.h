@@ -29,7 +29,7 @@ protected:
     void paint(Graphics& g) override;
     void resized() override;
 
-    GrooveStore store;
+    GrooveStore mStore;
 
-    GrooveListBox lists[6];
+    GrooveListBox mLists[6];
 };

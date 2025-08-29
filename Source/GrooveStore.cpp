@@ -18,15 +18,15 @@ GrooveStore::~GrooveStore() {
 }
 
 void GrooveStore::Initialize(File f) {
-    root.Initialize(f, nullptr);
+    mRoot.Initialize(f, nullptr);
 
     FetchStoreFromFolder();
 }
 
 void GrooveStore::FetchStoreFromFolder() {
-    root.Scan();
+    mRoot.Scan();
 }
 
 void GrooveStore::Enumerate(GrooveFolder::EnumerationCb cb) {
-    root.Enumerate(cb);
+    mRoot.Enumerate(cb);
 }

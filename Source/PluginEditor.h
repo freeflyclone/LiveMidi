@@ -30,13 +30,13 @@ public:
 
 private:
     // Provide this editor with access the processor object that created it.
-    LiveMidiAudioProcessor& audioProcessor;
+    LiveMidiAudioProcessor& mAudioProcessor;
 
     // Create a "Select Groove" button (WIP)
-    Label groovesLabel{"groovesLabel", "Grooves: "};
-    TextButton groovesButton{ TEMP_STORE_FOLDER_NAME };
+    Label mGroovesLabel{"groovesLabel", "Grooves: "};
+    TextButton mGroovesButton{ TEMP_STORE_FOLDER_NAME };
 
-    GrooveBrowser browser;
+    GrooveBrowser mBrowser;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (LiveMidiAudioProcessorEditor)
 };

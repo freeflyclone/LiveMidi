@@ -27,13 +27,13 @@ public:
     void Initialize(File);
     void Enumerate(GrooveFolder::EnumerationCb);
 
-    int MaxDepth() { return maxDepth; }
+    int MaxDepth() { return mMaxDepth; }
 
 protected:
     void FetchStoreFromFolder();
 
-    GrooveFolder root;
-    int maxDepth{ 0 };
+    GrooveFolder mRoot;
+    int mMaxDepth{ 0 };
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(GrooveStore)
 };

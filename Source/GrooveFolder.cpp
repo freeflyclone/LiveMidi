@@ -21,10 +21,11 @@ GrooveFolder::~GrooveFolder()
 
 // Fills a GrooveFolder's mSubdirNames Array and mFileNames Array
 void GrooveFolder::Initialize(File f, GrooveFolder* parent) {
-    mFileSelf = f;
     mSubdirNames.clear();
     mFileNames.clear();
     mChildren.clear();
+
+    mFileSelf = f;
     mParent = parent;
 
     auto subdirs = mFileSelf.findChildFiles(File::findDirectories, false);
@@ -52,10 +53,6 @@ void GrooveFolder::Scan() {
 
             mChildren.add(child);
         }
-    }
-
-    if (mFileNames.size()) {
-
     }
 }
 

@@ -38,7 +38,7 @@ public:
     void selectedRowsChanged(int /*lastRowselected*/) override;
 
 private:
-    ListBox listBox;
-    StringArray items;
+    ListBox mListBox;
+    StringArray mItems;
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(GrooveListBox)
 };

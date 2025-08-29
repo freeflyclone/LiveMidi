@@ -13,15 +13,15 @@
 //==============================================================================
 LiveMidiAudioProcessorEditor::LiveMidiAudioProcessorEditor (LiveMidiAudioProcessor& p)
     : AudioProcessorEditor (&p), 
-    audioProcessor (p)
+    mAudioProcessor (p)
 {
     setResizable(true, true);
 
-    addAndMakeVisible(groovesLabel);
-    addAndMakeVisible(groovesButton);
-    groovesButton.addListener(this);
+    addAndMakeVisible(mGroovesLabel);
+    addAndMakeVisible(mGroovesButton);
+    mGroovesButton.addListener(this);
 
-    addAndMakeVisible(browser);
+    addAndMakeVisible(mBrowser);
 
     // Make sure that before the constructor has finished, you've set the
     // editor's size to whatever you need it to be.
@@ -51,28 +51,28 @@ void LiveMidiAudioProcessorEditor::resized()
 
     // This is generally where you'll want to lay out the positions of any
     // subcomponents in your editor.
-    auto text = groovesLabel.getText();
+    auto text = mGroovesLabel.getText();
 
-    const Font labelFont = groovesLabel.getFont();
-    const auto textWidth = GlyphArrangement::getStringWidth(labelFont, groovesLabel.getText());
+    const Font labelFont = mGroovesLabel.getFont();
+    const auto textWidth = GlyphArrangement::getStringWidth(labelFont, mGroovesLabel.getText());
     const auto textHeight = labelFont.getHeight();
 
-    groovesLabel.setBounds(10, 20, textWidth, textHeight);
-    groovesButton.setBounds(20 + textWidth, 10, width - textWidth - 30, 32);
+    mGroovesLabel.setBounds(10, 20, textWidth, textHeight);
+    mGroovesButton.setBounds(20 + textWidth, 10, width - textWidth - 30, 32);
 
-    browser.setBounds(10, 60, width - 20, height / 2);
+    mBrowser.setBounds(10, 60, width - 20, height / 2);
 }
 
 
 void LiveMidiAudioProcessorEditor::buttonClicked(Button* button) {
-    if (button == &groovesButton) {
+    if (button == &mGroovesButton) {
         FileChooser chooser("Select folder to browse...", button->getButtonText(), "*.mid", false);
 
         if (chooser.browseForDirectory()) {
             File f = chooser.getResult();
 
             button->setButtonText(f.getFullPathName());
-            browser.Initialize(f);
+            mBrowser.Initialize(f);
         }
     }
 }
