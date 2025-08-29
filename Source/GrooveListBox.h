@@ -17,7 +17,7 @@ using namespace juce;
 #define GROOVE_LISTBOX_HEIGHT 200
 #define GROOVE_LISTBOX_WIDTH 250
 
-class GrooveListBox : public ListBoxModel, public Component
+class GrooveListBox : public ListBoxModel, public Component, public ActionBroadcaster
 {
     const int rowHeight{ 20 };
     int numRows{ 0 };

@@ -18,12 +18,13 @@ using namespace juce;
 
 #define TEMP_STORE_FOLDER_NAME "E:/music/Native Instruments Content/Abbey Road 60s Drummer Library/MIDI Files"
 
-class GrooveBrowser : public Component {
+class GrooveBrowser : public Component, public ActionListener {
 public:
     GrooveBrowser();
     ~GrooveBrowser();
 
     void Initialize(File);
+    void actionListenerCallback(const String&) override;
 
 protected:
     void paint(Graphics& g) override;

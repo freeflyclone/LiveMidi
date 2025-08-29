@@ -14,10 +14,13 @@
 GrooveBrowser::GrooveBrowser()
 {
     int xOffset{ 0 };
+    int idx{ 0 };
 
     for (auto& listBox : mListBoxes) {
         addChildComponent(listBox);
         listBox.setTopLeftPosition(xOffset, 0);
+        listBox.addActionListener(this);
+        listBox.setComponentID("GrooveListBox:" + std::to_string(idx++));
         xOffset += GROOVE_LISTBOX_WIDTH - 1;
     }
 }
@@ -65,4 +68,8 @@ void GrooveBrowser::paint(Graphics& g) {
 void GrooveBrowser::resized() {
     // Here's where we'll manage set of GrooveList children according to
     // GrooveStore::MaxDepth()
+}
+
+void GrooveBrowser::actionListenerCallback(const String& message) {
+    MYDBG(__FUNCTION__ "(): " + message.toStdString());
 }
