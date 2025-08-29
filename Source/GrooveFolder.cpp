@@ -20,11 +20,11 @@ GrooveFolder::~GrooveFolder()
 }
 
 // Fills a GrooveFolder's mSubdirNames Array and mFileNames Array
-void GrooveFolder::Initialize(File f, GrooveFolder* prnt) {
+void GrooveFolder::Initialize(File f, GrooveFolder* parent) {
     mFileSelf = f;
     mSubdirNames.clear();
     mFileNames.clear();
-    mParent = prnt;
+    mParent = parent;
 
     auto subdirs = mFileSelf.findChildFiles(File::findDirectories, false);
     for (const auto& subdir : subdirs)
@@ -43,7 +43,6 @@ void GrooveFolder::Scan() {
             // Figure out the absolute path for File class
             String subdirAbsolutePathName = mFileSelf.getFullPathName() + File::getSeparatorString() + subdirName;
 
-            MYDBG(__FUNCTION__"(), considering: " + subdirAbsolutePathName.toStdString());
             auto file = File(subdirAbsolutePathName);
 
             auto child = std::make_shared<GrooveFolder>();
@@ -57,4 +56,8 @@ void GrooveFolder::Scan() {
     if (mFileNames.size()) {
 
     }
+}
+
+void GrooveFolder::Enumerate(EnumerationCb cb) {
+    cb(*this);
 }

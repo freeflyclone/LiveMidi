@@ -19,16 +19,23 @@ using namespace juce;
 
 class GrooveFolder {
 public:
+    typedef std::function<void(GrooveFolder&)> EnumerationCb;
     typedef std::shared_ptr<GrooveFolder> GrooveFolderPtr;
 
     GrooveFolder();
     ~GrooveFolder();
 
-    // Load up all "*.mid" file and subfolder names non-recursively
+    // Load up all "*.mid" file and subfolder *names* non-recursively
     void Initialize(File, GrooveFolder*);
 
-    // Build the "children" tree
+    // Build the "mChildren" / "mParent" tree
     void Scan();
+
+    void Enumerate(EnumerationCb cb);
+
+    File& GetSelfFile() { return mFileSelf; }
+    StringArray GetFileNames() { return mFileNames; }
+    StringArray GetSubdirNames() { return mSubdirNames; }
 
 private:
     File mFileSelf;

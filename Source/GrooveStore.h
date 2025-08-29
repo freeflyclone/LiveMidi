@@ -21,13 +21,11 @@ using namespace juce;
 class GrooveStore
 {
 public:
-    typedef std::function<void(const GrooveFolder&)> EnumerationCb;
-
     GrooveStore();
     ~GrooveStore();
 
     void Initialize(File);
-    void Enumerate(EnumerationCb);
+    void Enumerate(GrooveFolder::EnumerationCb);
 
     int MaxDepth() { return maxDepth; }
 

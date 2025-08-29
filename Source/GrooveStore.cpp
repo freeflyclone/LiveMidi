@@ -27,5 +27,6 @@ void GrooveStore::FetchStoreFromFolder() {
     root.Scan();
 }
 
-void GrooveStore::Enumerate(EnumerationCb cb) {
+void GrooveStore::Enumerate(GrooveFolder::EnumerationCb cb) {
+    root.Enumerate(cb);
 }

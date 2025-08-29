@@ -32,7 +32,16 @@ void GrooveBrowser::Initialize(File f) {
 
     lists[0].clear();
 
-    store.Enumerate([&](const GrooveFolder& gf) {
+    store.Enumerate([](GrooveFolder& gf) {
+        auto& fileSelf = gf.GetSelfFile();
+
+        MYDBG("enumerating: " + fileSelf.getFileName().toStdString());
+
+        for (const auto subdirName : gf.GetSubdirNames())
+            MYDBG("  " + subdirName.toStdString());
+        
+        for (const auto fileName : gf.GetFileNames())
+            MYDBG("    " + fileName.toStdString());
     });
 
     lists[0].updateContent();
