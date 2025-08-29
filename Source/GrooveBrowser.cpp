@@ -37,9 +37,10 @@ void GrooveBrowser::Initialize(File f) {
 
         MYDBG("enumerating: " + fileSelf.getFileName().toStdString());
 
-        for (const auto subdirName : gf.GetSubdirNames())
-            MYDBG("  " + subdirName.toStdString());
-        
+        for (const auto child : gf.GetChildren()) {
+            MYDBG("  " + child->GetSelfFile().getFileName().toStdString() + ", parent: " + child->GetParent()->GetSelfFile().getFileName().toStdString());
+        }
+
         for (const auto fileName : gf.GetFileNames())
             MYDBG("    " + fileName.toStdString());
     });

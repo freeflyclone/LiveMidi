@@ -33,6 +33,8 @@ public:
 
     void Enumerate(EnumerationCb cb);
 
+    GrooveFolder* GetParent() { return mParent; }
+    Array<GrooveFolderPtr>& GetChildren() { return mChildren; }
     File& GetSelfFile() { return mFileSelf; }
     StringArray GetFileNames() { return mFileNames; }
     StringArray GetSubdirNames() { return mSubdirNames; }

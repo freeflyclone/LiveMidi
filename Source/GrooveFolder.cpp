@@ -24,6 +24,7 @@ void GrooveFolder::Initialize(File f, GrooveFolder* parent) {
     mFileSelf = f;
     mSubdirNames.clear();
     mFileNames.clear();
+    mChildren.clear();
     mParent = parent;
 
     auto subdirs = mFileSelf.findChildFiles(File::findDirectories, false);
