@@ -72,5 +72,28 @@ void GrooveBrowser::resized() {
 }
 
 void GrooveBrowser::actionListenerCallback(const String& message) {
-    MYDBG(__FUNCTION__ "(): " + message.toStdString());
+    auto end = message.fromLastOccurrenceOf(":", false, true);
+
+    String classCode = message.substring(0, 4);
+    String classIndex = message.substring(5, 6);
+    String actionCode = message.substring(7, 11);
+    String actionIndex = message.substring(11);
+    int aIdx = actionIndex.getIntValue();
+
+    MYDBG(__FUNCTION__ "(): " + message.toStdString() + ", end: " + end.toStdString());
+    MYDBG(__FUNCTION__ "(): classCode: " + classCode.toStdString() + ", classIndex: " + classIndex.toStdString() + ", actionCode: " + actionCode.toStdString() + ", actionIndex: " + actionIndex.toStdString());
+
+    GrooveFolder* root = mStore.GetRoot();
+    auto grooveFilePtrs = root->GetChildren();
+
+    int numChildren = grooveFilePtrs.size();
+
+    if (aIdx < numChildren) {
+        GrooveFolder::GrooveFolderPtr grooveFilePtr = grooveFilePtrs[aIdx];
+        auto& fullPath = grooveFilePtr->GetSelfFile().getFullPathName();
+
+        MYDBG(__FUNCTION__ "(): " + std::to_string(numChildren) + 
+            ", aIdx: " + std::to_string(aIdx) + 
+            ", fullPath: " + fullPath.toStdString());
+    }
 }

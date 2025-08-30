@@ -27,6 +27,7 @@ public:
     void Initialize(File);
     void Enumerate(GrooveFolder::EnumerationCb);
 
+    GrooveFolder* GetRoot() { return &mRoot; }
     int MaxDepth() { return mMaxDepth; }
 
 protected:
