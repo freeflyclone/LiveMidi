@@ -85,17 +85,14 @@ void GrooveListBox::paintListBoxItem(int rowNumber, Graphics& g,int width, int h
 
 void GrooveListBox::selectedRowsChanged(int lastRowSelected)
 {
-    //do stuff when selection changes
     mSelectedRow = lastRowSelected;
 
-    json jMessage;
-    jMessage["component"] = getName().toStdString();
-    jMessage["index"] = getComponentID().getIntValue();
-    jMessage["action"] = "SRC";
-    jMessage["value"] = mSelectedRow;
+    json jActionMessage;
+    jActionMessage["component"] = getName().toStdString();
+    jActionMessage["index"] = getComponentID().getIntValue();
+    jActionMessage["action"] = "SRC";
+    jActionMessage["value"] = mSelectedRow;
 
-    MYDBG(__FUNCTION__ "(): " + jMessage.dump());
-
-    sendActionMessage(jMessage.dump());
+    sendActionMessage(jActionMessage.dump());
 }
 

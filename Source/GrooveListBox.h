@@ -11,11 +11,12 @@
 #pragma once
 
 #include "JuceHeader.h"
+using namespace juce;
+
 #include "json.hpp"
 using namespace nlohmann::literals;
 using json = nlohmann::json;
 
-using namespace juce;
 
 #define GROOVE_LISTBOX_HEIGHT 200
 #define GROOVE_LISTBOX_WIDTH 250
