@@ -20,7 +20,8 @@ GrooveBrowser::GrooveBrowser()
         addChildComponent(listBox);
         listBox.setTopLeftPosition(xOffset, 0);
         listBox.addActionListener(this);
-        listBox.setComponentID("GLBX:" + std::to_string(idx++));
+        listBox.setName("GLBX");
+        listBox.setComponentID(std::to_string(idx++));
         xOffset += GROOVE_LISTBOX_WIDTH - 1;
     }
 }
@@ -68,32 +69,37 @@ void GrooveBrowser::resized() {
     // GrooveStore::MaxDepth()
 }
 
+void GrooveBrowser::actionListenerCallback(const String& message) {
+    json jActionMessage = json::parse(message.toStdString());
+
+    if (jActionMessage["component"] != "GLBX" || jActionMessage["action"] != "SRC")
+        return;
+
+    HandleSelectionChangeAction(jActionMessage);
+}
+
 // First pass at using the GrooveStore data for navigation.  WIP
 // Messages should be JSON, need to generalize GrooveFolder tree navigation
 // to make it comprehensible.
-void GrooveBrowser::actionListenerCallback(const String& message) {
-    auto end = message.fromLastOccurrenceOf(":", false, true);
+void GrooveBrowser::HandleSelectionChangeAction(json& jam) {
+    static int evenOdd{ 0 };
 
-    String classCode = message.substring(0, 4);
-    String classIndex = message.substring(5, 6);
-    String actionCode = message.substring(7, 11);
-    String actionIndex = message.substring(11);
-
-    int cIdx = classIndex.getIntValue();
-    int aIdx = actionIndex.getIntValue();
-
-    MYDBG(__FUNCTION__ "(): " + message.toStdString() + ", end: " + end.toStdString());
-    MYDBG(__FUNCTION__ "(): classCode: " + classCode.toStdString() + ", classIndex: " + classIndex.toStdString() + ", actionCode: " + actionCode.toStdString() + ", actionIndex: " + actionIndex.toStdString());
+    MYDBG(__FUNCTION__ "(): " + jam.dump());
 
     auto& grooveFolderPtrs = mStore.GetRoot()->GetChildren();
-
+    int boxIdx = jam["index"];
+    int rowIdx = jam["value"];
     int numChildren = grooveFolderPtrs.size();
 
-    if (aIdx < numChildren) {
-        GrooveFolder::GrooveFolderPtr grooveFolderPtr = grooveFolderPtrs[aIdx];
+    if (rowIdx < numChildren) {
+        GrooveFolder::GrooveFolderPtr grooveFolderPtr = grooveFolderPtrs[rowIdx];
 
         grooveFolderPtr->Enumerate([&](GrooveFolder& gf) {
-            auto& box = mListBoxes[cIdx + 1];
+            MYDBG("  enumerating: " + gf.GetSelfFile().getFileName().toStdString());
+
+            auto& box = mListBoxes[boxIdx + 1];
+
+            box.clear();
 
             for (const auto& name : gf.GetSubdirNames())
                 box.add(name);

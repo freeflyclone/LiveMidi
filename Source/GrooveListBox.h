@@ -11,6 +11,9 @@
 #pragma once
 
 #include "JuceHeader.h"
+#include "json.hpp"
+using namespace nlohmann::literals;
+using json = nlohmann::json;
 
 using namespace juce;
 

@@ -87,6 +87,15 @@ void GrooveListBox::selectedRowsChanged(int lastRowSelected)
 {
     //do stuff when selection changes
     mSelectedRow = lastRowSelected;
-    sendActionMessage( getComponentID() + ":SRC:" + String::formatted("%02d", mSelectedRow));
+
+    json jMessage;
+    jMessage["component"] = getName().toStdString();
+    jMessage["index"] = getComponentID().getIntValue();
+    jMessage["action"] = "SRC";
+    jMessage["value"] = mSelectedRow;
+
+    MYDBG(__FUNCTION__ "(): " + jMessage.dump());
+
+    sendActionMessage(jMessage.dump());
 }
 

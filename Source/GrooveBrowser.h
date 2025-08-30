@@ -24,11 +24,12 @@ public:
     ~GrooveBrowser();
 
     void Initialize(File);
-    void actionListenerCallback(const String&) override;
+    void HandleSelectionChangeAction(json&);
 
 protected:
     void paint(Graphics& g) override;
     void resized() override;
+    void actionListenerCallback(const String&) override;
 
     GrooveStore mStore;
 
