@@ -31,15 +31,12 @@ GrooveBrowser::~GrooveBrowser() {
 void GrooveBrowser::Initialize(File f) {
     mStore.Initialize(f);
 
-    auto maxDepth(mStore.MaxDepth());
-
     for (auto& listBox : mListBoxes) {
         listBox.clear();
         listBox.setVisible(false);
     }
 
     mStore.Enumerate([&](GrooveFolder& gf) {
-        auto& fileSelf = gf.GetSelfFile();
         auto& listBox = mListBoxes[0];
 
         for (const auto child : gf.GetChildren()) {
@@ -71,6 +68,9 @@ void GrooveBrowser::resized() {
     // GrooveStore::MaxDepth()
 }
 
+// First pass at using the GrooveStore data for navigation.  WIP
+// Messages should be JSON, need to generalize GrooveFolder tree navigation
+// to make it comprehensible.
 void GrooveBrowser::actionListenerCallback(const String& message) {
     auto end = message.fromLastOccurrenceOf(":", false, true);
 
@@ -78,22 +78,31 @@ void GrooveBrowser::actionListenerCallback(const String& message) {
     String classIndex = message.substring(5, 6);
     String actionCode = message.substring(7, 11);
     String actionIndex = message.substring(11);
+
+    int cIdx = classIndex.getIntValue();
     int aIdx = actionIndex.getIntValue();
 
     MYDBG(__FUNCTION__ "(): " + message.toStdString() + ", end: " + end.toStdString());
     MYDBG(__FUNCTION__ "(): classCode: " + classCode.toStdString() + ", classIndex: " + classIndex.toStdString() + ", actionCode: " + actionCode.toStdString() + ", actionIndex: " + actionIndex.toStdString());
 
-    GrooveFolder* root = mStore.GetRoot();
-    auto grooveFilePtrs = root->GetChildren();
+    auto& grooveFolderPtrs = mStore.GetRoot()->GetChildren();
 
-    int numChildren = grooveFilePtrs.size();
+    int numChildren = grooveFolderPtrs.size();
 
     if (aIdx < numChildren) {
-        GrooveFolder::GrooveFolderPtr grooveFilePtr = grooveFilePtrs[aIdx];
-        auto& fullPath = grooveFilePtr->GetSelfFile().getFullPathName();
+        GrooveFolder::GrooveFolderPtr grooveFolderPtr = grooveFolderPtrs[aIdx];
 
-        MYDBG(__FUNCTION__ "(): " + std::to_string(numChildren) + 
-            ", aIdx: " + std::to_string(aIdx) + 
-            ", fullPath: " + fullPath.toStdString());
+        grooveFolderPtr->Enumerate([&](GrooveFolder& gf) {
+            auto& box = mListBoxes[cIdx + 1];
+
+            for (const auto& name : gf.GetSubdirNames())
+                box.add(name);
+
+            for (const auto& name : gf.GetFileNames())
+                box.add(name);
+
+            box.updateContent();
+            box.setVisible(true);
+        });
     }
 }

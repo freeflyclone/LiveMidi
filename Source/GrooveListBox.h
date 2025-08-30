@@ -30,6 +30,7 @@ public:
     void updateContent();
 
     void add(String);
+    int getSelectedRow() const { return mSelectedRow; }
 
     void paint(Graphics& g) override;
     void resized() override;
@@ -40,5 +41,7 @@ public:
 private:
     ListBox mListBox;
     StringArray mItems;
+    int mSelectedRow{ -1 };
+
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(GrooveListBox)
 };

@@ -36,6 +36,7 @@ GrooveListBox::~GrooveListBox() {
 }
 
 void GrooveListBox::clear() {
+    mSelectedRow = -1;
     mItems.clear();
 }
 
@@ -85,6 +86,7 @@ void GrooveListBox::paintListBoxItem(int rowNumber, Graphics& g,int width, int h
 void GrooveListBox::selectedRowsChanged(int lastRowSelected)
 {
     //do stuff when selection changes
-    sendActionMessage( getComponentID() + ":SRC:" + String::formatted("%02d", lastRowSelected));
+    mSelectedRow = lastRowSelected;
+    sendActionMessage( getComponentID() + ":SRC:" + String::formatted("%02d", mSelectedRow));
 }
 
