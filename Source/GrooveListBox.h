@@ -46,7 +46,6 @@ protected:
     ListBox mListBox;
     StringArray mItems;
     int mSelectedRow{ -1 };
-    File mSelectedFile;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(GrooveListBox)
 };

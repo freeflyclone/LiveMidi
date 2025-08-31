@@ -80,6 +80,8 @@ void GrooveBrowser::actionListenerCallback(const String& message) {
 
 // Second pass at using the GrooveStore data for navigation.  WIP
 // Need to generalize GrooveFolder tree navigation to make it comprehensible.
+//
+// NOTE: it is assumed that JUCE calls this only with valid input. 
 void GrooveBrowser::HandleSelectionChangeAction(json& jam) {
     static int evenOdd{ 0 };
 
