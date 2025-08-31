@@ -3648,6 +3648,9 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\Source\GrooveActionMessage.h">
+      <Filter>LiveMidi\Source</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\Source\json.hpp">
       <Filter>LiveMidi\Source</Filter>
     </ClInclude>

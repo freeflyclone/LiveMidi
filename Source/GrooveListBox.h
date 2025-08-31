@@ -13,10 +13,7 @@
 #include "JuceHeader.h"
 using namespace juce;
 
-#include "json.hpp"
-using namespace nlohmann::literals;
-using json = nlohmann::json;
-
+#include "GrooveActionMessage.h"
 
 #define GROOVE_LISTBOX_HEIGHT 200
 #define GROOVE_LISTBOX_WIDTH 250

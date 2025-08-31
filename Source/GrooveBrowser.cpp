@@ -70,58 +70,47 @@ void GrooveBrowser::resized() {
 }
 
 void GrooveBrowser::actionListenerCallback(const String& message) {
-    json jActionMessage = json::parse(message.toStdString());
+    GrooveActionMessage gam = json::parse(message.toStdString());
 
-    if (jActionMessage["component"] != "GLBX" || jActionMessage["action"] != "SRC")
+    if (gam["component"] != "GLBX" || gam["action"] != "SRC")
         return;
 
-    HandleSelectionChangeAction(jActionMessage);
+    HandleSelectionChangeAction(gam);
 }
 
-// Second pass at using the GrooveStore data for navigation.  WIP
-// Need to generalize GrooveFolder tree navigation to make it comprehensible.
+// Third pass at using the GrooveStore data for navigation.  WIP
+// Using new GrooveStore::GetChild() works great!
 //
 // NOTE: it is assumed that JUCE calls this only with valid input. 
-void GrooveBrowser::HandleSelectionChangeAction(json& jam) {
+void GrooveBrowser::HandleSelectionChangeAction(GrooveActionMessage& gam) {
     static int evenOdd{ 0 };
 
-    MYDBG(__FUNCTION__ "(): " + jam.dump());
+    MYDBG(__FUNCTION__ "(): " + gam.dump());
 
-    int boxIdx = jam["index"];
-    int rowIdx = jam["value"];
+    int boxIdx = gam["index"];
+    int rowIdx = gam["value"];
 
-    auto& grooveFolderPtrs = mStore.GetRoot()->GetChildren();
-    int numChildren = grooveFolderPtrs.size();
+    // Build selector from chain of mListBoxes' current selected row
+    Array<int> selector;
+    for (int idx = boxIdx; idx >= 0; idx--)
+        selector.insert(0, mListBoxes[idx].getSelectedRow());
 
-    if (boxIdx > 0) {
-        Array<int> selector;
+    GrooveFolder child = mStore.GetChild(selector);
+    MYDBG(__FUNCTION__ "(): child: " + child.GetSelfFile().getFullPathName().toStdString());
 
-        for (int idx = boxIdx; idx >= 0; idx--)
-            selector.insert(0, mListBoxes[idx].getSelectedRow());
+    child.Enumerate([&](GrooveFolder& gf) {
+        auto& box = mListBoxes[boxIdx + 1];
 
-        auto grooveFolderPointer = mStore.GetChild(selector);
+        box.clear();
+        box.updateContent();
 
-        // TODO: use "grooveFolderPointer" from GrooveStore::GetChild() appropriately
-    }
+        for (const auto& name : gf.GetSubdirNames())
+            box.add(name);
 
-    if (rowIdx < numChildren) {
-        GrooveFolder::GrooveFolderPtr grooveFolderPtr = grooveFolderPtrs[rowIdx];
+        for (const auto& name : gf.GetFileNames())
+            box.add(name);
 
-        grooveFolderPtr->Enumerate([&](GrooveFolder& gf) {
-            MYDBG("  enumerating: " + gf.GetSelfFile().getFileName().toStdString());
-
-            auto& box = mListBoxes[boxIdx + 1];
-
-            box.clear();
-
-            for (const auto& name : gf.GetSubdirNames())
-                box.add(name);
-
-            for (const auto& name : gf.GetFileNames())
-                box.add(name);
-
-            box.updateContent();
-            box.setVisible(true);
-        });
-    }
+        box.updateContent();
+        box.setVisible(true);
+    });
 }

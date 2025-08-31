@@ -2891,6 +2891,7 @@
     <ClCompile Include="..\..\JuceLibraryCode\include_juce_opengl.cpp"/>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\Source\GrooveActionMessage.h"/>
     <ClInclude Include="..\..\Source\json.hpp"/>
     <ClInclude Include="..\..\Source\GrooveBrowser.h"/>
     <ClInclude Include="..\..\Source\GrooveFolder.h"/>

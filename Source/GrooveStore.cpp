@@ -32,13 +32,13 @@ void GrooveStore::Enumerate(GrooveFolder::EnumerationCb cb) {
     mRoot.Enumerate(cb);
 }
 
-GrooveFolder* GrooveStore::GetChild(Array<int>& selector) {
+GrooveFolder GrooveStore::GetChild(Array<int>& selector) {
     assert(selector.size());
 
-    MYDBG(__FUNCTION__ "(): selector.size(): " + std::to_string(selector.size()));
-    for (int i = 0; i < selector.size(); i++)
-        MYDBG("   item: " + std::to_string(selector[i]));
+    GrooveFolder node = mRoot;
 
-    // TODO: navigate GrooveFolder tree using "selector"
-    return nullptr;
+    for (int i = 0; i < selector.size(); i++)
+        node = *node.GetChildren()[selector[i]];
+
+    return node;
 }
