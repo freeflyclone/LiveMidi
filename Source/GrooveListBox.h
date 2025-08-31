@@ -36,13 +36,13 @@ public:
     void add(String);
     int getSelectedRow() const { return mSelectedRow; }
 
+protected:
     void paint(Graphics& g) override;
     void resized() override;
     int  getNumRows() override;
     void paintListBoxItem(int rowNumber, Graphics& g, int width, int height, bool rowIsSelected) override;
     void selectedRowsChanged(int /*lastRowselected*/) override;
 
-private:
     ListBox mListBox;
     StringArray mItems;
     int mSelectedRow{ -1 };
