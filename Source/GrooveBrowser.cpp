@@ -78,18 +78,29 @@ void GrooveBrowser::actionListenerCallback(const String& message) {
     HandleSelectionChangeAction(jActionMessage);
 }
 
-// First pass at using the GrooveStore data for navigation.  WIP
-// Messages should be JSON, need to generalize GrooveFolder tree navigation
-// to make it comprehensible.
+// Second pass at using the GrooveStore data for navigation.  WIP
+// Need to generalize GrooveFolder tree navigation to make it comprehensible.
 void GrooveBrowser::HandleSelectionChangeAction(json& jam) {
     static int evenOdd{ 0 };
 
     MYDBG(__FUNCTION__ "(): " + jam.dump());
 
-    auto& grooveFolderPtrs = mStore.GetRoot()->GetChildren();
     int boxIdx = jam["index"];
     int rowIdx = jam["value"];
+
+    auto& grooveFolderPtrs = mStore.GetRoot()->GetChildren();
     int numChildren = grooveFolderPtrs.size();
+
+    if (boxIdx > 0) {
+        Array<int> selector;
+
+        for (int idx = boxIdx; idx >= 0; idx--)
+            selector.insert(0, mListBoxes[idx].getSelectedRow());
+
+        auto grooveFolderPointer = mStore.GetChild(selector);
+
+        // TODO: use "grooveFolderPointer" from GrooveStore::GetChild() appropriately
+    }
 
     if (rowIdx < numChildren) {
         GrooveFolder::GrooveFolderPtr grooveFolderPtr = grooveFolderPtrs[rowIdx];
