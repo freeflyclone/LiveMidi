@@ -28,7 +28,7 @@ public:
     void Enumerate(GrooveFolder::EnumerationCb);
 
     GrooveFolder* GetRoot() { return &mRoot; }
-    GrooveFolder GetChild(Array<int>& selector);
+    GrooveFolder* GetGrooveFolder(Array<int>& selector);
 
     int MaxDepth() { return mMaxDepth; }
 

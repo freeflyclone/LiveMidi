@@ -79,35 +79,63 @@ void GrooveBrowser::actionListenerCallback(const String& message) {
 }
 
 // Third pass at using the GrooveStore data for navigation.  WIP
-// Using new GrooveStore::GetChild() works great!
+// Using new GrooveStore::GetGrooveFolder() works great!
 //
 // NOTE: it is assumed that JUCE calls this only with valid input. 
 void GrooveBrowser::HandleSelectionChangeAction(GrooveActionMessage& gam) {
-    static int evenOdd{ 0 };
+    if (gam["component"] != "GLBX")
+        return;
 
     MYDBG(__FUNCTION__ "(): " + gam.dump());
 
     int boxIdx = gam["index"];
     int rowIdx = gam["value"];
 
+    // Handle cases where selection occurs in higher level box
+    // when lower level boxes are present.
     if (rowIdx < 0) {
         auto& box = mListBoxes[boxIdx + 1];
-        MYDBG(__FUNCTION__"(): bad \"value\" parameter");
+
         box.clear();
         box.updateContent();
         box.setVisible(false);
+
         return;
     }
 
     // Build selector from chain of mListBoxes' current selected row
+    // No need to do this backwards actually.
     Array<int> selector;
     for (int idx = boxIdx; idx >= 0; idx--)
         selector.insert(0, mListBoxes[idx].getSelectedRow());
 
-    GrooveFolder child = mStore.GetChild(selector);
-    MYDBG(__FUNCTION__ "(): child: " + child.GetSelfFile().getFullPathName().toStdString());
+    // This WILL be null if user clicks on a MIDI file somewhere in the tree.
+    GrooveFolder* grooveFolder = mStore.GetGrooveFolder(selector);
+    if (grooveFolder == nullptr) {
+        // selector from somewhere lower in the heirarchy that points to a file
+        if (selector.size() > 1) {
+            selector.removeLast();
 
-    child.Enumerate([&](GrooveFolder& gf) {
+            // Truncate "selector" so we select the Groove folder one level up
+            GrooveFolder* self = mStore.GetGrooveFolder(selector);
+            if (self != nullptr) {
+                auto numChildren = self->GetChildren().size();
+                auto fpn = self->GetSelfFile().getFullPathName().toStdString();
+                rowIdx -= numChildren;
+                MYDBG(__FUNCTION__"()_: target is: " + fpn + std::string(File::getSeparatorString()) + self->GetFileNames()[rowIdx].toStdString());
+            }
+        }
+        else {
+            GrooveFolder* root = mStore.GetRoot();
+            auto numChildren = root->GetChildren().size();
+            auto fpn = root->GetSelfFile().getFullPathName().toStdString();
+            rowIdx -= numChildren;
+            MYDBG(__FUNCTION__"(): target is: " + fpn + std::string(File::getSeparatorString()) + root->GetFileNames()[rowIdx].toStdString());
+        }
+        return;
+    }
+
+    grooveFolder->Enumerate([&](GrooveFolder& gf) {
         auto& box = mListBoxes[boxIdx + 1];
 
         box.clear();

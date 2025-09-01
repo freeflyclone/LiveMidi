@@ -32,13 +32,13 @@ void GrooveStore::Enumerate(GrooveFolder::EnumerationCb cb) {
     mRoot.Enumerate(cb);
 }
 
-GrooveFolder GrooveStore::GetChild(Array<int>& selector) {
+GrooveFolder* GrooveStore::GetGrooveFolder(Array<int>& selector) {
     assert(selector.size());
 
-    GrooveFolder node = mRoot;
+    GrooveFolder* node = &mRoot;
 
     for (int i = 0; i < selector.size(); i++)
-        node = *node.GetChildren()[selector[i]];
-
+        node = node->GetChildren()[selector[i]].get();
+    
     return node;
 }
