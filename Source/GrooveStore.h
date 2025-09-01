@@ -31,13 +31,8 @@ public:
     GrooveFolder* GetGrooveFolder(Array<int>& selector);
     File GetGrooveFile(Array<int>& selector);
 
-    int MaxDepth() { return mMaxDepth; }
-
 protected:
-    void FetchStoreFromFolder();
-
     GrooveFolder mRoot;
-    int mMaxDepth{ 0 };
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(GrooveStore)
 };

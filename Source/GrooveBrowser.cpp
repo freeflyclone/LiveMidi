@@ -58,10 +58,7 @@ void GrooveBrowser::Initialize(File f) {
 }
 
 void GrooveBrowser::paint(Graphics& g) {
-    if (mStore.MaxDepth())
-        g.fillAll(Colour(0xff7f7f7f));
-    else
-        g.fillAll(Colour(0xff000000));
+    g.fillAll(Colour(0xff000000));
 }
 
 void GrooveBrowser::resized() {

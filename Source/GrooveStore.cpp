@@ -20,11 +20,6 @@ GrooveStore::~GrooveStore() {
 
 void GrooveStore::Initialize(File f) {
     mRoot.Initialize(f, nullptr);
-
-    FetchStoreFromFolder();
-}
-
-void GrooveStore::FetchStoreFromFolder() {
     mRoot.Scan();
 }
 
