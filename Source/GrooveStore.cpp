@@ -42,3 +42,28 @@ GrooveFolder* GrooveStore::GetGrooveFolder(Array<int>& selector) {
     
     return node;
 }
+
+File* GrooveStore::GetGrooveFile(Array<int>& selector) {
+    GrooveFolder* grooveFolder;
+    int rowIdx = selector.getLast();
+
+    // selector from somewhere lower in the heirarchy that points to a file
+    if (selector.size() > 1) {
+        selector.removeLast();
+
+        // Truncate "selector" so we select the Groove folder one level up
+        grooveFolder = GetGrooveFolder(selector);
+    }
+    else {
+        // "selector" is referring to "root" GrooveFolder
+        grooveFolder = GetRoot();
+    }
+
+    auto numChildren = grooveFolder->GetChildren().size();
+    auto fpn = grooveFolder->GetSelfFile().getFullPathName().toStdString();
+    rowIdx -= numChildren;
+
+    MYDBG(__FUNCTION__"(): target is: " + fpn + std::string(File::getSeparatorString()) + grooveFolder->GetFileNames()[rowIdx].toStdString());
+
+    return nullptr;
+}

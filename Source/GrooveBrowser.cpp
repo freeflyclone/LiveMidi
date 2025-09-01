@@ -107,24 +107,7 @@ void GrooveBrowser::HandleSelectionChangeAction(GrooveActionMessage& gam) {
     GrooveFolder* grooveFolder = mStore.GetGrooveFolder(selector);
 
     if (!grooveFolder) {
-        // selector from somewhere lower in the heirarchy that points to a file
-        if (selector.size() > 1) {
-            selector.removeLast();
-
-            // Truncate "selector" so we select the Groove folder one level up
-            grooveFolder = mStore.GetGrooveFolder(selector);
-        }
-        else {
-            // "selector" is referring to "root" GrooveFolder
-            grooveFolder = mStore.GetRoot();
-        }
-
-        auto numChildren = grooveFolder->GetChildren().size();
-        auto fpn = grooveFolder->GetSelfFile().getFullPathName().toStdString();
-        rowIdx -= numChildren;
-
-        MYDBG(__FUNCTION__"(): target is: " + fpn + std::string(File::getSeparatorString()) + grooveFolder->GetFileNames()[rowIdx].toStdString());
-
+        mStore.GetGrooveFile(selector);
         return;
     }
 
