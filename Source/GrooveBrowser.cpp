@@ -107,8 +107,11 @@ void GrooveBrowser::HandleSelectionChangeAction(GrooveActionMessage& inGam) {
         File grooveFile = mStore.GetGrooveFile(selector);
         GrooveActionMessage outGam;
 
-        outGam["component"] = "GBRNF";
-        outGam["fullPath"] = grooveFile.getFullPathName().toStdString();
+        outGam["component"] = "GVBR";
+        outGam["index"] = 0;
+        outGam["action"] = "NEWF";
+        outGam["value"] = grooveFile.getFullPathName().toStdString();
+
         sendActionMessage(outGam.dump());
 
         return;
