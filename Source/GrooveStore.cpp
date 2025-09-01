@@ -27,7 +27,7 @@ void GrooveStore::Enumerate(GrooveFolder::EnumerationCb cb) {
     mRoot.Enumerate(cb);
 }
 
-GrooveFolder* GrooveStore::GetGrooveFolder(Array<int>& selector) {
+GrooveFolder* GrooveStore::GetGrooveFolder(GrooveSelector& selector) {
     assert(selector.size());
 
     // Start at the root...
@@ -41,7 +41,7 @@ GrooveFolder* GrooveStore::GetGrooveFolder(Array<int>& selector) {
     return node;
 }
 
-File GrooveStore::GetGrooveFile(Array<int>& selector) {
+File GrooveStore::GetGrooveFile(GrooveSelector& selector) {
     GrooveFolder* grooveFolder;
     int rowIdx = selector.getLast();
 

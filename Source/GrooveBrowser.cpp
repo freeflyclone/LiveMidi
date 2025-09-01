@@ -16,6 +16,9 @@ GrooveBrowser::GrooveBrowser()
     int xOffset{ 0 };
     int idx{ 0 };
 
+    setName("GVBR");
+    setComponentID("0");
+
     for (auto& listBox : mListBoxes) {
         addChildComponent(listBox);
         listBox.setTopLeftPosition(xOffset, 0);
@@ -99,7 +102,7 @@ void GrooveBrowser::HandleSelectionChangeAction(GrooveActionMessage& inGam) {
     }
 
     // Build selector from chain of mListBoxes' current selected row(s)
-    Array<int> selector;
+    GrooveStore::GrooveSelector selector;
     for (int idx = 0; idx <= boxIdx; idx++)
         selector.add(mListBoxes[idx].getSelectedRow());
 
@@ -109,8 +112,8 @@ void GrooveBrowser::HandleSelectionChangeAction(GrooveActionMessage& inGam) {
         File grooveFile = mStore.GetGrooveFile(selector);
         GrooveActionMessage outGam;
 
-        outGam["component"] = "GVBR";
-        outGam["index"] = 0;
+        outGam["component"] = getName().toStdString();
+        outGam["index"] = getComponentID().getIntValue();
         outGam["action"] = "NEWF";
         outGam["value"] = grooveFile.getFullPathName().toStdString();
 

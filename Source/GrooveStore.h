@@ -21,6 +21,8 @@ using namespace juce;
 class GrooveStore
 {
 public:
+    typedef Array<int> GrooveSelector;
+
     GrooveStore();
     ~GrooveStore();
 
@@ -28,8 +30,8 @@ public:
     void Enumerate(GrooveFolder::EnumerationCb);
 
     GrooveFolder* GetRoot() { return &mRoot; }
-    GrooveFolder* GetGrooveFolder(Array<int>& selector);
-    File GetGrooveFile(Array<int>& selector);
+    GrooveFolder* GetGrooveFolder(GrooveSelector& selector);
+    File GetGrooveFile(GrooveSelector& selector);
 
 protected:
     GrooveFolder mRoot;
