@@ -90,6 +90,15 @@ void GrooveBrowser::HandleSelectionChangeAction(GrooveActionMessage& gam) {
     int boxIdx = gam["index"];
     int rowIdx = gam["value"];
 
+    if (rowIdx < 0) {
+        auto& box = mListBoxes[boxIdx + 1];
+        MYDBG(__FUNCTION__"(): bad \"value\" parameter");
+        box.clear();
+        box.updateContent();
+        box.setVisible(false);
+        return;
+    }
+
     // Build selector from chain of mListBoxes' current selected row
     Array<int> selector;
     for (int idx = boxIdx; idx >= 0; idx--)
