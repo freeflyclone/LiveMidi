@@ -17,11 +17,12 @@ using namespace juce;
 //==============================================================================
 /**
 */
-class LiveMidiAudioProcessorEditor  : public AudioProcessorEditor, public Button::Listener
+class LiveMidiAudioProcessorEditor  : public AudioProcessorEditor, public Button::Listener, public ActionListener
 {
 public:
     LiveMidiAudioProcessorEditor (LiveMidiAudioProcessor&);
     ~LiveMidiAudioProcessorEditor() override;
+    void actionListenerCallback(const String&);
 
     //==============================================================================
     void paint (Graphics&) override;

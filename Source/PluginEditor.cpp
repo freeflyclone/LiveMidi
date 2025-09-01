@@ -8,7 +8,7 @@
 
 #include "PluginProcessor.h"
 #include "PluginEditor.h"
-
+#include "Log.h"
 
 //==============================================================================
 LiveMidiAudioProcessorEditor::LiveMidiAudioProcessorEditor (LiveMidiAudioProcessor& p)
@@ -22,6 +22,7 @@ LiveMidiAudioProcessorEditor::LiveMidiAudioProcessorEditor (LiveMidiAudioProcess
     mGroovesButton.addListener(this);
 
     addAndMakeVisible(mBrowser);
+    mBrowser.addActionListener(this);
 
     // Make sure that before the constructor has finished, you've set the
     // editor's size to whatever you need it to be.
@@ -75,4 +76,8 @@ void LiveMidiAudioProcessorEditor::buttonClicked(Button* button) {
             mBrowser.Initialize(f);
         }
     }
+}
+
+void LiveMidiAudioProcessorEditor::actionListenerCallback(const String& message) {
+    MYDBG(__FUNCTION__"(): message: " + message.toStdString());
 }

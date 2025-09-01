@@ -83,9 +83,9 @@ void GrooveBrowser::actionListenerCallback(const String& message) {
 // Added use of GrooveStore::GetGrooveFile() when user chooses a "*.mid" File
 //
 // NOTE: it is assumed that JUCE calls this only with valid input. 
-void GrooveBrowser::HandleSelectionChangeAction(GrooveActionMessage& gam) {
-    int boxIdx = gam["index"];
-    int rowIdx = gam["value"];
+void GrooveBrowser::HandleSelectionChangeAction(GrooveActionMessage& inGam) {
+    int boxIdx = inGam["index"];
+    int rowIdx = inGam["value"];
 
     // Handle cases where selection occurs in higher level box
     // when lower level box(es) is(are) present.
@@ -108,8 +108,12 @@ void GrooveBrowser::HandleSelectionChangeAction(GrooveActionMessage& gam) {
     GrooveFolder* grooveFolder = mStore.GetGrooveFolder(selector);
     if (!grooveFolder) {
         File grooveFile = mStore.GetGrooveFile(selector);
+        GrooveActionMessage outGam;
 
-        MYDBG(__FUNCTION__"(): file: " + grooveFile.getFullPathName().toStdString());
+        outGam["component"] = "GBRNF";
+        outGam["fullPath"] = grooveFile.getFullPathName().toStdString();
+        sendActionMessage(outGam.dump());
+
         return;
     }
 
