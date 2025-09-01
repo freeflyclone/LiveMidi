@@ -64,6 +64,8 @@ void GrooveBrowser::paint(Graphics& g) {
 void GrooveBrowser::resized() {
     // Here's where we'll manage set of GrooveList children according to
     // GrooveStore::MaxDepth()
+    for (int idx = 0; idx < MAX_GROOVE_LISTBOXES; idx++)
+        mListBoxes[idx].setSize(GROOVE_LISTBOX_WIDTH, getHeight());
 }
 
 void GrooveBrowser::actionListenerCallback(const String& message) {

@@ -57,7 +57,7 @@ void GrooveListBox::resized()
 {
     // This method is where you should set the bounds of any child
     // components that your component contains..
-    mListBox.setBounds(0, 0, GROOVE_LISTBOX_WIDTH, GROOVE_LISTBOX_HEIGHT);
+    mListBox.setSize(GROOVE_LISTBOX_WIDTH, getParentHeight());
 }
 
 // The following methods implement the ListBoxModel virtual methods:
