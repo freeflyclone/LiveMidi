@@ -83,14 +83,11 @@ void GrooveBrowser::actionListenerCallback(const String& message) {
 //
 // NOTE: it is assumed that JUCE calls this only with valid input. 
 void GrooveBrowser::HandleSelectionChangeAction(GrooveActionMessage& gam) {
-    if (gam["component"] != "GLBX")
-        return;
-
     int boxIdx = gam["index"];
     int rowIdx = gam["value"];
 
     // Handle cases where selection occurs in higher level box
-    // when lower level boxes are present.
+    // when lower level box(es) is(are) present.
     if (rowIdx < 0) {
         auto& box = mListBoxes[boxIdx + 1];
 
@@ -102,15 +99,14 @@ void GrooveBrowser::HandleSelectionChangeAction(GrooveActionMessage& gam) {
     }
 
     // Build selector from chain of mListBoxes' current selected row(s)
-    // No need to do this backwards actually.
     Array<int> selector;
-    for (int idx = boxIdx; idx >= 0; idx--)
-        selector.insert(0, mListBoxes[idx].getSelectedRow());
+    for (int idx = 0; idx <= boxIdx; idx++)
+        selector.add(mListBoxes[idx].getSelectedRow());
 
     // This WILL be null if user clicks on a MIDI file somewhere in the tree.
     GrooveFolder* grooveFolder = mStore.GetGrooveFolder(selector);
 
-    if (grooveFolder == nullptr) {
+    if (!grooveFolder) {
         // selector from somewhere lower in the heirarchy that points to a file
         if (selector.size() > 1) {
             selector.removeLast();
