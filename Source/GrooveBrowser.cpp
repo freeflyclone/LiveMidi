@@ -78,8 +78,9 @@ void GrooveBrowser::actionListenerCallback(const String& message) {
     HandleSelectionChangeAction(gam);
 }
 
-// Third pass at using the GrooveStore data for navigation.  WIP
+// Fourth pass at using the GrooveStore data for navigation.
 // Using new GrooveStore::GetGrooveFolder() works great!
+// Added use of GrooveStore::GetGrooveFile() when user chooses a "*.mid" File
 //
 // NOTE: it is assumed that JUCE calls this only with valid input. 
 void GrooveBrowser::HandleSelectionChangeAction(GrooveActionMessage& gam) {
@@ -103,26 +104,33 @@ void GrooveBrowser::HandleSelectionChangeAction(GrooveActionMessage& gam) {
     for (int idx = 0; idx <= boxIdx; idx++)
         selector.add(mListBoxes[idx].getSelectedRow());
 
-    // This WILL be null if user clicks on a MIDI file somewhere in the tree.
+    // This WILL be null if user clicked on a MIDI file somewhere in the tree.
     GrooveFolder* grooveFolder = mStore.GetGrooveFolder(selector);
-
     if (!grooveFolder) {
-        mStore.GetGrooveFile(selector);
+        File grooveFile = mStore.GetGrooveFile(selector);
+
+        MYDBG(__FUNCTION__"(): file: " + grooveFile.getFullPathName().toStdString());
         return;
     }
 
+    // If we're still here, user clicked on a folder instead
     grooveFolder->Enumerate([&](GrooveFolder& gf) {
+        // find the next lower GrooveListBox 
         auto& box = mListBoxes[boxIdx + 1];
 
+        // Clear it, and update its contents.  (update IS needed here)
         box.clear();
         box.updateContent();
 
+        // start with sub folders (children)
         for (const auto& name : gf.GetSubdirNames())
             box.add(name);
 
+        // add *.mid files
         for (const auto& name : gf.GetFileNames())
             box.add(name);
 
+        // refresh the GrooveBoxList and make it visible (possibly for 1st time)
         box.updateContent();
         box.setVisible(true);
     });

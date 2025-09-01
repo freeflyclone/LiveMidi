@@ -35,35 +35,36 @@ void GrooveStore::Enumerate(GrooveFolder::EnumerationCb cb) {
 GrooveFolder* GrooveStore::GetGrooveFolder(Array<int>& selector) {
     assert(selector.size());
 
+    // Start at the root...
     GrooveFolder* node = &mRoot;
 
+    // move down the hiearchy of "selector" choices
     for (int i = 0; i < selector.size(); i++)
         node = node->GetChildren()[selector[i]].get();
     
+    // *might* be nullptr, upper layers handle that.
     return node;
 }
 
-File* GrooveStore::GetGrooveFile(Array<int>& selector) {
+File GrooveStore::GetGrooveFile(Array<int>& selector) {
     GrooveFolder* grooveFolder;
     int rowIdx = selector.getLast();
 
-    // selector from somewhere lower in the heirarchy that points to a file
+    // selector from somewhere lower in the hierarchy that points to a file
     if (selector.size() > 1) {
         selector.removeLast();
 
-        // Truncate "selector" so we select the Groove folder one level up
+        // Truncate "selector" so we select the GrooveFolder one level up
         grooveFolder = GetGrooveFolder(selector);
     }
     else {
-        // "selector" is referring to "root" GrooveFolder
+        // "selector" is referring to "root" GrooveFolder, but not a child folder
         grooveFolder = GetRoot();
     }
 
-    auto numChildren = grooveFolder->GetChildren().size();
-    auto fpn = grooveFolder->GetSelfFile().getFullPathName().toStdString();
-    rowIdx -= numChildren;
+    // rowIdx is known to be greater than the number of GrooveFolder children,
+    // so adjust it accordingly.
+    rowIdx -= grooveFolder->GetChildren().size();
 
-    MYDBG(__FUNCTION__"(): target is: " + fpn + std::string(File::getSeparatorString()) + grooveFolder->GetFileNames()[rowIdx].toStdString());
-
-    return nullptr;
+    return File(grooveFolder->GetSelfFile().getFullPathName() + File::getSeparatorString() + grooveFolder->GetFileNames()[rowIdx]);
 }

@@ -29,7 +29,7 @@ public:
 
     GrooveFolder* GetRoot() { return &mRoot; }
     GrooveFolder* GetGrooveFolder(Array<int>& selector);
-    File* GetGrooveFile(Array<int>& selector);
+    File GetGrooveFile(Array<int>& selector);
 
     int MaxDepth() { return mMaxDepth; }
 
