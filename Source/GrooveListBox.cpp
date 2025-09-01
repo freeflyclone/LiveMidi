@@ -87,12 +87,12 @@ void GrooveListBox::selectedRowsChanged(int lastRowSelected)
 {
     mSelectedRow = lastRowSelected;
 
-    json jActionMessage;
-    jActionMessage["component"] = getName().toStdString();
-    jActionMessage["index"] = getComponentID().getIntValue();
-    jActionMessage["action"] = "SRC";
-    jActionMessage["value"] = mSelectedRow;
+    GrooveActionMessage gam;
+    gam["component"] = getName().toStdString();
+    gam["index"] = getComponentID().getIntValue();
+    gam["action"] = "SRC";
+    gam["value"] = mSelectedRow;
 
-    sendActionMessage(jActionMessage.dump());
+    sendActionMessage(gam.dump());
 }
 
