@@ -4,7 +4,8 @@
               addUsingNamespaceToJuceHeader="0" jucerFormatVersion="1" pluginCharacteristicsValue="pluginProducesMidiOut,pluginWantsMidiIn"
               pluginManufacturer="Lumenicious" pluginVST3Category="Analyzer,Instrument"
               companyName="Lumenicious" companyEmail="support@Lumenicious.com"
-              version="0.1.0" pluginFormats="buildAU,buildVST3" headerPath="E:\DevLibs\asiosdk_2.3.3_2019-06-14\common">
+              version="0.1.0" pluginFormats="buildAU,buildVST3" headerPath="E:\DevLibs\asiosdk_2.3.3_2019-06-14\common"
+              defines="JUCE_MODAL_LOOPS_PERMITTED=1">
   <MAINGROUP id="bGTinK" name="LiveMidi">
     <GROUP id="{E2B440C9-98EB-7B5A-68F6-1F806C3DCF11}" name="Source">
       <FILE id="Q1K7fQ" name="GrooveActionMessage.h" compile="0" resource="0"
