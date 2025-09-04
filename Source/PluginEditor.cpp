@@ -22,7 +22,7 @@ LiveMidiAudioProcessorEditor::LiveMidiAudioProcessorEditor (LiveMidiAudioProcess
     mGroovesButton.addListener(this);
 
     addAndMakeVisible(mBrowser);
-    mBrowser.addActionListener(this);
+    mBrowser.addActionListener(&mPlayer);
 
     // Make sure that before the constructor has finished, you've set the
     // editor's size to whatever you need it to be.

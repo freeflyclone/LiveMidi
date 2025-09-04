@@ -11,6 +11,7 @@
 #include <JuceHeader.h>
 #include "PluginProcessor.h"
 #include "GrooveBrowser.h"
+#include "GroovePlayer.h"
 
 using namespace juce;
 
@@ -38,6 +39,7 @@ private:
     TextButton mGroovesButton{ TEMP_STORE_FOLDER_NAME };
 
     GrooveBrowser mBrowser;
+    GroovePlayer mPlayer;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (LiveMidiAudioProcessorEditor)
 };

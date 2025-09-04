@@ -712,6 +712,9 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\Source\GroovePlayer.cpp">
+      <Filter>LiveMidi\Source</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\Source\GrooveBrowser.cpp">
       <Filter>LiveMidi\Source</Filter>
     </ClCompile>
@@ -3648,6 +3651,9 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\Source\GroovePlayer.h">
+      <Filter>LiveMidi\Source</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\Source\GrooveActionMessage.h">
       <Filter>LiveMidi\Source</Filter>
     </ClInclude>
