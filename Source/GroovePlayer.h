@@ -9,7 +9,8 @@
 */
 
 #pragma once
-
+#include <sstream>
+#include <iomanip>
 #include <JuceHeader.h>
 #include "GrooveActionMessage.h"
 
@@ -23,12 +24,18 @@ public:
     void setGrooveMidiFile(File);
     int getNumTracks();
 
+    void processMidiMessage(const MidiMessage& event);
+    void processMetaEvent(const MidiMessage& event);
+
     Optional<PositionInfo> getPosition() const override;
 
 private:
     MidiFile mMidiFile;
     std::atomic<int> mCurrentTrack; 
     std::atomic<int> mNumTracks;
+
+    short mTimeFormat{ 0 };
+
     Array<const MidiMessageSequence*> mTracks;
 
     PositionInfo mCurrentPosition;

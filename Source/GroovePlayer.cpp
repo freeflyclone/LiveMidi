@@ -12,11 +12,9 @@
 #include "Log.h"
 
 GroovePlayer::GroovePlayer() {
-    MYDBG(__FUNCTION__);
 }
 
 GroovePlayer::~GroovePlayer() {
-    MYDBG(__FUNCTION__);
 }
 
 void GroovePlayer::setGrooveMidiFile(File f) {
@@ -24,6 +22,8 @@ void GroovePlayer::setGrooveMidiFile(File f) {
 
     auto fileInStream = FileInputStream(f);
     mMidiFile.readFrom(fileInStream);
+
+    mTimeFormat = mMidiFile.getTimeFormat();
 
     mNumTracks.store(mMidiFile.getNumTracks());
     MYDBG(__FUNCTION__"(): found " + std::to_string(mNumTracks.load()) + " channels");
@@ -40,7 +40,7 @@ void GroovePlayer::setGrooveMidiFile(File f) {
 
         for (int i = 0; i < numEvents; i++) {
             auto event = track->getEventPointer(i);
-            MYDBG("      event: " + event->message.getDescription().toStdString());
+            processMidiMessage(event->message);
         }
     }
 }
@@ -59,4 +59,32 @@ void GroovePlayer::actionListenerCallback(const String& message) {
         return;
 
     setGrooveMidiFile(File((std::string)gam["value"]));
+}
+
+void GroovePlayer::processMidiMessage(const MidiMessage& message) {
+    if (message.isMetaEvent()) {
+        processMetaEvent(message);
+    }
+    else {
+        MYDBG("      event: " + message.getDescription().toStdString() + ", ts: " + String::formatted("%0.4f", message.getTimeStamp()).toStdString());
+    }
+}
+
+void GroovePlayer::processMetaEvent(const MidiMessage& message) {
+    if (message.isTrackNameEvent()) {
+        MYDBG("       track name: " + message.getTextFromTextMetaEvent().toStdString());
+    }
+    else if (message.isEndOfTrackMetaEvent()) {
+        MYDBG("       End-of-track");
+    }
+    else if (message.isTempoMetaEvent()) {
+        double tickLength = message.getTempoMetaEventTickLength(mTimeFormat);
+        MYDBG("       Tick Length: " + std::to_string(tickLength));
+    }
+    else {
+        std::stringstream ss;
+        ss << std::hex << message.getMetaEventType();
+        std::string hexStr = ss.str();
+        MYDBG("       meta, type: " + hexStr + ", ts: " + String::formatted("%0.4f", message.getTimeStamp()).toStdString());
+    }
 }
