@@ -56,5 +56,10 @@ public:
 
 private:
     //==============================================================================
+
+    // Near as I can tell, these are driven by the chosen audio interface.
+    double mSampleRate;
+    int mSamplesPerBlock;
+
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (LiveMidiAudioProcessor)
 };
