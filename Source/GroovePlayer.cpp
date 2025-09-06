@@ -23,10 +23,16 @@ void GroovePlayer::setGrooveMidiFile(File f) {
     auto fileInStream = FileInputStream(f);
     mMidiFile.readFrom(fileInStream);
 
-    mTimeFormat = mMidiFile.getTimeFormat();
-
     mNumTracks.store(mMidiFile.getNumTracks());
     MYDBG(__FUNCTION__"(): found " + std::to_string(mNumTracks.load()) + " channels");
+
+    mTimeFormat = mMidiFile.getTimeFormat();
+    if (mTimeFormat > 0) {
+        MYDBG(" time format: " + std::to_string(mTimeFormat) + " TPQ");
+    }
+    else {
+        MYDBG(" SMPTE time format: " + std::to_string((-mTimeFormat) >> 8 & 0xFF) + ":" + std::to_string(mTimeFormat & 0xFF));
+    }
 
     // Add all tracks to "mTracks"
     for (int idx = 0; idx < mNumTracks.load(); idx++)
@@ -47,10 +53,6 @@ void GroovePlayer::setGrooveMidiFile(File f) {
 
 int GroovePlayer::getNumTracks() {
     return mNumTracks.load();
-}
-
-Optional<AudioPlayHead::PositionInfo> GroovePlayer::getPosition() const {
-    return mCurrentPosition;
 }
 
 void GroovePlayer::actionListenerCallback(const String& message) {
@@ -79,7 +81,7 @@ void GroovePlayer::processMetaEvent(const MidiMessage& message) {
     }
     else if (message.isTempoMetaEvent()) {
         double tickLength = message.getTempoMetaEventTickLength(mTimeFormat);
-        MYDBG("       Tick Length: " + std::to_string(tickLength));
+        MYDBG("       Tempo Event: " + std::to_string(tickLength));
     }
     else {
         std::stringstream ss;

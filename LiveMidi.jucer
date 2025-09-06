@@ -8,6 +8,10 @@
               defines="JUCE_MODAL_LOOPS_PERMITTED=1">
   <MAINGROUP id="bGTinK" name="LiveMidi">
     <GROUP id="{E2B440C9-98EB-7B5A-68F6-1F806C3DCF11}" name="Source">
+      <FILE id="QdPWwW" name="GrooveTransport.cpp" compile="1" resource="0"
+            file="Source/GrooveTransport.cpp"/>
+      <FILE id="s4XtwV" name="GrooveTransport.h" compile="0" resource="0"
+            file="Source/GrooveTransport.h"/>
       <FILE id="hOijwH" name="GroovePlayer.cpp" compile="1" resource="0"
             file="Source/GroovePlayer.cpp"/>
       <FILE id="FZhcvb" name="GroovePlayer.h" compile="0" resource="0" file="Source/GroovePlayer.h"/>

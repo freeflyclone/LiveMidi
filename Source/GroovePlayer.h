@@ -13,10 +13,11 @@
 #include <iomanip>
 #include <JuceHeader.h>
 #include "GrooveActionMessage.h"
+#include "GrooveTransport.h"
 
 using namespace juce;
 
-class GroovePlayer : public AudioPlayHead, public ActionListener {
+class GroovePlayer : public ActionListener, public GrooveTransport {
 public:
     GroovePlayer();
     ~GroovePlayer();
@@ -27,8 +28,6 @@ public:
     void processMidiMessage(const MidiMessage& event);
     void processMetaEvent(const MidiMessage& event);
 
-    Optional<PositionInfo> getPosition() const override;
-
 private:
     MidiFile mMidiFile;
     std::atomic<int> mCurrentTrack; 
@@ -37,8 +36,6 @@ private:
     short mTimeFormat{ 0 };
 
     Array<const MidiMessageSequence*> mTracks;
-
-    PositionInfo mCurrentPosition;
 
     void actionListenerCallback(const String&);
 };
