@@ -34,6 +34,8 @@ private:
     std::atomic<int> mNumTracks;
 
     short mTimeFormat{ 0 };
+    int mTimeSigNum{ 4 };
+    int mTimeSigDen{ 4 };
 
     Array<const MidiMessageSequence*> mTracks;
 

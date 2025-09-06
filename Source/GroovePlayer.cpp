@@ -83,6 +83,10 @@ void GroovePlayer::processMetaEvent(const MidiMessage& message) {
         double tickLength = message.getTempoMetaEventTickLength(mTimeFormat);
         MYDBG("       Tempo Event: " + std::to_string(tickLength));
     }
+    else if (message.isTimeSignatureMetaEvent()) {
+        message.getTimeSignatureInfo(mTimeSigNum, mTimeSigDen);
+        MYDBG("       Time Signature: " + std::to_string(mTimeSigNum) + " / " + std::to_string(mTimeSigDen));
+    }
     else {
         std::stringstream ss;
         ss << std::hex << message.getMetaEventType();
