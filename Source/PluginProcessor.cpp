@@ -97,6 +97,12 @@ void LiveMidiAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlo
     // initialisation that you need..
     mSampleRate = sampleRate;
     mSamplesPerBlock = samplesPerBlock;
+
+    setPlayHead(&this->mTransport);
+
+    auto playhead = getPlayHead();
+    if (playhead->canControlTransport())
+        MYDBG(__FUNCTION__"(): transport IS controllable");
 }
 
 void LiveMidiAudioProcessor::releaseResources()

@@ -13,7 +13,8 @@
 //==============================================================================
 LiveMidiAudioProcessorEditor::LiveMidiAudioProcessorEditor (LiveMidiAudioProcessor& p)
     : AudioProcessorEditor (&p), 
-    mAudioProcessor (p)
+    mAudioProcessor (p),
+    mPlayer(p.getTransport())
 {
     setResizable(true, true);
 
@@ -22,6 +23,8 @@ LiveMidiAudioProcessorEditor::LiveMidiAudioProcessorEditor (LiveMidiAudioProcess
     mGroovesButton.addListener(this);
 
     addAndMakeVisible(mBrowser);
+
+    // We signal GroovePlayer when GrooveBrowser clicks on a file
     mBrowser.addActionListener(&mPlayer);
 
     // Make sure that before the constructor has finished, you've set the

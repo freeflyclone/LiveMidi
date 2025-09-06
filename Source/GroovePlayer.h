@@ -17,9 +17,9 @@
 
 using namespace juce;
 
-class GroovePlayer : public ActionListener, public GrooveTransport {
+class GroovePlayer : public ActionListener, public ActionBroadcaster {
 public:
-    GroovePlayer();
+    GroovePlayer(GrooveTransport&);
     ~GroovePlayer();
 
     void setGrooveMidiFile(File);
@@ -29,6 +29,7 @@ public:
     void processMetaEvent(const MidiMessage& event);
 
 private:
+    GrooveTransport& mTransport;
     MidiFile mMidiFile;
     std::atomic<int> mCurrentTrack; 
     std::atomic<int> mNumTracks;

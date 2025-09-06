@@ -11,7 +11,10 @@
 #include "GroovePlayer.h"
 #include "Log.h"
 
-GroovePlayer::GroovePlayer() {
+GroovePlayer::GroovePlayer(GrooveTransport& gt)
+    : mTransport(gt)
+{
+    MYDBG(__FUNCTION__);
 }
 
 GroovePlayer::~GroovePlayer() {
