@@ -20,6 +20,7 @@ GroovePlayer::GroovePlayer(GrooveTransport& gt)
     setComponentID("0");
 
     addAndMakeVisible(mStartButton);
+    addAndMakeVisible(mMinusMeasure);
 
     setSize(400, 48);
 }
@@ -32,7 +33,14 @@ void GroovePlayer::paint(Graphics& g) {
 }
 
 void GroovePlayer::resized() {
-    MYDBG(__FUNCTION__);
+    Rectangle area = getLocalBounds();
+    auto width = area.getWidth();
+    auto height = area.getHeight();
+
+    MYDBG(__FUNCTION__"(): width: " + std::to_string(width) + ", height: " + std::to_string(height));
+
+    mStartButton.setBounds(10, 10, 50, 32);
+    mMinusMeasure.setBounds(70, 10, 60, 32);
 }
 
 void GroovePlayer::setGrooveMidiFile(File f) {

@@ -57,8 +57,6 @@ void LiveMidiAudioProcessorEditor::resized()
 
     // This is generally where you'll want to lay out the positions of any
     // subcomponents in your editor.
-    auto text = mGroovesLabel.getText();
-
     const Font labelFont = mGroovesLabel.getFont();
     const auto textWidth = GlyphArrangement::getStringWidth(labelFont, mGroovesLabel.getText());
     const auto textHeight = labelFont.getHeight();
