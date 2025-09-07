@@ -15,9 +15,24 @@ GroovePlayer::GroovePlayer(GrooveTransport& gt)
     : mTransport(gt)
 {
     MYDBG(__FUNCTION__);
+
+    setName("GPLR");
+    setComponentID("0");
+
+    addAndMakeVisible(mStartButton);
+
+    setSize(400, 48);
 }
 
 GroovePlayer::~GroovePlayer() {
+}
+
+void GroovePlayer::paint(Graphics& g) {
+    g.fillAll(Colour(0xffcf00cf));
+}
+
+void GroovePlayer::resized() {
+    MYDBG(__FUNCTION__);
 }
 
 void GroovePlayer::setGrooveMidiFile(File f) {

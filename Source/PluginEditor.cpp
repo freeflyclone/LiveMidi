@@ -24,6 +24,8 @@ LiveMidiAudioProcessorEditor::LiveMidiAudioProcessorEditor (LiveMidiAudioProcess
 
     addAndMakeVisible(mBrowser);
 
+    addAndMakeVisible(mPlayer);
+
     // We signal GroovePlayer when GrooveBrowser clicks on a file
     mBrowser.addActionListener(&mPlayer);
 
@@ -65,6 +67,8 @@ void LiveMidiAudioProcessorEditor::resized()
     mGroovesButton.setBounds(20 + textWidth, 10, width - textWidth - 30, 32);
 
     mBrowser.setBounds(10, 60, width - 20, height / 2);
+
+    mPlayer.setTopLeftPosition(10, 60 + height / 2 + 10);
 }
 
 
