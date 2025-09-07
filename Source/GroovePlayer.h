@@ -28,6 +28,8 @@ public:
     void processMidiMessage(const MidiMessage& event);
     void processMetaEvent(const MidiMessage& event);
 
+    GrooveTransport* getTransport() { return &mTransport; }
+
 private:
     GrooveTransport& mTransport;
     MidiFile mMidiFile;

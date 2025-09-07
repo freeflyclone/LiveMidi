@@ -14,7 +14,7 @@
 GroovePlayer::GroovePlayer(GrooveTransport& gt)
     : mTransport(gt)
 {
-    setName("GPLR");
+    setName("GPLYR");
     setComponentID("0");
 
     // Add transport control buttons whose names are held in "::mButtonsText"
@@ -39,10 +39,6 @@ void GroovePlayer::paint(Graphics& g) {
 }
 
 void GroovePlayer::resized() {
-    Rectangle area = getLocalBounds();
-    auto width = area.getWidth();
-    auto height = area.getHeight();
-
     int xOffset{ mButtonMargin };
 
     for (int idx = 0; idx < mButtons.size(); idx++) {
@@ -91,6 +87,8 @@ int GroovePlayer::getNumTracks() {
 
 void GroovePlayer::actionListenerCallback(const String& message) {
     GrooveActionMessage gam = json::parse(message.toStdString());
+
+    // Ignore message if it isn't from GrooveBrowser or isn't a "NewFile" action
     if (gam["component"] != "GVBR" || gam["action"] != "NEWF")
         return;
 
@@ -98,7 +96,16 @@ void GroovePlayer::actionListenerCallback(const String& message) {
 }
 
 void GroovePlayer::buttonClicked(Button* button) {
-    MYDBG(__FUNCTION__"(): " + button->getButtonText().toStdString());
+    GrooveActionMessage gam;
+
+    gam["component"] = getName().toStdString();
+    gam["index"] = getComponentID().getIntValue();
+    gam["action"] = "TPTCTRL";
+    gam["value"] = button->getButtonText().toStdString();
+
+    // broadcast a Transport Control message based on the just clicked transport control button
+    // Presently GrooveTransport (part of LiveMidiAudioProcessor) is the intended client.
+    sendActionMessage(gam.dump());
 }
 
 void GroovePlayer::processMidiMessage(const MidiMessage& message) {
