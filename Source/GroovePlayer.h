@@ -17,7 +17,7 @@
 
 using namespace juce;
 
-class GroovePlayer : public Component, public ActionListener, public ActionBroadcaster {
+class GroovePlayer : public Component, public ActionListener, public ActionBroadcaster, public Button::Listener {
 public:
     GroovePlayer(GrooveTransport&);
     ~GroovePlayer();
@@ -40,15 +40,17 @@ private:
 
     Array<const MidiMessageSequence*> mTracks;
 
-    TextButton mStartButton{ " Start " };
-    TextButton mMinusMeasure{ " -Meas " };
-    TextButton mStopButton{ " Stop " };
-    TextButton mPauseButton{ " Pause " };
-    TextButton mPlusMeasure{ " +Meas " };
-    TextButton mEndButton{ " End " };
+    Array<String> mButtonsText{ "Start", "-Meas", "Stop", "Pause", "Play", "+Meas" , "End"};
+
+    const int mButtonWidth{ 60 };
+    const int mButtonHeight{ 32 };
+    const int mButtonMargin{ 2 };
+
+    Array<std::shared_ptr<TextButton>> mButtons;
 
     void paint(Graphics& g) override;
     void resized() override;
 
     void actionListenerCallback(const String&);
+    void buttonClicked(Button* button) override;
 };

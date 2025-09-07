@@ -14,15 +14,21 @@
 GroovePlayer::GroovePlayer(GrooveTransport& gt)
     : mTransport(gt)
 {
-    MYDBG(__FUNCTION__);
-
     setName("GPLR");
     setComponentID("0");
 
-    addAndMakeVisible(mStartButton);
-    addAndMakeVisible(mMinusMeasure);
+    // Add transport control buttons whose names are held in "::mButtonsText"
+    for (auto& buttonText : mButtonsText) {
+        auto newButton = std::make_shared<TextButton>(buttonText);
 
-    setSize(400, 48);
+        mButtons.add(newButton);
+
+        newButton->setSize(mButtonWidth, mButtonHeight);
+        newButton->addListener(this);
+        addAndMakeVisible(*newButton);
+    }
+  
+    setSize( (mButtonWidth + mButtonMargin) * mButtons.size() + mButtonMargin, mButtonHeight + 2 * mButtonMargin);
 }
 
 GroovePlayer::~GroovePlayer() {
@@ -37,10 +43,12 @@ void GroovePlayer::resized() {
     auto width = area.getWidth();
     auto height = area.getHeight();
 
-    MYDBG(__FUNCTION__"(): width: " + std::to_string(width) + ", height: " + std::to_string(height));
+    int xOffset{ mButtonMargin };
 
-    mStartButton.setBounds(10, 10, 50, 32);
-    mMinusMeasure.setBounds(70, 10, 60, 32);
+    for (int idx = 0; idx < mButtons.size(); idx++) {
+        mButtons[idx]->setTopLeftPosition(xOffset, mButtonMargin);
+        xOffset += mButtonWidth + mButtonMargin;
+    }
 }
 
 void GroovePlayer::setGrooveMidiFile(File f) {
@@ -87,6 +95,10 @@ void GroovePlayer::actionListenerCallback(const String& message) {
         return;
 
     setGrooveMidiFile(File((std::string)gam["value"]));
+}
+
+void GroovePlayer::buttonClicked(Button* button) {
+    MYDBG(__FUNCTION__"(): " + button->getButtonText().toStdString());
 }
 
 void GroovePlayer::processMidiMessage(const MidiMessage& message) {
