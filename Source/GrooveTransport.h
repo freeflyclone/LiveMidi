@@ -26,7 +26,7 @@ public:
     void transportPlay(bool shouldStart) { mIsPlaying = shouldStart; };
     void transportRecord(bool shouldStart) { mIsRecording = shouldStart; };
 
-private:
+protected:
     PositionInfo mPositionInfo;
     bool mIsPlaying{ false };
     bool mIsRecording{ false };
