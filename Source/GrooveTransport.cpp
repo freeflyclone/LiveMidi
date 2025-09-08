@@ -19,13 +19,15 @@ void GrooveTransport::actionListenerCallback(const String& message) {
 
     // GroovePlayer component ActionMessages we care about...
     if (gam["component"] == "GPLYR") {
-        std::string buttonText(gam["value"]);
+        if (gam["action"] == "TPTCTRL") {
+            std::string buttonText(gam["value"]);
 
-        if (buttonText == "Play" && !mIsPlaying)
-            transportPlay(true);
-        else if (buttonText == "Stop" && mIsPlaying)
-            transportPlay(false);
-    
-        MYDBG(__FUNCTION__"(): buttion: " + buttonText);
+            if (buttonText == "Play" && !mIsPlaying)
+                transportPlay(true);
+            else if (buttonText == "Stop" && mIsPlaying)
+                transportPlay(false);
+            else 
+                MYDBG(__FUNCTION__"(): buttion: " + buttonText);
+        }
     }
 }
