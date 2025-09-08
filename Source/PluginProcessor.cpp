@@ -173,9 +173,8 @@ void LiveMidiAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juc
         MYDBG(currentMessage.getDescription().toStdString());
     }
 
-    if (mIsPlaying) {
-        MYDBG(__FUNCTION__);
-    }
+    if (mIsPlaying)
+		updateCurrentPosition(buffer.getNumSamples());
 }
 
 //==============================================================================

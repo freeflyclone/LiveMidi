@@ -31,5 +31,10 @@ protected:
     bool mIsPlaying{ false };
     bool mIsRecording{ false };
 
+    // Updated in AudioProcessor::processBlock() when "mIsPlaying" is true.
+    // Reset to "0" when "Stop" message received.
+    int mSampleCount{ 0 };
+
     void actionListenerCallback(const String&);
+    void updateCurrentPosition(int);
 };

@@ -24,10 +24,20 @@ void GrooveTransport::actionListenerCallback(const String& message) {
 
             if (buttonText == "Play" && !mIsPlaying)
                 transportPlay(true);
-            else if (buttonText == "Stop" && mIsPlaying)
+            else if (buttonText == "Stop" && mIsPlaying) {
                 transportPlay(false);
-            else 
-                MYDBG(__FUNCTION__"(): buttion: " + buttonText);
+                mSampleCount = 0;
+            }
+            else if (buttonText == "Pause" && mIsPlaying) {
+                transportPlay(false);
+            }
+
+            MYDBG(__FUNCTION__"(): buttion: " + buttonText);
         }
     }
+}
+
+void GrooveTransport::updateCurrentPosition(int numSamples) {
+    mSampleCount += numSamples;
+    MYDBG(__FUNCTION__"():  mSampleCount: " + std::to_string(mSampleCount));
 }
