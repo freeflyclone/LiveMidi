@@ -11,8 +11,7 @@
 #include "GroovePlayer.h"
 #include "Log.h"
 
-GroovePlayer::GroovePlayer(GrooveTransport& gt)
-    : mTransport(gt)
+GroovePlayer::GroovePlayer()
 {
     setName("GPLYR");
     setComponentID("0");

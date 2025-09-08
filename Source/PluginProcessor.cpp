@@ -98,7 +98,7 @@ void LiveMidiAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlo
     mSampleRate = sampleRate;
     mSamplesPerBlock = samplesPerBlock;
 
-    setPlayHead(&this->mTransport);
+    setPlayHead(this);
 
     auto playhead = getPlayHead();
     if (playhead->canControlTransport())

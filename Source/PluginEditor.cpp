@@ -14,7 +14,7 @@
 LiveMidiAudioProcessorEditor::LiveMidiAudioProcessorEditor (LiveMidiAudioProcessor& p)
     : AudioProcessorEditor (&p), 
     mAudioProcessor (p),
-    mPlayer(p.getTransport())
+    mPlayer()
 {
     setResizable(true, true);
 
@@ -30,7 +30,7 @@ LiveMidiAudioProcessorEditor::LiveMidiAudioProcessorEditor (LiveMidiAudioProcess
     mBrowser.addActionListener(&mPlayer);
 
     // We signal GrooveTransport when a transport control button is clicked
-    mPlayer.addActionListener(mPlayer.getTransport());
+    mPlayer.addActionListener(&mAudioProcessor);
 
     // Make sure that before the constructor has finished, you've set the
     // editor's size to whatever you need it to be.

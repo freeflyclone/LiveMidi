@@ -15,7 +15,7 @@
 //==============================================================================
 /**
 */
-class LiveMidiAudioProcessor  : public juce::AudioProcessor
+class LiveMidiAudioProcessor  : public juce::AudioProcessor, public GrooveTransport
 {
 public:
     //==============================================================================
@@ -55,7 +55,6 @@ public:
     void getStateInformation (juce::MemoryBlock& destData) override;
     void setStateInformation (const void* data, int sizeInBytes) override;
 
-    GrooveTransport& getTransport() { return mTransport; }
 private:
     //==============================================================================
 
@@ -63,6 +62,5 @@ private:
     double mSampleRate;
     int mSamplesPerBlock;
 
-    GrooveTransport mTransport{};
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (LiveMidiAudioProcessor)
 };
