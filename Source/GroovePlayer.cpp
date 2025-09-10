@@ -57,7 +57,7 @@ void GroovePlayer::setGrooveMidiFile(File f) {
 
     mTimeFormat = mMidiFile.getTimeFormat();
     if (mTimeFormat > 0) {
-        MYDBG(" time format: " + std::to_string(mTimeFormat) + " TPQ");
+        MYDBG(" time format: " + std::to_string(mTimeFormat) + " PPQ");
     }
     else {
         MYDBG(" SMPTE time format: " + std::to_string((-mTimeFormat) >> 8 & 0xFF) + ":" + std::to_string(mTimeFormat & 0xFF));
@@ -124,8 +124,8 @@ void GroovePlayer::processMetaEvent(const MidiMessage& message) {
         MYDBG("       End-of-track");
     }
     else if (message.isTempoMetaEvent()) {
-        double tickLength = message.getTempoMetaEventTickLength(mTimeFormat);
-        MYDBG("       Tempo Event: " + std::to_string(tickLength));
+        double tempo = 60.0 / message.getTempoSecondsPerQuarterNote();
+        MYDBG("       Tempo Event:  Tempo: " + std::to_string(tempo));
     }
     else if (message.isTimeSignatureMetaEvent()) {
         message.getTimeSignatureInfo(mTimeSigNum, mTimeSigDen);
