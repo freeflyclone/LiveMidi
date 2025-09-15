@@ -97,12 +97,6 @@ void LiveMidiAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlo
     // initialisation that you need..
     mSampleRate = sampleRate;
     mSamplesPerBlock = samplesPerBlock;
-
-    setPlayHead(this);
-
-    auto playhead = getPlayHead();
-    if (playhead->canControlTransport())
-        MYDBG(__FUNCTION__"(): transport IS controllable");
 }
 
 void LiveMidiAudioProcessor::releaseResources()
@@ -173,8 +167,7 @@ void LiveMidiAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juc
         MYDBG(currentMessage.getDescription().toStdString());
     }
 
-    if (mIsPlaying)
-		updateCurrentPosition(buffer.getNumSamples());
+	processMidi(getPlayHead()->getPosition(), buffer.getNumSamples(), midiMessages);
 }
 
 //==============================================================================

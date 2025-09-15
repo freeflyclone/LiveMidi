@@ -10,10 +10,6 @@
 
 #include "GrooveTransport.h"
 
-Optional<AudioPlayHead::PositionInfo> GrooveTransport::getPosition() const {
-    return mPositionInfo;
-}
-
 void GrooveTransport::actionListenerCallback(const String& message) {
     GrooveActionMessage gam = json::parse(message.toStdString());
 
@@ -21,23 +17,20 @@ void GrooveTransport::actionListenerCallback(const String& message) {
     if (gam["component"] == "GPLYR") {
         if (gam["action"] == "TPTCTRL") {
             std::string buttonText(gam["value"]);
-
-            if (buttonText == "Play" && !mIsPlaying)
-                transportPlay(true);
-            else if (buttonText == "Stop" && mIsPlaying) {
-                transportPlay(false);
-                mSampleCount = 0;
-            }
-            else if (buttonText == "Pause" && mIsPlaying) {
-                transportPlay(false);
-            }
-
-            MYDBG(__FUNCTION__"(): buttion: " + buttonText);
+            MYDBG(__FUNCTION__"(): button: " + buttonText);
         }
     }
 }
 
-void GrooveTransport::updateCurrentPosition(int numSamples) {
-    mSampleCount += numSamples;
-    MYDBG(__FUNCTION__"():  mSampleCount: " + std::to_string(mSampleCount));
+void GrooveTransport::processMidi(Optional<AudioPlayHead::PositionInfo>& posInfo, int numSamples, MidiBuffer& midiMessages) {
+    if (!posInfo.hasValue()) {
+        MYDBG(__FUNCTION__"(): mHostPlayHead returned NO value for PositionInfo");
+        return;
+    }
+
+    mSampleCount = posInfo->getTimeInSamples().orFallback(0);
+
+    if (posInfo->getIsPlaying()) {
+        MYDBG(__FUNCTION__"():  mSampleCount: " + std::to_string(mSampleCount));
+    }
 }

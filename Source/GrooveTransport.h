@@ -16,25 +16,20 @@
 
 using namespace juce;
 
-class GrooveTransport : public AudioPlayHead, public ActionListener {
+class GrooveTransport : public ActionListener {
 public:
     GrooveTransport() {};
     ~GrooveTransport() {};
 
-    Optional<PositionInfo> getPosition() const;
-    bool canControlTransport() override { return true; }
-    void transportPlay(bool shouldStart) { mIsPlaying = shouldStart; };
-    void transportRecord(bool shouldStart) { mIsRecording = shouldStart; };
-
 protected:
-    PositionInfo mPositionInfo;
-    bool mIsPlaying{ false };
-    bool mIsRecording{ false };
+    // Near as I can tell, these are driven by the chosen audio interface.
+    double mSampleRate{ 44100.0f };
+    int mSamplesPerBlock{ 1024 };
 
     // Updated in AudioProcessor::processBlock() when "mIsPlaying" is true.
     // Reset to "0" when "Stop" message received.
-    int mSampleCount{ 0 };
+    int64_t mSampleCount{ 0 };
 
     void actionListenerCallback(const String&);
-    void updateCurrentPosition(int);
+    void processMidi(Optional<AudioPlayHead::PositionInfo>& p, int, MidiBuffer&);
 };
