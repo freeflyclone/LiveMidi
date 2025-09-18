@@ -23,11 +23,10 @@ void GrooveTransport::actionListenerCallback(const String& message) {
 }
 
 void GrooveTransport::processMidi(
-    Optional<AudioPlayHead::PositionInfo>* positionInfo, 
+    const Optional<AudioPlayHead::PositionInfo>& posInfo, 
     [[maybe_unused]]int numSamples, 
     [[maybe_unused]]MidiBuffer& midiMessages)
 {
-    auto posInfo = *positionInfo;
     if (!posInfo.hasValue()) {
         MYDBG(__FUNCTION__"(): missing PositionInfo");
         return;

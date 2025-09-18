@@ -170,9 +170,9 @@ void LiveMidiAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juc
         MYDBG(currentMessage.getDescription().toStdString());
     }
 
-    Optional<AudioPlayHead::PositionInfo> pi = getPlayHead()->getPosition();
+    const Optional<AudioPlayHead::PositionInfo> pi = getPlayHead()->getPosition();
 
-	processMidi(&pi, buffer.getNumSamples(), midiMessages);
+	processMidi(pi, buffer.getNumSamples(), midiMessages);
 }
 
 //==============================================================================

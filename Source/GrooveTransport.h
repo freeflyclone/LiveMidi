@@ -31,5 +31,5 @@ protected:
     int64_t mSampleCount{ 0 };
 
     void actionListenerCallback(const String&);
-    void processMidi(Optional<AudioPlayHead::PositionInfo>* p, int, MidiBuffer&);
+    void processMidi(const Optional<AudioPlayHead::PositionInfo>& p, int, MidiBuffer&);
 };
