@@ -5,6 +5,18 @@
     Created: 6 Sep 2025 10:29:26am
     Author:  evan
 
+    GrooveTransport is the heart of the MIDI data sampler for MIDI files.
+
+    It creates & manages a TrackPlayHead for each track in the file.
+    
+    Each call of ::processMidi() (driven by AudioProcessor::processBlock())
+    process each track looking for MIDI events that fall within the current
+    AudioPlayHead's temporal window.
+
+    For each in-window event:
+        adjust its timestamp to be relative to current AudioPlayHead time
+        add it to the outgoing MidiBuffer
+        increment next event index
   ==============================================================================
 */
 
@@ -40,10 +52,8 @@ protected:
     double mSampleRate{ 44100.0f };
     int mSamplesPerBlock{ 1024 };
 
-    // Updated in ::processMidi()
-    // Reset to "0" when "Stop" message received.
-    int64_t mCurrentSampleClock{ 0 };
-
     void actionListenerCallback(const String&);
+
+    // Runs in the audio thread at end of LiveMidiAudioProcessor::processBlock()
     void processMidi(const Optional<AudioPlayHead::PositionInfo>& p, int, MidiBuffer&);
 };

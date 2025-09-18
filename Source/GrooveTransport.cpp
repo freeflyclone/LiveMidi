@@ -28,7 +28,7 @@ void GrooveTransport::actionListenerCallback(const String& message) {
 
 void GrooveTransport::processMidi(
     const Optional<AudioPlayHead::PositionInfo>& posInfo, 
-    [[maybe_unused]]int numSamples, 
+    int numSamples, 
     [[maybe_unused]]MidiBuffer& midiMessages)
 {
     if (!posInfo.hasValue()) {
@@ -36,9 +36,31 @@ void GrooveTransport::processMidi(
         return;
     }
 
-    mCurrentSampleClock = posInfo->getTimeInSamples().orFallback(0);
+    // if not playing there's nothing to do
+    if (!posInfo->getIsPlaying())
+        return;
 
-    if (posInfo->getIsPlaying()) {
-        MYDBG(__FUNCTION__"():  mCurrentSampleClock: " + std::to_string(mCurrentSampleClock));
+    // use time-in-seconds to specify the temporal window bounds 
+    // of the current play head.
+    double startTime = posInfo->getTimeInSeconds().orFallback(0.0);
+    double endTime = startTime + (numSamples / mSampleRate);
+
+    // for all the tracks we have (that were in the MIDI file)...
+    for (const auto& trackHead : mTrackHeads) {
+        //.. starting from where we left off from previous call..
+        auto& message = trackHead.mTrack.getEventPointer(trackHead.mNextEventIdx)->message;
+        double eventTime = message.getTimeStamp();
+
+        if (eventTime < startTime) {
+            MYDBG(__FUNCTION__"(): oopsie!  Seems like an event got missed.");
+            continue;
+        }
+
+        if (eventTime > endTime)
+            continue;
+
+        do {
+
+        } while (eventTime < endTime);
     }
 }

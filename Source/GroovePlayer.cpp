@@ -53,6 +53,8 @@ void GroovePlayer::setGrooveMidiFile(File f) {
     auto fileInStream = FileInputStream(f);
     mMidiFile.readFrom(fileInStream);
 
+    mMidiFile.convertTimestampTicksToSeconds();
+
     mNumTracks.store(mMidiFile.getNumTracks());
     MYDBG(__FUNCTION__"(): found " + std::to_string(mNumTracks.load()) + " channels");
 
