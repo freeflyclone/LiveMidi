@@ -14,7 +14,7 @@
 LiveMidiAudioProcessorEditor::LiveMidiAudioProcessorEditor (LiveMidiAudioProcessor& p)
     : AudioProcessorEditor (&p), 
     mAudioProcessor (p),
-    mPlayer()
+    mPlayer(p)
 {
     setResizable(true, true);
 

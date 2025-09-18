@@ -11,7 +11,8 @@
 #include "GroovePlayer.h"
 #include "Log.h"
 
-GroovePlayer::GroovePlayer()
+GroovePlayer::GroovePlayer(LiveMidiAudioProcessor& p)
+    : mAudioProcessor(p)
 {
     setName("GPLYR");
     setComponentID("0");
@@ -64,8 +65,12 @@ void GroovePlayer::setGrooveMidiFile(File f) {
     }
 
     // Add all tracks to "mTracks"
-    for (int idx = 0; idx < mNumTracks.load(); idx++)
-        mTracks.add(mMidiFile.getTrack(idx));
+    for (int idx = 0; idx < mNumTracks.load(); idx++) {
+        auto track = mMidiFile.getTrack(idx);
+
+        mTracks.add(track);
+        mAudioProcessor.addTrack(*track);
+    }
 
     int idx{ 0 };
     for (const auto& track : mTracks) {
@@ -112,7 +117,7 @@ void GroovePlayer::processMidiMessage(const MidiMessage& message) {
         processMetaEvent(message);
     }
     else {
-        MYDBG("      event: " + message.getDescription().toStdString() + ", ts: " + String::formatted("%0.4f", message.getTimeStamp()).toStdString());
+        //MYDBG("      event: " + message.getDescription().toStdString() + ", ts: " + String::formatted("%0.4f", message.getTimeStamp()).toStdString());
     }
 }
 

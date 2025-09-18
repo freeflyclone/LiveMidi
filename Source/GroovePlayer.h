@@ -12,6 +12,7 @@
 #include <sstream>
 #include <iomanip>
 #include <JuceHeader.h>
+#include "PluginProcessor.h"
 #include "GrooveActionMessage.h"
 #include "GrooveTransport.h"
 
@@ -19,7 +20,7 @@ using namespace juce;
 
 class GroovePlayer : public Component, public ActionListener, public ActionBroadcaster, public Button::Listener {
 public:
-    GroovePlayer();
+    GroovePlayer(LiveMidiAudioProcessor&);
     ~GroovePlayer();
 
     void setGrooveMidiFile(File);
@@ -30,6 +31,7 @@ public:
 
 
 private:
+    LiveMidiAudioProcessor& mAudioProcessor;
     MidiFile mMidiFile;
     std::atomic<int> mCurrentTrack; 
     std::atomic<int> mNumTracks;

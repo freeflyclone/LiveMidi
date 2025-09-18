@@ -10,6 +10,10 @@
 
 #include "GrooveTransport.h"
 
+void GrooveTransport::addTrack(const MidiMessageSequence& track) {
+    mTrackHeads.emplace_back(track);
+}
+
 void GrooveTransport::actionListenerCallback(const String& message) {
     GrooveActionMessage gam = json::parse(message.toStdString());
 
@@ -32,9 +36,9 @@ void GrooveTransport::processMidi(
         return;
     }
 
-    mSampleCount = posInfo->getTimeInSamples().orFallback(0);
+    mCurrentSampleClock = posInfo->getTimeInSamples().orFallback(0);
 
     if (posInfo->getIsPlaying()) {
-        MYDBG(__FUNCTION__"():  mSampleCount: " + std::to_string(mSampleCount));
+        MYDBG(__FUNCTION__"():  mCurrentSampleClock: " + std::to_string(mCurrentSampleClock));
     }
 }
