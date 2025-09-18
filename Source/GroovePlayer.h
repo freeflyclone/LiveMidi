@@ -24,23 +24,9 @@ public:
     ~GroovePlayer();
 
     void setGrooveMidiFile(File);
-    int getNumTracks();
-
-    void processMidiMessage(const MidiMessage& event);
-    void processMetaEvent(const MidiMessage& event);
-
 
 private:
     LiveMidiAudioProcessor& mAudioProcessor;
-    MidiFile mMidiFile;
-    std::atomic<int> mCurrentTrack; 
-    std::atomic<int> mNumTracks;
-
-    short mTimeFormat{ 0 };
-    int mTimeSigNum{ 4 };
-    int mTimeSigDen{ 4 };
-
-    Array<const MidiMessageSequence*> mTracks;
 
     Array<String> mButtonsText{ "Start", "-Meas", "Stop", "Pause", "Play", "+Meas" , "End"};
 

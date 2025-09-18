@@ -43,16 +43,28 @@ public:
     GrooveTransport() {};
     ~GrooveTransport() {};
 
+    void initialize(File);
     void addTrack(const MidiMessageSequence&);
 
 protected:
+    MidiFile mMidiFile;
     TrackPlayHeads mTrackHeads;
+
+    //std::atomic<int> mCurrentTrack;
+    std::atomic<int> mNumTracks;
+
+    short mTimeFormat{ 0 };
+    int mTimeSigNum{ 4 };
+    int mTimeSigDen{ 4 };
 
     // Near as I can tell, these are driven by the chosen audio interface.
     double mSampleRate{ 44100.0f };
     int mSamplesPerBlock{ 1024 };
 
     void actionListenerCallback(const String&);
+    void parseTracks();
+    void parseMetaEvent(const MidiMessage& message);
+    void parseEvent(const MidiMessage& message);
 
     // Runs in the audio thread at end of LiveMidiAudioProcessor::processBlock()
     void processMidi(const Optional<AudioPlayHead::PositionInfo>& p, int, MidiBuffer&);
