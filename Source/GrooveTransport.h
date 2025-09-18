@@ -26,10 +26,10 @@ protected:
     double mSampleRate{ 44100.0f };
     int mSamplesPerBlock{ 1024 };
 
-    // Updated in AudioProcessor::processBlock() when "mIsPlaying" is true.
+    // Updated in ::processMidi()
     // Reset to "0" when "Stop" message received.
     int64_t mSampleCount{ 0 };
 
     void actionListenerCallback(const String&);
-    void processMidi(Optional<AudioPlayHead::PositionInfo>& p, int, MidiBuffer&);
+    void processMidi(Optional<AudioPlayHead::PositionInfo>* p, int, MidiBuffer&);
 };

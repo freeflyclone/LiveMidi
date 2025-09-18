@@ -77,17 +77,20 @@ int LiveMidiAudioProcessor::getCurrentProgram()
     return 0;
 }
 
-void LiveMidiAudioProcessor::setCurrentProgram (int index)
+void LiveMidiAudioProcessor::setCurrentProgram (int /*index*/)
 {
 }
 
 const juce::String LiveMidiAudioProcessor::getProgramName (int index)
 {
+    (index);
     return {};
 }
 
 void LiveMidiAudioProcessor::changeProgramName (int index, const juce::String& newName)
 {
+    (index);
+    (newName);
 }
 
 //==============================================================================
@@ -154,7 +157,7 @@ void LiveMidiAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juc
     // interleaved by keeping the same state.
     for (int channel = 0; channel < totalNumInputChannels; ++channel)
     {
-        auto* channelData = buffer.getWritePointer (channel);
+        //auto* channelData = buffer.getWritePointer (channel);
 
         // ..do something to the data...
     }
@@ -167,7 +170,9 @@ void LiveMidiAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juc
         MYDBG(currentMessage.getDescription().toStdString());
     }
 
-	processMidi(getPlayHead()->getPosition(), buffer.getNumSamples(), midiMessages);
+    Optional<AudioPlayHead::PositionInfo> pi = getPlayHead()->getPosition();
+
+	processMidi(&pi, buffer.getNumSamples(), midiMessages);
 }
 
 //==============================================================================
@@ -182,14 +187,14 @@ juce::AudioProcessorEditor* LiveMidiAudioProcessor::createEditor()
 }
 
 //==============================================================================
-void LiveMidiAudioProcessor::getStateInformation (juce::MemoryBlock& destData)
+void LiveMidiAudioProcessor::getStateInformation ([[maybe_unused]]juce::MemoryBlock& destData)
 {
     // You should use this method to store your parameters in the memory block.
     // You could do that either as raw data, or use the XML or ValueTree classes
     // as intermediaries to make it easy to save and load complex data.
 }
 
-void LiveMidiAudioProcessor::setStateInformation (const void* data, int sizeInBytes)
+void LiveMidiAudioProcessor::setStateInformation ([[maybe_unused]]const void* data, [[maybe_unused]]int sizeInBytes)
 {
     // You should use this method to restore your parameters from this memory block,
     // whose contents will have been created by the getStateInformation() call.

@@ -64,8 +64,8 @@ void LiveMidiAudioProcessorEditor::resized()
     const auto textWidth = GlyphArrangement::getStringWidth(labelFont, mGroovesLabel.getText());
     const auto textHeight = labelFont.getHeight();
 
-    mGroovesLabel.setBounds(10, 20, textWidth, textHeight);
-    mGroovesButton.setBounds(20 + textWidth, 10, width - textWidth - 30, 32);
+    mGroovesLabel.setBounds(10, 20, (int)textWidth, (int)textHeight);
+    mGroovesButton.setBounds(20 + (int)textWidth, 10, width - (int)textWidth - 30, 32);
 
     mBrowser.setBounds(10, 60, width - 20, height / 2);
 
