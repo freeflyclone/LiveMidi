@@ -32,11 +32,10 @@ class GrooveTransport : public ActionListener {
 public:
     // TrackPlayHead provides real-time "next event" index per track whilst actually playing,
     // and a const reference to the actual MIDI sequence data for that track
-    struct TrackPlayHead {
+    struct TrackPlayHead : public MidiMessageSequence {
         int mNextEventIdx{ 0 };
-        const MidiMessageSequence& mTrack;
 
-        TrackPlayHead(const MidiMessageSequence& track) : mTrack(track) {};
+        TrackPlayHead(const MidiMessageSequence& mms) : MidiMessageSequence(mms) {};
     };
     typedef std::vector<TrackPlayHead> TrackPlayHeads;
 
@@ -48,10 +47,7 @@ public:
 
 protected:
     MidiFile mMidiFile;
-    TrackPlayHeads mTrackHeads;
-
-    //std::atomic<int> mCurrentTrack;
-    std::atomic<int> mNumTracks;
+    TrackPlayHeads mTrackPlayHeads;
 
     short mTimeFormat{ 0 };
     int mTimeSigNum{ 4 };

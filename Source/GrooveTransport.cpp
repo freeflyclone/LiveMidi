@@ -18,8 +18,8 @@ void GrooveTransport::initialize(File f) {
 
     mMidiFile.convertTimestampTicksToSeconds();
 
-    mNumTracks.store(mMidiFile.getNumTracks());
-    MYDBG(__FUNCTION__"(): found " + std::to_string(mNumTracks.load()) + " channels");
+    auto numTracks = mMidiFile.getNumTracks();
+    MYDBG(__FUNCTION__"(): found " + std::to_string(numTracks) + " channels");
 
     mTimeFormat = mMidiFile.getTimeFormat();
     if (mTimeFormat > 0) {
@@ -30,17 +30,14 @@ void GrooveTransport::initialize(File f) {
     }
 
     // Add all tracks to "mTracks"
-    for (int idx = 0; idx < mNumTracks.load(); idx++) {
-        auto track = mMidiFile.getTrack(idx);
-
-        addTrack(*track);
-    }
+    for (int idx = 0; idx < numTracks; idx++)
+        addTrack(*mMidiFile.getTrack(idx));
 
     parseTracks();
 }
 
 void GrooveTransport::addTrack(const MidiMessageSequence& track) {
-    mTrackHeads.emplace_back(track);
+    mTrackPlayHeads.emplace_back(track);
 }
 
 void GrooveTransport::actionListenerCallback(const String& message) {
@@ -58,13 +55,13 @@ void GrooveTransport::actionListenerCallback(const String& message) {
 void GrooveTransport::parseTracks() {
     int idx{ 0 };
 
-    for (const auto& track : mTrackHeads) {
-        int numEvents = track.mTrack.getNumEvents();
+    for (const auto& track : mTrackPlayHeads) {
+        int numEvents = track.getNumEvents();
 
         MYDBG("    track: " + std::to_string(idx++) + ", " + std::to_string(numEvents) + " events.");
 
         for (int i = 0; i < numEvents; i++) {
-            auto event = track.mTrack.getEventPointer(i);
+            auto event = track.getEventPointer(i);
             auto message = event->message;
 
             if (message.isMetaEvent())
@@ -122,21 +119,26 @@ void GrooveTransport::processMidi(
     double endTime = startTime + (numSamples / mSampleRate);
 
     // for all the tracks we have (that were in the MIDI file)...
-    for (const auto& trackHead : mTrackHeads) {
-        //.. starting from where we left off from previous call..
-        auto& message = trackHead.mTrack.getEventPointer(trackHead.mNextEventIdx)->message;
-        double eventTime = message.getTimeStamp();
+    for (const auto& tph : mTrackPlayHeads) {
+        int numEventsThisTrack = tph.getNumEvents();
+        int nextIndex = tph.getNextIndexAtTime(startTime);
 
-        if (eventTime < startTime) {
-            MYDBG(__FUNCTION__"(): oopsie!  Seems like an event got missed.");
+        // Expect tracks to vary in number of events
+        if (nextIndex == numEventsThisTrack)
             continue;
+
+        // for each remaining event in this track: starting at 1st event AFTER current "startTime"...
+        for (int idx = nextIndex; idx < numEventsThisTrack; idx++) {
+            MidiMessage message = tph.getEventPointer(idx)->message;
+            double eventTime = message.getTimeStamp();
+
+            // if next event occurs AFTER current "endTime", we're done with this track for now.
+            if (eventTime >= endTime)
+                break;
+
+            // Adjust time stamp (as sample position) to relative to current play head.
+            auto samplePosition = roundToInt((message.getTimeStamp() - startTime) * mSampleRate);
+            midiMessages.addEvent(message, samplePosition);
         }
-
-        if (eventTime > endTime)
-            continue;
-
-        do {
-
-        } while (eventTime < endTime);
     }
 }
