@@ -10,13 +10,12 @@
     It creates & manages a TrackPlayHead for each track in the file.
     
     Each call of ::processMidi() (driven by AudioProcessor::processBlock())
-    process each track looking for MIDI events that fall within the current
+    processes each track looking for MIDI events that fall within the current
     AudioPlayHead's temporal window.
 
     For each in-window event:
         adjust its timestamp to be relative to current AudioPlayHead time
         add it to the outgoing MidiBuffer
-        increment next event index
   ==============================================================================
 */
 
@@ -30,14 +29,7 @@ using namespace juce;
 
 class GrooveTransport : public ActionListener {
 public:
-    // TrackPlayHead provides real-time "next event" index per track whilst actually playing,
-    // and a const reference to the actual MIDI sequence data for that track
-    struct TrackPlayHead : public MidiMessageSequence {
-        int mNextEventIdx{ 0 };
-
-        TrackPlayHead(const MidiMessageSequence& mms) : MidiMessageSequence(mms) {};
-    };
-    typedef std::vector<TrackPlayHead> TrackPlayHeads;
+    typedef std::vector<MidiMessageSequence> TrackPlayHeads;
 
     GrooveTransport() {};
     ~GrooveTransport() {};
@@ -58,6 +50,9 @@ protected:
     int mSamplesPerBlock{ 1024 };
 
     void actionListenerCallback(const String&);
+
+    // TODO: make these into ActionMessage broadcasters
+    void parseMidiFile();
     void parseTracks();
     void parseMetaEvent(const MidiMessage& message);
     void parseEvent(const MidiMessage& message);

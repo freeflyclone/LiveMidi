@@ -11,11 +11,32 @@
 #include "GrooveTransport.h"
 
 void GrooveTransport::initialize(File f) {
+    mTrackPlayHeads.clear();
     mMidiFile.clear();
 
-    auto fileInStream = FileInputStream(f);
+    FileInputStream fileInStream = FileInputStream(f);
     mMidiFile.readFrom(fileInStream);
 
+    parseMidiFile();
+}
+
+void GrooveTransport::addTrack(const MidiMessageSequence& track) {
+    mTrackPlayHeads.emplace_back(track);
+}
+
+void GrooveTransport::actionListenerCallback(const String& message) {
+    GrooveActionMessage gam = json::parse(message.toStdString());
+
+    // GroovePlayer component ActionMessages we care about...
+    if (gam["component"] == "GPLYR") {
+        if (gam["action"] == "TPTCTRL") {
+            std::string buttonText(gam["value"]);
+            MYDBG(__FUNCTION__"(): button: " + buttonText);
+        }
+    }
+}
+
+void GrooveTransport::parseMidiFile() {
     mMidiFile.convertTimestampTicksToSeconds();
 
     auto numTracks = mMidiFile.getNumTracks();
@@ -34,22 +55,6 @@ void GrooveTransport::initialize(File f) {
         addTrack(*mMidiFile.getTrack(idx));
 
     parseTracks();
-}
-
-void GrooveTransport::addTrack(const MidiMessageSequence& track) {
-    mTrackPlayHeads.emplace_back(track);
-}
-
-void GrooveTransport::actionListenerCallback(const String& message) {
-    GrooveActionMessage gam = json::parse(message.toStdString());
-
-    // GroovePlayer component ActionMessages we care about...
-    if (gam["component"] == "GPLYR") {
-        if (gam["action"] == "TPTCTRL") {
-            std::string buttonText(gam["value"]);
-            MYDBG(__FUNCTION__"(): button: " + buttonText);
-        }
-    }
 }
 
 void GrooveTransport::parseTracks() {
