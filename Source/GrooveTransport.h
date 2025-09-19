@@ -38,16 +38,15 @@ public:
     void addTrack(const MidiMessageSequence&);
 
 protected:
-    MidiFile mMidiFile;
-    TrackPlayHeads mTrackPlayHeads;
-
-    short mTimeFormat{ 0 };
-    int mTimeSigNum{ 4 };
-    int mTimeSigDen{ 4 };
-
     // Near as I can tell, these are driven by the chosen audio interface.
     double mSampleRate{ 44100.0f };
     int mSamplesPerBlock{ 1024 };
+
+    MidiFile mMidiFile;
+    TrackPlayHeads mTrackPlayHeads;
+    short mTimeFormat{ 0 };
+    int mTimeSigNum{ 4 };
+    int mTimeSigDen{ 4 };
 
     void actionListenerCallback(const String&);
 
