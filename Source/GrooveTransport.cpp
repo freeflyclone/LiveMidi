@@ -79,10 +79,10 @@ void GrooveTransport::parseTracks() {
 
 void GrooveTransport::parseMetaEvent(const MidiMessage& message) {
     if (message.isTrackNameEvent()) {
-        MYDBG("       track name: " + message.getTextFromTextMetaEvent().toStdString());
+        MYDBG("       track name: " + message.getTextFromTextMetaEvent().toStdString() + " @ " + std::to_string(message.getTimeStamp()));
     }
     else if (message.isEndOfTrackMetaEvent()) {
-        MYDBG("       End-of-track");
+        MYDBG("       End-of-track @ timestamp: " + std::to_string(message.getTimeStamp()));
     }
     else if (message.isTempoMetaEvent()) {
         double tempo = 60.0 / message.getTempoSecondsPerQuarterNote();
@@ -101,7 +101,7 @@ void GrooveTransport::parseMetaEvent(const MidiMessage& message) {
 }
 
 void GrooveTransport::parseEvent(const MidiMessage& message) {
-    MYDBG("      event: " + message.getDescription().toStdString() + ", ts: " + String::formatted("%0.4f", message.getTimeStamp()).toStdString());
+    //MYDBG("      event: " + message.getDescription().toStdString() + ", ts: " + String::formatted("%0.4f", message.getTimeStamp()).toStdString());
 }
 
 void GrooveTransport::processMidi(
