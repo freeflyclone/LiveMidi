@@ -48,6 +48,9 @@ protected:
     int mTimeSigNum{ 4 };
     int mTimeSigDen{ 4 };
 
+    bool mIsPlaying{ false };
+    double mEndTime{ 0.0 };
+
     void actionListenerCallback(const String&);
 
     // TODO: make these into ActionMessage broadcasters
@@ -58,4 +61,6 @@ protected:
 
     // Runs in the audio thread at end of LiveMidiAudioProcessor::processBlock()
     void processMidi(const Optional<AudioPlayHead::PositionInfo>& p, int, MidiBuffer&);
+
+    void sendAllNotesOff(MidiBuffer& midiMessages);
 };
