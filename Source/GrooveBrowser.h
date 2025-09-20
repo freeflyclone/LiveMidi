@@ -17,9 +17,9 @@
 
 using namespace juce;
 
-#define TEMP_STORE_FOLDER_NAME "E:/music/Native Instruments Content/Abbey Road 60s Drummer Library/MIDI Files"
+//#define TEMP_STORE_FOLDER_NAME "E:/music/Native Instruments Content/Abbey Road 60s Drummer Library/MIDI Files"
 //#define TEMP_STORE_FOLDER_NAME "E:/music/GigPerformer/Recordings/Studio/2025-08-31 at 1219"
-//#define TEMP_STORE_FOLDER_NAME "E:/music/Free MIDI"
+#define TEMP_STORE_FOLDER_NAME "E:/music/Free MIDI"
 #define MAX_GROOVE_LISTBOXES 6
 
 class GrooveBrowser : public Component, public ActionListener, public ActionBroadcaster {

@@ -29,7 +29,8 @@ GrooveListBox::GrooveListBox()
     vScroll.setVisible(true);
     vScroll.getLookAndFeel().setColour(ScrollBar::thumbColourId, Colour(0xFF3f3f3f));
 
-    setSize(GROOVE_LISTBOX_WIDTH, GROOVE_LISTBOX_HEIGHT);
+    // initialize height to 0, so 1st ::resized() call WILL cause a visual update
+    setSize(GROOVE_LISTBOX_WIDTH, 0);
 }
 
 GrooveListBox::~GrooveListBox() {
