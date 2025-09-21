@@ -134,32 +134,37 @@ void GrooveTransport::markNote(MidiMessage& message) {
         markNoteOff(message.getChannel(), message.getNoteNumber());
 }
 
+void GrooveTransport::sendNotesOff(int channel, MidiBuffer& midiMessages) {
+    // go through each byte of the bitmap that tracks note on/off state...
+    for (int noteBlock = 0; noteBlock < mNumNoteBlocks; noteBlock++) {
+        unsigned char activeNotesThisBlock = mActiveNotes[channel - 1][noteBlock];
+
+        // for each bit in this activeNotesThisBlock...
+        for (int bitIdx = 0; bitIdx < sizeof(unsigned char) * 8; bitIdx++) {
+            unsigned char mask = 1 << bitIdx;
+
+            // if this bit (note) is on...
+            if (activeNotesThisBlock & mask) {
+                // calculate the note number
+                int noteNumber = noteBlock * 8 + bitIdx;
+
+                // and send a Note On with 0 velocity.  (I believe its the most universal note-off) 
+                midiMessages.addEvent(MidiMessage().noteOn(channel, noteNumber, 0.0f), 0);
+            }
+        }
+    }
+}
+
 void GrooveTransport::sendAllNotesOff(MidiBuffer& midiMessages)
 {
-    MYDBG(__FUNCTION__"()");
-
-    for (auto channel = 1; channel <= 16; channel++) {
+    // Go through all 16 MIDI channels...
+    for (auto channel = 1; channel <= mNumMidiChannels; channel++) {
+        midiMessages.addEvent(MidiMessage::allNotesOff(channel), 0);
         midiMessages.addEvent(MidiMessage::allSoundOff(channel), 0);
         midiMessages.addEvent(MidiMessage::allControllersOff(channel), 0);
 
-        for (int noteBlock = 0; noteBlock < 16; noteBlock++) {
-            if (mActiveNotes[channel-1][noteBlock] != 0) {
-                unsigned char activeNotesThisBlock = mActiveNotes[channel-1][noteBlock];
-
-                for (int k = 0; k < 8; k++) {
-                    unsigned char mask = 1 << k;
-
-                    if (activeNotesThisBlock & mask) {
-                        int noteNumber = noteBlock * 8 + k;
-
-                        MYDBG("Found stuck note: channel: " + std::to_string(channel) + ", note block: " + std::to_string(noteBlock) + ", bits: " + std::to_string(mActiveNotes[channel - 1][noteBlock]) + ", noteNumber: " + std::to_string(noteNumber));
-
-                        auto newMessage = MidiMessage().noteOn(channel, noteNumber, 0.0f);
-                        midiMessages.addEvent(newMessage, 0);
-                    }
-                }
-            }
-        }
+        // silence hanging notes, 'cuz allNotesOff() not guaranteed.
+        sendNotesOff(channel, midiMessages);
     }
 
     mIsPlaying = false;
@@ -212,7 +217,7 @@ void GrooveTransport::processMidi(
             if (eventTime >= endTime)
                 break;
 
-            // Adjust time stamp (as sample position) to relative to current play head.
+            // Adjust time stamp (as sample position), make it relative to current play head.
             auto samplePosition = roundToInt((message.getTimeStamp() - startTime) * mSampleRate);
             midiMessages.addEvent(message, samplePosition);
 

@@ -31,9 +31,6 @@ class GrooveTransport : public ActionListener {
 public:
     typedef std::vector<MidiMessageSequence> TrackPlayHeads;
 
-    GrooveTransport() {};
-    ~GrooveTransport() {};
-
     void initialize(File);
     void addTrack(const MidiMessageSequence&);
 
@@ -54,7 +51,9 @@ protected:
     // bitmap of 128 notes for each of 16 midi channels,
     // indexed as [channel][note>>3]
     //
-    unsigned char mActiveNotes[16][16];
+    const static int mNumMidiChannels{ 16 };
+    const static int mNumNoteBlocks{ 16 };
+    unsigned char mActiveNotes[mNumMidiChannels][mNumNoteBlocks];
 
     void actionListenerCallback(const String&);
 
@@ -68,7 +67,11 @@ protected:
     void processMidi(const Optional<AudioPlayHead::PositionInfo>& p, int, MidiBuffer&);
 
     void sendAllNotesOff(MidiBuffer& midiMessages);
+
+    // MIDI all-notes-off event support is not guaranteed, so track active notes
+    // and at play stop time we'll turn them off.
     void markNote(MidiMessage& message);
     void markNoteOn(int channel, int note);
     void markNoteOff(int channel, int note);
+    void sendNotesOff(int channel, MidiBuffer&);
 };
