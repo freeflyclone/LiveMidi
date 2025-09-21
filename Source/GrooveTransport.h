@@ -51,6 +51,11 @@ protected:
     bool mIsPlaying{ false };
     double mEndTime{ 0.0 };
 
+    // bitmap of 128 notes for each of 16 midi channels,
+    // indexed as [channel][note>>3]
+    //
+    unsigned char mActiveNotes[16][16];
+
     void actionListenerCallback(const String&);
 
     // TODO: make these into ActionMessage broadcasters
@@ -63,4 +68,6 @@ protected:
     void processMidi(const Optional<AudioPlayHead::PositionInfo>& p, int, MidiBuffer&);
 
     void sendAllNotesOff(MidiBuffer& midiMessages);
+    void activateNote(int channel, int note);
+    void deactivateNote(int channel, int note);
 };

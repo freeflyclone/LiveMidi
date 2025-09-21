@@ -109,17 +109,29 @@ void GrooveTransport::parseEvent(const MidiMessage& message) {
     //MYDBG("      event: " + message.getDescription().toStdString() + ", ts: " + String::formatted("%0.4f", message.getTimeStamp()).toStdString());
 }
 
+void GrooveTransport::activateNote(int channel, int note) {
+    unsigned char* activeNotesByChannel = mActiveNotes[channel];
+    unsigned char* activeNoteByte = activeNotesByChannel + (note >> 3);
+    unsigned char activeNoteBit = 1 << (note & 0x7);
+
+    *activeNoteByte |= activeNoteBit;
+    MYDBG(__FUNCTION__"()");
+}
+
+void GrooveTransport::deactivateNote(int channel, int note) {
+    unsigned char* activeNotesByChannel = mActiveNotes[channel];
+    unsigned char* activeNoteByte = activeNotesByChannel + (note >> 3);
+    unsigned char activeNoteMask = ~(1 << (note & 0x7));
+
+    *activeNoteByte &= activeNoteMask;
+    MYDBG(__FUNCTION__"()");
+}
+
 void GrooveTransport::sendAllNotesOff(MidiBuffer& midiMessages)
 {
     MYDBG(__FUNCTION__"()");
 
-    for (auto i = 1; i <= 16; i++)
-    {
-        // FIXME (?) : MIDI all-notes-off event is not guaranteed by the spec.
-        // Optimize this brute force approach with an activeNotes map of some sort.
-        for (int n = 0; n < 127; n++)
-            midiMessages.addEvent(MidiMessage::noteOff(i, n), 0);
-
+    for (auto i = 1; i <= 16; i++) {
         midiMessages.addEvent(MidiMessage::allNotesOff(i), 0);
         midiMessages.addEvent(MidiMessage::allSoundOff(i), 0);
         midiMessages.addEvent(MidiMessage::allControllersOff(i), 0);
@@ -178,6 +190,14 @@ void GrooveTransport::processMidi(
             // Adjust time stamp (as sample position) to relative to current play head.
             auto samplePosition = roundToInt((message.getTimeStamp() - startTime) * mSampleRate);
             midiMessages.addEvent(message, samplePosition);
+
+            // track all note events for more efficient "all notes off" behavior 
+            if (message.isNoteOnOrOff()) {
+                if (message.isNoteOn())
+                    activateNote(message.getChannel(), message.getNoteNumber());
+                else
+                    deactivateNote(message.getChannel(), message.getNoteNumber());
+            }
 
             mIsPlaying = true;
         }
