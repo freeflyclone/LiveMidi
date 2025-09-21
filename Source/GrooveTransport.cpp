@@ -15,6 +15,9 @@ void GrooveTransport::initialize(File f) {
     mMidiFile.clear();
     mEndTime = 0.0;
 
+    auto size = sizeof(mActiveNotes);
+    memset(mActiveNotes, 0, size);
+
     FileInputStream fileInStream = FileInputStream(f);
     mMidiFile.readFrom(fileInStream);
 
@@ -106,35 +109,52 @@ void GrooveTransport::parseMetaEvent(const MidiMessage& message) {
 }
 
 void GrooveTransport::parseEvent(const MidiMessage& message) {
-    //MYDBG("      event: " + message.getDescription().toStdString() + ", ts: " + String::formatted("%0.4f", message.getTimeStamp()).toStdString());
+    if (!message.isNoteOnOrOff())
+        MYDBG("      event: " + message.getDescription().toStdString() + ", ts: " + String::formatted("%0.4f", message.getTimeStamp()).toStdString());
 }
 
-void GrooveTransport::activateNote(int channel, int note) {
-    unsigned char* activeNotesByChannel = mActiveNotes[channel];
-    unsigned char* activeNoteByte = activeNotesByChannel + (note >> 3);
-    unsigned char activeNoteBit = 1 << (note & 0x7);
-
-    *activeNoteByte |= activeNoteBit;
-    MYDBG(__FUNCTION__"()");
+void GrooveTransport::markNoteOn(int channel, int note) {
+    mActiveNotes[channel][note>>3] |= (1 << (note & 0x7));
 }
 
-void GrooveTransport::deactivateNote(int channel, int note) {
-    unsigned char* activeNotesByChannel = mActiveNotes[channel];
-    unsigned char* activeNoteByte = activeNotesByChannel + (note >> 3);
-    unsigned char activeNoteMask = ~(1 << (note & 0x7));
+void GrooveTransport::markNoteOff(int channel, int note) {
+    mActiveNotes[channel][note >> 3] &= ~(1 << (note & 0x7));
+}
 
-    *activeNoteByte &= activeNoteMask;
-    MYDBG(__FUNCTION__"()");
+void GrooveTransport::markNote(MidiMessage& message) {
+    if (message.isNoteOn())
+        markNoteOn(message.getChannel(), message.getNoteNumber());
+    else
+        markNoteOff(message.getChannel(), message.getNoteNumber());
 }
 
 void GrooveTransport::sendAllNotesOff(MidiBuffer& midiMessages)
 {
     MYDBG(__FUNCTION__"()");
 
-    for (auto i = 1; i <= 16; i++) {
-        midiMessages.addEvent(MidiMessage::allNotesOff(i), 0);
-        midiMessages.addEvent(MidiMessage::allSoundOff(i), 0);
-        midiMessages.addEvent(MidiMessage::allControllersOff(i), 0);
+    for (auto channel = 1; channel <= 16; channel++) {
+        //midiMessages.addEvent(MidiMessage::allNotesOff(channel), 0);
+        midiMessages.addEvent(MidiMessage::allSoundOff(channel), 0);
+        midiMessages.addEvent(MidiMessage::allControllersOff(channel), 0);
+    }
+
+    for (int channel = 0; channel < 16; channel++) {
+        for (int noteBlock = 0; noteBlock < 16; noteBlock++) {
+            if (mActiveNotes[channel][noteBlock] != 0) {
+                unsigned char activeNotesThisBlock = mActiveNotes[channel][noteBlock];
+
+                for (int k = 0; k < 8; k++) {
+                    unsigned char mask = 1 << k;
+
+                    if (activeNotesThisBlock & mask) {
+                        int noteNumber = noteBlock * 8 + k;
+
+                        MYDBG("Found stuck note: channel: " + std::to_string(channel) + ", note block: " + std::to_string(noteBlock) + ", bits: " + std::to_string(mActiveNotes[channel][noteBlock]) + ", noteNumber: " + std::to_string(noteNumber));
+                        midiMessages.addEvent(MidiMessage().noteOn(channel, noteNumber, 0.0f), 0);
+                    }
+                }
+            }
+        }
     }
 
     mIsPlaying = false;
@@ -192,12 +212,8 @@ void GrooveTransport::processMidi(
             midiMessages.addEvent(message, samplePosition);
 
             // track all note events for more efficient "all notes off" behavior 
-            if (message.isNoteOnOrOff()) {
-                if (message.isNoteOn())
-                    activateNote(message.getChannel(), message.getNoteNumber());
-                else
-                    deactivateNote(message.getChannel(), message.getNoteNumber());
-            }
+            if (message.isNoteOnOrOff())
+                markNote(message);
 
             mIsPlaying = true;
         }

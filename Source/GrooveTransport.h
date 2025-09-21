@@ -68,6 +68,7 @@ protected:
     void processMidi(const Optional<AudioPlayHead::PositionInfo>& p, int, MidiBuffer&);
 
     void sendAllNotesOff(MidiBuffer& midiMessages);
-    void activateNote(int channel, int note);
-    void deactivateNote(int channel, int note);
+    void markNote(MidiMessage& message);
+    void markNoteOn(int channel, int note);
+    void markNoteOff(int channel, int note);
 };
