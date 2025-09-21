@@ -114,11 +114,17 @@ void GrooveTransport::parseEvent(const MidiMessage& message) {
 }
 
 void GrooveTransport::markNoteOn(int channel, int note) {
-    mActiveNotes[channel][note>>3] |= (1 << (note & 0x7));
+    jassert(channel >= 1 && channel <= 16);
+    jassert(note >= 0 && note <= 127);
+
+    mActiveNotes[channel-1][note>>3] |= (1 << (note & 0x7));
 }
 
 void GrooveTransport::markNoteOff(int channel, int note) {
-    mActiveNotes[channel][note >> 3] &= ~(1 << (note & 0x7));
+    jassert(channel >= 1 && channel <= 16);
+    jassert(note >= 0 && note <= 127);
+
+    mActiveNotes[channel-1][note >> 3] &= ~(1 << (note & 0x7));
 }
 
 void GrooveTransport::markNote(MidiMessage& message) {
@@ -133,15 +139,12 @@ void GrooveTransport::sendAllNotesOff(MidiBuffer& midiMessages)
     MYDBG(__FUNCTION__"()");
 
     for (auto channel = 1; channel <= 16; channel++) {
-        //midiMessages.addEvent(MidiMessage::allNotesOff(channel), 0);
         midiMessages.addEvent(MidiMessage::allSoundOff(channel), 0);
         midiMessages.addEvent(MidiMessage::allControllersOff(channel), 0);
-    }
 
-    for (int channel = 0; channel < 16; channel++) {
         for (int noteBlock = 0; noteBlock < 16; noteBlock++) {
-            if (mActiveNotes[channel][noteBlock] != 0) {
-                unsigned char activeNotesThisBlock = mActiveNotes[channel][noteBlock];
+            if (mActiveNotes[channel-1][noteBlock] != 0) {
+                unsigned char activeNotesThisBlock = mActiveNotes[channel-1][noteBlock];
 
                 for (int k = 0; k < 8; k++) {
                     unsigned char mask = 1 << k;
@@ -149,8 +152,10 @@ void GrooveTransport::sendAllNotesOff(MidiBuffer& midiMessages)
                     if (activeNotesThisBlock & mask) {
                         int noteNumber = noteBlock * 8 + k;
 
-                        MYDBG("Found stuck note: channel: " + std::to_string(channel) + ", note block: " + std::to_string(noteBlock) + ", bits: " + std::to_string(mActiveNotes[channel][noteBlock]) + ", noteNumber: " + std::to_string(noteNumber));
-                        midiMessages.addEvent(MidiMessage().noteOn(channel, noteNumber, 0.0f), 0);
+                        MYDBG("Found stuck note: channel: " + std::to_string(channel) + ", note block: " + std::to_string(noteBlock) + ", bits: " + std::to_string(mActiveNotes[channel - 1][noteBlock]) + ", noteNumber: " + std::to_string(noteNumber));
+
+                        auto newMessage = MidiMessage().noteOn(channel, noteNumber, 0.0f);
+                        midiMessages.addEvent(newMessage, 0);
                     }
                 }
             }
