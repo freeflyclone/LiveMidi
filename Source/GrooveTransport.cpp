@@ -13,6 +13,7 @@
 void GrooveTransport::initialize(File f) {
     mTrackPlayHeads.clear();
     mMidiFile.clear();
+    mHostTempoMidiFile.clear();
     mEndTime = 0.0;
 
     auto size = sizeof(mActiveNotes);
@@ -20,8 +21,12 @@ void GrooveTransport::initialize(File f) {
 
     FileInputStream fileInStream = FileInputStream(f);
     mMidiFile.readFrom(fileInStream);
+    parseMidiFile(mMidiFile);
 
-    parseMidiFile();
+    // rewind "fileInStream", initialize another MidiFile object with it
+    // for "file tempo" vs "host tempo" development.
+    fileInStream.setPosition(0);
+    mHostTempoMidiFile.readFrom(fileInStream);
 }
 
 void GrooveTransport::addTrack(const MidiMessageSequence& track) {
@@ -40,13 +45,13 @@ void GrooveTransport::actionListenerCallback(const String& message) {
     }
 }
 
-void GrooveTransport::parseMidiFile() {
-    mMidiFile.convertTimestampTicksToSeconds();
+void GrooveTransport::parseMidiFile(MidiFile& m) {
+    m.convertTimestampTicksToSeconds();
 
-    auto numTracks = mMidiFile.getNumTracks();
+    auto numTracks = m.getNumTracks();
     MYDBG(__FUNCTION__"(): found " + std::to_string(numTracks) + " channels");
 
-    mTimeFormat = mMidiFile.getTimeFormat();
+    mTimeFormat = m.getTimeFormat();
     if (mTimeFormat > 0) {
         MYDBG(" time format: " + std::to_string(mTimeFormat) + " PPQ");
     }
@@ -56,7 +61,7 @@ void GrooveTransport::parseMidiFile() {
 
     // Add all tracks to "mTracks"
     for (int idx = 0; idx < numTracks; idx++)
-        addTrack(*mMidiFile.getTrack(idx));
+        addTrack(*m.getTrack(idx));
 
     parseTracks();
 }

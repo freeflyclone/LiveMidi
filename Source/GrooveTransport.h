@@ -40,6 +40,8 @@ protected:
     int mSamplesPerBlock{ 1024 };
 
     MidiFile mMidiFile;
+    MidiFile mHostTempoMidiFile;
+
     TrackPlayHeads mTrackPlayHeads;
     short mTimeFormat{ 0 };
     int mTimeSigNum{ 4 };
@@ -58,7 +60,7 @@ protected:
     void actionListenerCallback(const String&);
 
     // TODO: make these into ActionMessage broadcasters
-    void parseMidiFile();
+    void parseMidiFile(MidiFile&);
     void parseTracks();
     void parseMetaEvent(const MidiMessage& message);
     void parseEvent(const MidiMessage& message);
