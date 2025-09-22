@@ -180,6 +180,16 @@ void GrooveTransport::processMidi(
         return;
     }
 
+    // If/when we're synced to host's tempo...
+    static double hostBpm{ 0.0 };
+    auto bpm = posInfo->getBpm();
+    if (bpm.hasValue()) {
+        if (*bpm != hostBpm) {
+            hostBpm = *bpm;
+            MYDBG("  Host BPM: " + std::to_string(hostBpm));
+        }
+    }
+
     // if not playing there's nothing to do
     if (!posInfo->getIsPlaying()) {
         if (mIsPlaying)
