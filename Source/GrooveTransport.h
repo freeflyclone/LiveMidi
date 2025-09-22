@@ -29,10 +29,12 @@ using namespace juce;
 
 class GrooveTransport : public ActionListener {
 public:
-    typedef std::vector<MidiMessageSequence> TrackPlayHeads;
+    struct GrooveTracks {
+        std::vector<MidiMessageSequence> mPlayHeads;
+        void addTrack(const MidiMessageSequence&);
+    };
 
     void initialize(File);
-    void addTrack(const MidiMessageSequence&);
 
 protected:
     // Near as I can tell, these are driven by the chosen audio interface.
@@ -42,7 +44,8 @@ protected:
     MidiFile mMidiFile;
     MidiFile mHostTempoMidiFile;
 
-    TrackPlayHeads mTrackPlayHeads;
+    GrooveTracks mTracks;
+
     short mTimeFormat{ 0 };
     int mTimeSigNum{ 4 };
     int mTimeSigDen{ 4 };

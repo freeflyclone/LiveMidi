@@ -11,7 +11,7 @@
 #include "GrooveTransport.h"
 
 void GrooveTransport::initialize(File f) {
-    mTrackPlayHeads.clear();
+    mTracks.mPlayHeads.clear();
     mMidiFile.clear();
     mHostTempoMidiFile.clear();
     mEndTime = 0.0;
@@ -29,8 +29,8 @@ void GrooveTransport::initialize(File f) {
     mHostTempoMidiFile.readFrom(fileInStream);
 }
 
-void GrooveTransport::addTrack(const MidiMessageSequence& track) {
-    mTrackPlayHeads.emplace_back(track);
+void GrooveTransport::GrooveTracks::addTrack(const MidiMessageSequence& track) {
+    mPlayHeads.emplace_back(track);
 }
 
 void GrooveTransport::actionListenerCallback(const String& message) {
@@ -61,7 +61,7 @@ void GrooveTransport::parseMidiFile(MidiFile& m) {
 
     // Add all tracks to "mTracks"
     for (int idx = 0; idx < numTracks; idx++)
-        addTrack(*m.getTrack(idx));
+        mTracks.addTrack(*m.getTrack(idx));
 
     parseTracks();
 }
@@ -69,7 +69,7 @@ void GrooveTransport::parseMidiFile(MidiFile& m) {
 void GrooveTransport::parseTracks() {
     int idx{ 0 };
 
-    for (const auto& track : mTrackPlayHeads) {
+    for (const auto& track : mTracks.mPlayHeads) {
         double trackEndTime = track.getEndTime();
         int numEvents = track.getNumEvents();
 
@@ -215,7 +215,7 @@ void GrooveTransport::processMidi(
     }
 
     // for all the tracks we have (that are in the MIDI file)...
-    for (const auto& tph : mTrackPlayHeads) {
+    for (const auto& tph : mTracks.mPlayHeads) {
         int numEventsThisTrack = tph.getNumEvents();
         int nextIndex = tph.getNextIndexAtTime(startTime);
 
