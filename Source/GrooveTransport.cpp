@@ -15,6 +15,9 @@ void GrooveTransport::initialize(File f) {
     mMidiFile.clear();
     mEndTime = 0.0;
 
+    auto size = sizeof(mActiveNotes);
+    memset(mActiveNotes, 0, size);
+
     FileInputStream fileInStream = FileInputStream(f);
     mMidiFile.readFrom(fileInStream);
 
@@ -106,23 +109,62 @@ void GrooveTransport::parseMetaEvent(const MidiMessage& message) {
 }
 
 void GrooveTransport::parseEvent(const MidiMessage& message) {
-    //MYDBG("      event: " + message.getDescription().toStdString() + ", ts: " + String::formatted("%0.4f", message.getTimeStamp()).toStdString());
+    if (!message.isNoteOnOrOff())
+        MYDBG("      event: " + message.getDescription().toStdString() + ", ts: " + String::formatted("%0.4f", message.getTimeStamp()).toStdString());
+}
+
+void GrooveTransport::markNoteOn(int channel, int note) {
+    jassert(channel >= 1 && channel <= 16);
+    jassert(note >= 0 && note <= 127);
+
+    mActiveNotes[channel-1][note>>3] |= (1 << (note & 0x7));
+}
+
+void GrooveTransport::markNoteOff(int channel, int note) {
+    jassert(channel >= 1 && channel <= 16);
+    jassert(note >= 0 && note <= 127);
+
+    mActiveNotes[channel-1][note >> 3] &= ~(1 << (note & 0x7));
+}
+
+void GrooveTransport::markNote(MidiMessage& message) {
+    if (message.isNoteOn())
+        markNoteOn(message.getChannel(), message.getNoteNumber());
+    else
+        markNoteOff(message.getChannel(), message.getNoteNumber());
+}
+
+void GrooveTransport::sendNotesOff(int channel, MidiBuffer& midiMessages) {
+    // go through each byte of the bitmap that tracks note on/off state...
+    for (int noteBlock = 0; noteBlock < mNumNoteBlocks; noteBlock++) {
+        unsigned char activeNotesThisBlock = mActiveNotes[channel - 1][noteBlock];
+
+        // for each bit in this activeNotesThisBlock...
+        for (int bitIdx = 0; bitIdx < sizeof(unsigned char) * 8; bitIdx++) {
+            unsigned char mask = 1 << bitIdx;
+
+            // if this bit (note) is on...
+            if (activeNotesThisBlock & mask) {
+                // calculate the note number
+                int noteNumber = noteBlock * 8 + bitIdx;
+
+                // and send a Note On with 0 velocity.  (I believe its the most universal note-off) 
+                midiMessages.addEvent(MidiMessage().noteOn(channel, noteNumber, 0.0f), 0);
+            }
+        }
+    }
 }
 
 void GrooveTransport::sendAllNotesOff(MidiBuffer& midiMessages)
 {
-    MYDBG(__FUNCTION__"()");
+    // Go through all 16 MIDI channels...
+    for (auto channel = 1; channel <= mNumMidiChannels; channel++) {
+        midiMessages.addEvent(MidiMessage::allNotesOff(channel), 0);
+        midiMessages.addEvent(MidiMessage::allSoundOff(channel), 0);
+        midiMessages.addEvent(MidiMessage::allControllersOff(channel), 0);
 
-    for (auto i = 1; i <= 16; i++)
-    {
-        // FIXME (?) : MIDI all-notes-off event is not guaranteed by the spec.
-        // Optimize this brute force approach with an activeNotes map of some sort.
-        for (int n = 0; n < 127; n++)
-            midiMessages.addEvent(MidiMessage::noteOff(i, n), 0);
-
-        midiMessages.addEvent(MidiMessage::allNotesOff(i), 0);
-        midiMessages.addEvent(MidiMessage::allSoundOff(i), 0);
-        midiMessages.addEvent(MidiMessage::allControllersOff(i), 0);
+        // silence hanging notes, 'cuz allNotesOff() not guaranteed.
+        sendNotesOff(channel, midiMessages);
     }
 
     mIsPlaying = false;
@@ -136,6 +178,16 @@ void GrooveTransport::processMidi(
     if (!posInfo.hasValue()) {
         MYDBG(__FUNCTION__"(): missing PositionInfo");
         return;
+    }
+
+    // If/when we're synced to host's tempo...
+    static double hostBpm{ 0.0 };
+    auto bpm = posInfo->getBpm();
+    if (bpm.hasValue()) {
+        if (*bpm != hostBpm) {
+            hostBpm = *bpm;
+            MYDBG("  Host BPM: " + std::to_string(hostBpm));
+        }
     }
 
     // if not playing there's nothing to do
@@ -175,9 +227,13 @@ void GrooveTransport::processMidi(
             if (eventTime >= endTime)
                 break;
 
-            // Adjust time stamp (as sample position) to relative to current play head.
+            // Adjust time stamp (as sample position), make it relative to current play head.
             auto samplePosition = roundToInt((message.getTimeStamp() - startTime) * mSampleRate);
             midiMessages.addEvent(message, samplePosition);
+
+            // track all note events for more efficient "all notes off" behavior 
+            if (message.isNoteOnOrOff())
+                markNote(message);
 
             mIsPlaying = true;
         }
