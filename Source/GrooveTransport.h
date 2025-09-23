@@ -41,10 +41,11 @@ protected:
     double mSampleRate{ 44100.0f };
     int mSamplesPerBlock{ 1024 };
 
-    MidiFile mMidiFile;
+    MidiFile mFileTempoMidiFile;
     MidiFile mHostTempoMidiFile;
 
     GrooveTracks mFileTempoTracks;
+    GrooveTracks mHostTempoTracks;
 
     short mTimeFormat{ 0 };
     int mTimeSigNum{ 4 };

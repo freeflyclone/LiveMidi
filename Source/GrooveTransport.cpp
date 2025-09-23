@@ -12,17 +12,20 @@
 
 void GrooveTransport::initialize(File f) {
     mFileTempoTracks.mPlayHeads.clear();
-    mMidiFile.clear();
+    mHostTempoTracks.mPlayHeads.clear();
+
+    mFileTempoMidiFile.clear();
     mHostTempoMidiFile.clear();
+
     mEndTime = 0.0;
 
     auto size = sizeof(mActiveNotes);
     memset(mActiveNotes, 0, size);
 
     FileInputStream fileInStream = FileInputStream(f);
-    mMidiFile.readFrom(fileInStream);
-    mMidiFile.convertTimestampTicksToSeconds();
-    parseMidiFile(mMidiFile, mFileTempoTracks);
+    mFileTempoMidiFile.readFrom(fileInStream);
+    mFileTempoMidiFile.convertTimestampTicksToSeconds();
+    parseMidiFile(mFileTempoMidiFile, mFileTempoTracks);
 
     // rewind "fileInStream", initialize another MidiFile object with it
     // for "file tempo" vs "host tempo" development.
