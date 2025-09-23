@@ -11,7 +11,7 @@
 #include "GrooveTransport.h"
 
 void GrooveTransport::initialize(File f) {
-    mTracks.mPlayHeads.clear();
+    mFileTempoTracks.mPlayHeads.clear();
     mMidiFile.clear();
     mHostTempoMidiFile.clear();
     mEndTime = 0.0;
@@ -21,7 +21,8 @@ void GrooveTransport::initialize(File f) {
 
     FileInputStream fileInStream = FileInputStream(f);
     mMidiFile.readFrom(fileInStream);
-    parseMidiFile(mMidiFile);
+    mMidiFile.convertTimestampTicksToSeconds();
+    parseMidiFile(mMidiFile, mFileTempoTracks);
 
     // rewind "fileInStream", initialize another MidiFile object with it
     // for "file tempo" vs "host tempo" development.
@@ -45,9 +46,7 @@ void GrooveTransport::actionListenerCallback(const String& message) {
     }
 }
 
-void GrooveTransport::parseMidiFile(MidiFile& m) {
-    m.convertTimestampTicksToSeconds();
-
+void GrooveTransport::parseMidiFile(MidiFile& m, GrooveTracks& gt) {
     auto numTracks = m.getNumTracks();
     MYDBG(__FUNCTION__"(): found " + std::to_string(numTracks) + " channels");
 
@@ -61,15 +60,15 @@ void GrooveTransport::parseMidiFile(MidiFile& m) {
 
     // Add all tracks to "mTracks"
     for (int idx = 0; idx < numTracks; idx++)
-        mTracks.addTrack(*m.getTrack(idx));
+        gt.addTrack(*m.getTrack(idx));
 
-    parseTracks();
+    parseTracks(gt);
 }
 
-void GrooveTransport::parseTracks() {
+void GrooveTransport::parseTracks(GrooveTracks& gt) {
     int idx{ 0 };
 
-    for (const auto& track : mTracks.mPlayHeads) {
+    for (const auto& track : gt.mPlayHeads) {
         double trackEndTime = track.getEndTime();
         int numEvents = track.getNumEvents();
 
@@ -215,7 +214,7 @@ void GrooveTransport::processMidi(
     }
 
     // for all the tracks we have (that are in the MIDI file)...
-    for (const auto& tph : mTracks.mPlayHeads) {
+    for (const auto& tph : mFileTempoTracks.mPlayHeads) {
         int numEventsThisTrack = tph.getNumEvents();
         int nextIndex = tph.getNextIndexAtTime(startTime);
 

@@ -44,7 +44,7 @@ protected:
     MidiFile mMidiFile;
     MidiFile mHostTempoMidiFile;
 
-    GrooveTracks mTracks;
+    GrooveTracks mFileTempoTracks;
 
     short mTimeFormat{ 0 };
     int mTimeSigNum{ 4 };
@@ -63,8 +63,8 @@ protected:
     void actionListenerCallback(const String&);
 
     // TODO: make these into ActionMessage broadcasters
-    void parseMidiFile(MidiFile&);
-    void parseTracks();
+    void parseMidiFile(MidiFile&, GrooveTracks&);
+    void parseTracks(GrooveTracks&);
     void parseMetaEvent(const MidiMessage& message);
     void parseEvent(const MidiMessage& message);
 
