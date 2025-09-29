@@ -24,8 +24,8 @@ void GrooveTransport::initialize(File f) {
     parseMidiFile();
 }
 
-void GrooveTransport::addTrack(const MidiMessageSequence& track) {
-    mTrackPlayHeads.emplace_back(track);
+void GrooveTransport::addTrack(const MidiMessageSequence* track) {
+    mTrackPlayHeads.emplace_back(track, 0);
 }
 
 void GrooveTransport::actionListenerCallback(const String& message) {
@@ -56,7 +56,7 @@ void GrooveTransport::parseMidiFile() {
 
     // Add all tracks to "mTracks"
     for (int idx = 0; idx < numTracks; idx++)
-        addTrack(*mMidiFile.getTrack(idx));
+        addTrack(mMidiFile.getTrack(idx));
 
     parseTracks();
 }
@@ -65,8 +65,8 @@ void GrooveTransport::parseTracks() {
     int idx{ 0 };
 
     for (const auto& track : mTrackPlayHeads) {
-        double trackEndTime = track.getEndTime();
-        int numEvents = track.getNumEvents();
+        double trackEndTime = track.mSequence->getEndTime();
+        int numEvents = track.mSequence->getNumEvents();
 
         MYDBG("    track: " + std::to_string(idx++) + ", " + std::to_string(numEvents) + " events, end time: " + std::to_string(trackEndTime));
 
@@ -74,7 +74,7 @@ void GrooveTransport::parseTracks() {
             mEndTime = trackEndTime;
 
         for (int i = 0; i < numEvents; i++) {
-            auto event = track.getEventPointer(i);
+            auto event = track.mSequence->getEventPointer(i);
             auto message = event->message;
 
             if (message.isMetaEvent())
@@ -211,8 +211,8 @@ void GrooveTransport::processMidi(
 
     // for all the tracks we have (that are in the MIDI file)...
     for (const auto& tph : mTrackPlayHeads) {
-        int numEventsThisTrack = tph.getNumEvents();
-        int nextIndex = tph.getNextIndexAtTime(startTime);
+        int numEventsThisTrack = tph.mSequence->getNumEvents();
+        int nextIndex = tph.mSequence->getNextIndexAtTime(startTime);
 
         // Expect tracks to vary in number of events
         if (nextIndex == numEventsThisTrack)
@@ -220,7 +220,7 @@ void GrooveTransport::processMidi(
 
         // for each remaining event in this track: starting at 1st event AFTER current "startTime"...
         for (int idx = nextIndex; idx < numEventsThisTrack; idx++) {
-            MidiMessage message = tph.getEventPointer(idx)->message;
+            MidiMessage message = tph.mSequence->getEventPointer(idx)->message;
             double eventTime = message.getTimeStamp();
 
             // if next event occurs AFTER current "endTime", we're done with this track for now.
