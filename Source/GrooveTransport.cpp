@@ -167,6 +167,10 @@ void GrooveTransport::sendAllNotesOff(MidiBuffer& midiMessages)
         sendNotesOff(channel, midiMessages);
     }
 
+    // rewind "mNextIdx" for every track in the file 
+    for (auto& track : mTrackPlayHeads)
+        track.mNextIdx = 0;
+
     mIsPlaying = false;
 }
 
@@ -210,16 +214,15 @@ void GrooveTransport::processMidi(
     }
 
     // for all the tracks we have (that are in the MIDI file)...
-    for (const auto& tph : mTrackPlayHeads) {
+    for (auto& tph : mTrackPlayHeads) {
         int numEventsThisTrack = tph.mSequence->getNumEvents();
-        int nextIndex = tph.mSequence->getNextIndexAtTime(startTime);
 
         // Expect tracks to vary in number of events
-        if (nextIndex == numEventsThisTrack)
+        if (tph.mNextIdx == numEventsThisTrack)
             continue;
 
         // for each remaining event in this track: starting at 1st event AFTER current "startTime"...
-        for (int idx = nextIndex; idx < numEventsThisTrack; idx++) {
+        for (int idx = tph.mNextIdx; idx < numEventsThisTrack; idx++) {
             MidiMessage message = tph.mSequence->getEventPointer(idx)->message;
             double eventTime = message.getTimeStamp();
 
@@ -235,6 +238,7 @@ void GrooveTransport::processMidi(
             if (message.isNoteOnOrOff())
                 markNote(message);
 
+            tph.mNextIdx++;
             mIsPlaying = true;
         }
     }
