@@ -36,7 +36,7 @@ LiveMidiAudioProcessorEditor::LiveMidiAudioProcessorEditor (LiveMidiAudioProcess
     // editor's size to whatever you need it to be.
     // 
     // SOHN: do setSize() last!
-    setSize (800, 400);
+    setSize (800, 800);
 }
 
 LiveMidiAudioProcessorEditor::~LiveMidiAudioProcessorEditor()
