@@ -18,7 +18,7 @@
 
 using namespace juce;
 
-class GroovePlayer : public Component, public ActionListener, public ActionBroadcaster, public Button::Listener {
+class GroovePlayer : public Component, public ActionListener {
 public:
     GroovePlayer(LiveMidiAudioProcessor&);
     ~GroovePlayer();
@@ -28,17 +28,8 @@ public:
 private:
     LiveMidiAudioProcessor& mAudioProcessor;
 
-    Array<String> mButtonsText{ "Start", "-Meas", "Stop", "Pause", "Play", "+Meas" , "End"};
-
-    const int mButtonWidth{ 60 };
-    const int mButtonHeight{ 32 };
-    const int mButtonMargin{ 2 };
-
-    Array<std::shared_ptr<TextButton>> mButtons;
-
     void paint(Graphics& g) override;
     void resized() override;
 
     void actionListenerCallback(const String&);
-    void buttonClicked(Button* button) override;
 };

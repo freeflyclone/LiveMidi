@@ -29,9 +29,6 @@ LiveMidiAudioProcessorEditor::LiveMidiAudioProcessorEditor (LiveMidiAudioProcess
     // We signal GroovePlayer when GrooveBrowser clicks on a file
     mBrowser.addActionListener(&mPlayer);
 
-    // We signal GrooveTransport when a transport control button is clicked
-    mPlayer.addActionListener(&mAudioProcessor);
-
     // Make sure that before the constructor has finished, you've set the
     // editor's size to whatever you need it to be.
     // 
