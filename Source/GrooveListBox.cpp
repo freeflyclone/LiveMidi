@@ -86,12 +86,16 @@ void GrooveListBox::paintListBoxItem(int rowNumber, Graphics& g,int width, int h
 
 void GrooveListBox::selectedRowsChanged(int lastRowSelected)
 {
+	// Don't care about "deselectAllRows" callback.
+    if (lastRowSelected < 0)
+        return;
+
     mSelectedRow = lastRowSelected;
 
     GrooveActionMessage gam;
-    gam["component"] = getName().toStdString();
+    gam["component"] = getParentComponent()->getName().toStdString();
     gam["index"] = getComponentID().getIntValue();
-    gam["action"] = "SRC";
+    gam["action"] = getName().toStdString();
     gam["value"] = mSelectedRow;
 
     sendActionMessage(gam.dump());

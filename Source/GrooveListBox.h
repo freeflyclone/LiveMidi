@@ -32,6 +32,7 @@ public:
 
     void add(String);
     int getSelectedRow() const { return mSelectedRow; }
+    void deselectAllRows() { mListBox.deselectAllRows(); }
 
 protected:
     void paint(Graphics& g) override;

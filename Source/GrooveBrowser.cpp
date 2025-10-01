@@ -11,13 +11,17 @@
 #include "GrooveBrowser.h"
 #include "Log.h"
 
+namespace {
+    int nsComponentID{ 0 };
+};
+
 GrooveBrowser::GrooveBrowser()
 {
     int xOffset{ 0 };
     int idx{ 0 };
 
     setName("GVBR");
-    setComponentID("0");
+    setComponentID(String::formatted("%02d", nsComponentID++));
 
     for (auto& listBox : mListBoxes) {
         addChildComponent(listBox);
@@ -74,10 +78,10 @@ void GrooveBrowser::resized() {
 void GrooveBrowser::actionListenerCallback(const String& message) {
     GrooveActionMessage gam = json::parse(message.toStdString());
 
-    if (gam["component"] != "GLBX" || gam["action"] != "SRC")
-        return;
-
-    HandleSelectionChangeAction(gam);
+    if (gam["component"] == "GVBR" && gam["action"] == "GLBX")
+        HandleSelectionChangeAction(gam);
+    else
+        MYDBG(__FUNCTION__"(): message: " + message.toStdString());
 }
 
 // Fourth pass at using the GrooveStore data for navigation.

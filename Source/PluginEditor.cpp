@@ -66,7 +66,7 @@ void LiveMidiAudioProcessorEditor::resized()
 
     mBrowser.setBounds(10, 60, width - 20, height / 2);
 
-    mPlayer.setTopLeftPosition(10, 60 + height / 2 + 10);
+    mPlayer.setBounds(10, 60 + height / 2 + 10, width - 20, height / 2 - 80);
 }
 
 
