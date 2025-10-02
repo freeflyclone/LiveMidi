@@ -24,8 +24,10 @@ public:
     GroovePlayer(LiveMidiAudioProcessor&);
     ~GroovePlayer();
 
-    void setGrooveMidiFile(File);
-    void viewSelectedMidiFile(const File&);
+    void SetGrooveMidiFile(File);
+    void ViewSelectedMidiFile(const File&);
+
+    void HandleViewerAction(const GrooveActionMessage&);
 
 private:
     LiveMidiAudioProcessor& mAudioProcessor;

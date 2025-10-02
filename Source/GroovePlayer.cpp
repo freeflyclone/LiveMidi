@@ -37,7 +37,7 @@ GroovePlayer::GroovePlayer(LiveMidiAudioProcessor& p)
 GroovePlayer::~GroovePlayer() {
 }
 
-void GroovePlayer::viewSelectedMidiFile(const File& f) {
+void GroovePlayer::ViewSelectedMidiFile(const File& f) {
     for (auto& listBox : mListBoxes) {
         listBox.clear();
         listBox.setVisible(false);
@@ -61,9 +61,9 @@ void GroovePlayer::resized() {
     mListBoxes[0].setSize(GROOVE_LISTBOX_WIDTH, getHeight());
 }
 
-void GroovePlayer::setGrooveMidiFile(File f) {
+void GroovePlayer::SetGrooveMidiFile(File f) {
     mAudioProcessor.initialize(f);
-    viewSelectedMidiFile(f);
+    ViewSelectedMidiFile(f);
 }
 
 void GroovePlayer::actionListenerCallback(const String& message) {
@@ -71,9 +71,20 @@ void GroovePlayer::actionListenerCallback(const String& message) {
 
     // process Browser's "NEWF" message.
     if (gam["component"] == "GVBR" && gam["action"] == "NEWF") {
-        setGrooveMidiFile(File((std::string)gam["value"]));
+        SetGrooveMidiFile(File((std::string)gam["value"]));
+    }
+    else if (gam["component"] == "GPLYR" && gam["action"] == "GLVWR") {
+        HandleViewerAction(gam);
     }
     else {
         MYDBG(__FUNCTION__"(): unrecognized message: " + message.toStdString());
     }
 }
+
+void GroovePlayer::HandleViewerAction(const GrooveActionMessage& gam) {
+    MYDBG(__FUNCTION__"(): from: "
+        + (std::string)gam["component"]
+        + "[" + std::to_string((int)gam["index"])
+        + "], action: " + (std::string)gam["action"]);
+}
+
