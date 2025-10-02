@@ -10,6 +10,12 @@
 #include "PluginEditor.h"
 #include "Log.h"
 
+namespace {
+    const int cBrowserYOffset = 50;
+    const int cHorizontalMargin = 10;
+    const int cVerticalMargin = 10;
+}
+
 //==============================================================================
 LiveMidiAudioProcessorEditor::LiveMidiAudioProcessorEditor (LiveMidiAudioProcessor& p)
     : AudioProcessorEditor (&p), 
@@ -61,12 +67,16 @@ void LiveMidiAudioProcessorEditor::resized()
     const auto textWidth = GlyphArrangement::getStringWidth(labelFont, mGroovesLabel.getText());
     const auto textHeight = labelFont.getHeight();
 
-    mGroovesLabel.setBounds(10, 20, (int)textWidth, (int)textHeight);
-    mGroovesButton.setBounds(20 + (int)textWidth, 10, width - (int)textWidth - 30, 32);
+    auto hMargix2x = cHorizontalMargin * 2;
+    auto vMargin2x = cVerticalMargin * 2;
+    auto halfHeight = height / 2;
+    auto textHeight2x = textHeight * 2;
 
-    mBrowser.setBounds(10, 60, width - 20, height / 2);
+    mGroovesLabel.setBounds(cHorizontalMargin, vMargin2x, (int)textWidth, (int)textHeight);
+    mGroovesButton.setBounds(hMargix2x + (int)textWidth, cVerticalMargin, width - (int)textWidth - cHorizontalMargin * 3, textHeight2x);
 
-    mPlayer.setBounds(10, 60 + height / 2 + 10, width - 20, height / 2 - 80);
+    mBrowser.setBounds(cHorizontalMargin, cBrowserYOffset, width - hMargix2x, halfHeight);
+    mPlayer.setBounds(cHorizontalMargin, cBrowserYOffset + halfHeight + cVerticalMargin, width - hMargix2x, halfHeight - (textHeight2x * 2 + cVerticalMargin));
 }
 
 
