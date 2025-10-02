@@ -32,6 +32,7 @@ public:
 
     void add(String);
     int getSelectedRow() const { return mSelectedRow; }
+    String getSelectedRowItem() const { return mItems[mSelectedRow]; }
     void deselectAllRows() { mListBox.deselectAllRows(); }
 
 protected:

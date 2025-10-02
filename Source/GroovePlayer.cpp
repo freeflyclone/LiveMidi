@@ -82,9 +82,14 @@ void GroovePlayer::actionListenerCallback(const String& message) {
 }
 
 void GroovePlayer::HandleViewerAction(const GrooveActionMessage& gam) {
-    MYDBG(__FUNCTION__"(): from: "
-        + (std::string)gam["component"]
-        + "[" + std::to_string((int)gam["index"])
-        + "], action: " + (std::string)gam["action"]);
+    int index = gam["index"];
+    int value = gam["value"];
+
+    if (index == 0) {
+        MYDBG(__FUNCTION__"(): selected: " + mListBoxes[index].getSelectedRowItem().toStdString());
+    }
+    else {
+        MYDBG(__FUNCTION__"(): box[" + std::to_string(index) + "], row[" + std::to_string(value) + "]");
+    }
 }
 
